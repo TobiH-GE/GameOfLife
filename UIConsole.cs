@@ -45,7 +45,7 @@ namespace GameOfLife
         {
             Console.Clear();
             Console.CursorVisible = false;
-            game.status = Status.Started;
+            game.StartGame();
 
             UIElements.Add(new UILogo("Logo", "Logo.txt", 5, 1, 96, 7));
             UIElements.Add(new UIText("Titel", "(c) by TobiH ", 99, 7));
@@ -68,7 +68,7 @@ namespace GameOfLife
             {
                 for (byte x = 0; x < 6; x++)
                 {
-                    UIElements.Add(new UIButton($"Button {x},{y}", " ", 10 + x, 10 + y, true, Toggle));
+                    UIElements.Add(new UIButton($"Button {x},{y}", "", 10 + x, 10 + y, true, Toggle));
                 }
             }
         }

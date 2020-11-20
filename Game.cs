@@ -11,14 +11,11 @@ namespace GameOfLife
         public UI UIGame;               // UserInterface des Spiels
         public Status status;
         public int currentField = 0;
+        public int xsize = 6;
+        public int ysize = 6;
 
         public Game (UI uigame)
         {
-            SetFieldSize(6, 6);
-
-            fieldAB.Add(fieldA);
-            fieldAB.Add(fieldB);
-
             UIGame = uigame;
             UIGame.game = this;
             UIGame.Start();         // UserInterface starten
@@ -29,7 +26,12 @@ namespace GameOfLife
         }
         public void StartGame()
         {
-            
+            status = Status.Started;
+
+            SetFieldSize(xsize, ysize);
+
+            fieldAB.Add(fieldA);
+            fieldAB.Add(fieldB);
         }
         public void NextCycle()
         {
@@ -77,6 +79,7 @@ namespace GameOfLife
                     fieldB[y, x] = false;
                 }
             }
+            cycleNumber++;
         }
         public void SetFieldSize(int x, int y)
         {
