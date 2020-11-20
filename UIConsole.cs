@@ -49,7 +49,7 @@ namespace GameOfLife
 
             UIElements.Add(new UILogo("Logo", "Logo.txt", 5, 1, 96, 7));
             UIElements.Add(new UIText("Titel", "(c) by TobiH ", 99, 7));
-            UIElements.Add(new UIText("Status", $"cylce {game.cycleNumber}!\n", 5, 20, true));
+            UIElements.Add(new UIText("Status", $"cylce #: {game.cycleNumber}", 5, 20, true));
             
 
             UIElements.Add(new UIText("Info", "[SPACE] to toggle, [S] start next cycle, [<>^v] navigation and [ESC] to exit", 5, 21));
@@ -62,7 +62,7 @@ namespace GameOfLife
             UIElements.Add(new UIButton("Exit", "Exit", 30, 28, true, Exit));
             ActiveElement = 15;
 
-            UIElements.Add(new UIField("FieldA", "GameOfLife", 10, 10, game.fieldA, game.xsize, game.ysize));
+            UIElements.Add(new UIField("Field", "GameOfLife", 10, 10, game.fieldA, game.xsize, game.ysize));
 
             for (byte y = 0; y < game.ysize; y++)
             {
@@ -198,6 +198,8 @@ namespace GameOfLife
         public bool Ok()
         {
             game.NextCycle();
+            UIElements[GetUIElementByName("Field")].field = game.fieldAB[game.currentField ? 1 : 0];
+            UIElements[GetUIElementByName("Status")].text = $"cylce #: {game.cycleNumber}";
             return true;
         }
         public bool Exit()

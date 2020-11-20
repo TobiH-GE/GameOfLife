@@ -8,7 +8,6 @@ namespace GameOfLife
     {
         int width = 0;
         int height = 0;
-        bool[,] field;
         public UIField(string name, string text, int x, int y, bool[,] field, int width = 0, int height = 0, bool visible = true, ConsoleColor fColor = ConsoleColor.White, ConsoleColor bColor = ConsoleColor.Black, bool selected = false) : base(name, text, x, y, visible, fColor, bColor, selected)
         {
             this.field = field;

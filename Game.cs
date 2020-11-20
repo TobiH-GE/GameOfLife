@@ -10,7 +10,7 @@ namespace GameOfLife
         public byte cycleNumber = 1;
         public UI UIGame;               // UserInterface des Spiels
         public Status status;
-        public int currentField = 0;
+        public bool currentField = false;
         public int xsize = 10;
         public int ysize = 10;
 
@@ -22,13 +22,13 @@ namespace GameOfLife
         }
         public bool[,] GetField() // noch keine Verwendung
         {
-            return fieldA;
+            return fieldAB[currentField ? 1 : 0];
         }
         public void StartGame()
         {
             status = Status.Started;
 
-            SetFieldSize(xsize, ysize);
+            SetFieldSize(xsize, ysize); // Feldgrösse
 
             fieldAB.Add(fieldA);
             fieldAB.Add(fieldB);
@@ -37,9 +37,9 @@ namespace GameOfLife
         {
             int livingNeighbours = 0;
 
-            for (int y = 0; y < fieldAB[0].GetLength(0); y++)
+            for (int y = 0; y < fieldAB[currentField ? 1 : 0].GetLength(0); y++)
             {
-                for (int x = 0; x < fieldAB[0].GetLength(1); x++)
+                for (int x = 0; x < fieldAB[currentField ? 1 : 0].GetLength(1); x++)
                 {
                     livingNeighbours = 0;
                     for (int y1 = -1; y1 < 2; y1++)
@@ -53,32 +53,25 @@ namespace GameOfLife
                             }
                         }
                     }
-                    if (fieldAB[0][y, x]) // Zelle mit Leben
+                    if (fieldAB[currentField ? 1 : 0][y, x]) // Zelle mit Leben
                     {
                         if (livingNeighbours < 2)
                             DiePosition(x, y);
                         else if (livingNeighbours == 2 || livingNeighbours == 3)
-                            LiveToPosition(x, y);
+                            LifeToPosition(x, y);
                         else
                             DiePosition(x, y);
                     }
-                    else
+                    else // Zelle ohne Leben
                     {
                         if (livingNeighbours == 3)
-                            LiveToPosition(x, y);
+                            LifeToPosition(x, y);
                         else
                             DiePosition(x, y);
                     }
                 }
             }
-            for (int y = 0; y < fieldAB[0].GetLength(0); y++)
-            {
-                for (int x = 0; x < fieldAB[0].GetLength(1); x++)
-                {
-                    fieldA[y, x] = fieldB[y, x];
-                    fieldB[y, x] = false;
-                }
-            }
+            currentField = !currentField;
             cycleNumber++;
         }
         public void SetFieldSize(int x, int y)
@@ -93,19 +86,19 @@ namespace GameOfLife
                 
                 return false;
 
-            else return fieldA[y, x];
+            else return fieldAB[currentField ? 1 : 0][y, x];
         }
         public void TogglePosition(int x, int y)
         {
-            fieldAB[0][y, x] = !fieldAB[0][y, x];
+            fieldAB[currentField ? 1 : 0][y, x] = !fieldAB[currentField ? 1 : 0][y, x];
         }
-        public void LiveToPosition(int x, int y)
+        public void LifeToPosition(int x, int y)
         {
-            fieldAB[1][y, x] = true;
+            fieldAB[!currentField ? 1 : 0][y, x] = true;
         }
         public void DiePosition(int x, int y)
         {
-            fieldAB[1][y, x] = false;
+            fieldAB[!currentField ? 1 : 0][y, x] = false;
         }
 
         public void ResetGame()
