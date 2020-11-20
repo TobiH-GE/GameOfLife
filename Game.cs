@@ -11,7 +11,7 @@ namespace GameOfLife
         public UI UIGame;               // UserInterface des Spiels
         public Status status;
         public bool currentField = false;
-        public int xsize = 10;
+        public int xsize = 30;
         public int ysize = 10;
 
         public Game (UI uigame)
@@ -103,7 +103,9 @@ namespace GameOfLife
 
         public void ResetGame()
         {
-            
+            cycleNumber = 1;
+            currentField = false;
+            SetFieldSize(xsize, ysize);
         }   
     }
 }

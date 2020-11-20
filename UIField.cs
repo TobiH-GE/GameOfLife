@@ -16,9 +16,9 @@ namespace GameOfLife
         }
         public override void Draw()
         {
-            for (int y1 = 0; y1 < width; y1++)
+            for (int y1 = 0; y1 < height; y1++)
             {
-                for (int x1 = 0; x1 < height; x1++)
+                for (int x1 = 0; x1 < width; x1++)
                 {
                     Console.SetCursorPosition(x+x1, y+y1);
                     if (field[y1, x1] == false)

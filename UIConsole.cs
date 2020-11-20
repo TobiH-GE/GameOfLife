@@ -49,20 +49,20 @@ namespace GameOfLife
 
             UIElements.Add(new UILogo("Logo", "Logo.txt", 5, 1, 96, 7));
             UIElements.Add(new UIText("Titel", "(c) by TobiH ", 99, 7));
-            UIElements.Add(new UIText("Status", $"cylce #: {game.cycleNumber}", 5, 20, true));
+            UIElements.Add(new UIText("Status", $"cylce #: {game.cycleNumber}", 5, 22, true));
             
 
-            UIElements.Add(new UIText("Info", "[SPACE] to toggle, [S] start next cycle, [<>^v] navigation and [ESC] to exit", 5, 21));
-            UIElements.Add(new UIText("Error", "", 20, 22));
+            UIElements.Add(new UIText("Info", "[SPACE] to toggle, [S] start next cycle, [<>^v] navigation and [ESC] to exit", 5, 23));
+            UIElements.Add(new UIText("Error", "", 20, 24));
 
-            UIElements.Add(new UIInput("X", "X", 5, 25, true, Next));
-            UIElements.Add(new UIInput("Y", "Y", 5, 26, true, () => { ActiveElement = GetUIElementByName("Ok"); return true; }));
+            UIElements.Add(new UIInput("X", "X", 5, 26, true, Next));
+            UIElements.Add(new UIInput("Y", "Y", 5, 27, true, () => { ActiveElement = GetUIElementByName("Ok"); return true; }));
 
             UIElements.Add(new UIButton("Ok", "OK", 20, 28, true, Ok));
             UIElements.Add(new UIButton("Exit", "Exit", 30, 28, true, Exit));
             ActiveElement = 15;
 
-            UIElements.Add(new UIField("Field", "GameOfLife", 10, 10, game.fieldA, game.xsize, game.ysize));
+            UIElements.Add(new UIField("Field", "GameOfLife", 10, 10, game.fieldAB[game.currentField ? 1 : 0], game.xsize, game.ysize));
 
             for (byte y = 0; y < game.ysize; y++)
             {

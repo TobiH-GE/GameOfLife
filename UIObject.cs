@@ -16,6 +16,7 @@ namespace GameOfLife
         public bool active = true;
         public bool selectable;
         public bool[,] field;
+        public bool drawUpdate = true;
         public UIObject(string name, string text, int x, int y, bool visible = true, ConsoleColor fColor = ConsoleColor.White, ConsoleColor bColor = ConsoleColor.Black, bool selected = false)
         {
             this.name = name;

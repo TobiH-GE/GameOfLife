@@ -31,9 +31,10 @@ namespace GameOfLife
         }
         public override void Draw()
         {
-            int i = 0;
-            if (visible)
+            if (drawUpdate && visible)
             {
+                int i = 0;
+
                 Console.ForegroundColor = fColor;
                 foreach (string line in logo)
                 {
@@ -42,6 +43,7 @@ namespace GameOfLife
                     i++;
                 }
                 Console.ResetColor();
+                drawUpdate = false; // Logo nur einmal zeichnen
             }
         }
     }
