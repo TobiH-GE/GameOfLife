@@ -11,8 +11,8 @@ namespace GameOfLife
         public UI UIGame;               // UserInterface des Spiels
         public Status status;
         public int currentField = 0;
-        public int xsize = 6;
-        public int ysize = 6;
+        public int xsize = 10;
+        public int ysize = 10;
 
         public Game (UI uigame)
         {
@@ -46,7 +46,7 @@ namespace GameOfLife
                     {
                         for (int x1 = -1; x1 < 2; x1++)
                         {
-                            if (!(x + x1 == x && y + y1 == y))
+                            if (!(x1 == 0 && y1 == 0))
                             {
                                 if (GetPosition(x + x1, y + y1))
                                     livingNeighbours++;

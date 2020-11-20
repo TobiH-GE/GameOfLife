@@ -62,11 +62,11 @@ namespace GameOfLife
             UIElements.Add(new UIButton("Exit", "Exit", 30, 28, true, Exit));
             ActiveElement = 15;
 
-            UIElements.Add(new UIField("FieldA", "GameOfLife", 10, 10, game.fieldA, 6, 6));
+            UIElements.Add(new UIField("FieldA", "GameOfLife", 10, 10, game.fieldA, game.xsize, game.ysize));
 
-            for (byte y = 0; y < 6; y++)
+            for (byte y = 0; y < game.ysize; y++)
             {
-                for (byte x = 0; x < 6; x++)
+                for (byte x = 0; x < game.xsize; x++)
                 {
                     UIElements.Add(new UIButton($"Button {x},{y}", "", 10 + x, 10 + y, true, Toggle));
                 }
@@ -187,8 +187,6 @@ namespace GameOfLife
         }
         public bool Toggle()
         {
-            UIElements[GetUIElementByName("X")].input = (UIElements[activeElement].x-10).ToString();
-            UIElements[GetUIElementByName("Y")].input = (UIElements[activeElement].y-10).ToString();
             game.TogglePosition((UIElements[activeElement].x - 10), (UIElements[activeElement].y - 10));
             return true;
         }
