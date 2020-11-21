@@ -7,7 +7,7 @@ namespace GameOfLife
         public bool[,] fieldA;
         public bool[,] fieldB;
         public List<bool[,]> fieldAB = new List<bool[,]>();
-        public byte cycleNumber = 1;
+        public int cycleNumber = 1;
         public UI UIGame;               // UserInterface des Spiels
         public Status status;
         public bool currentField = false;
@@ -24,11 +24,11 @@ namespace GameOfLife
         {
             return fieldAB[currentField ? 1 : 0];
         }
-        public void StartGame()
+        public void StartGame(int x, int y)
         {
             status = Status.Started;
 
-            SetFieldSize(xsize, ysize); // Feldgrösse
+            SetFieldSize(x, y); // Feldgrösse
 
             fieldAB.Add(fieldA);
             fieldAB.Add(fieldB);
@@ -106,6 +106,7 @@ namespace GameOfLife
             cycleNumber = 1;
             currentField = false;
             SetFieldSize(xsize, ysize);
+            fieldAB.Clear();
         }   
     }
 }

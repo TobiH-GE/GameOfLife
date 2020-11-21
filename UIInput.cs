@@ -28,7 +28,7 @@ namespace GameOfLife
                 Console.Write(text + ":");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.BackgroundColor = ConsoleColor.Black;
-                Console.Write(" " + input);
+                Console.Write(" " + input + " ");
                 Console.ResetColor();
             }
         }

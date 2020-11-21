@@ -45,22 +45,22 @@ namespace GameOfLife
         {
             Console.Clear();
             Console.CursorVisible = false;
-            game.StartGame();
+            game.StartGame(game.xsize, game.ysize);
 
             UIElements.Add(new UILogo("Logo", "Logo.txt", 5, 1, 96, 7));
             UIElements.Add(new UIText("Titel", "(c) by TobiH ", 99, 7));
             UIElements.Add(new UIText("Status", $"cylce #: {game.cycleNumber}", 5, 22, true));
             
 
-            UIElements.Add(new UIText("Info", "[SPACE] to toggle, [S] start next cycle, [<>^v] navigation and [ESC] to exit", 5, 23));
+            UIElements.Add(new UIText("Info", "[SPACE] toggle [C] cycle [A] auto [<>^v] nav [R] restart [ESC] exit", 5, 23));
             UIElements.Add(new UIText("Error", "", 20, 24));
 
             UIElements.Add(new UIInput("X", "X", 5, 26, true, Next));
-            UIElements.Add(new UIInput("Y", "Y", 5, 27, true, () => { ActiveElement = GetUIElementByName("Ok"); return true; }));
+            UIElements.Add(new UIInput("Y", "Y", 5, 27, true, Restart));
 
             UIElements.Add(new UIButton("Ok", "OK", 20, 28, true, Ok));
             UIElements.Add(new UIButton("Exit", "Exit", 30, 28, true, Exit));
-            ActiveElement = 15;
+            
 
             UIElements.Add(new UIField("Field", "GameOfLife", 10, 10, game.fieldAB[game.currentField ? 1 : 0], game.xsize, game.ysize));
 
@@ -71,6 +71,8 @@ namespace GameOfLife
                     UIElements.Add(new UIButton($"Button {x},{y}", "", 10 + x, 10 + y, true, Toggle));
                 }
             }
+
+            ActiveElement = 15;
         }
         public override void WaitForInput()
         {
@@ -105,16 +107,7 @@ namespace GameOfLife
                     case ConsoleKey.RightArrow:
                         ActiveElement = FindNextUIElement(Direction.Right);
                         break;
-                    case ConsoleKey.D0:
-                        UIElements[ActiveElement].input = "0";
-                        break;
-                    case ConsoleKey.D1:
-                        UIElements[ActiveElement].input = "1";
-                        break;
-                    case ConsoleKey.D2:
-                        UIElements[ActiveElement].input = "2";
-                        break;
-                    case ConsoleKey.S:
+                    case ConsoleKey.C:
                         Ok();
                         break;
                     case ConsoleKey.Enter:
@@ -123,18 +116,20 @@ namespace GameOfLife
                     case ConsoleKey.Spacebar:
                         UIElements[ActiveElement].Action();
                         break;
-                    case ConsoleKey.Y:
-                        if (game.status == Status.Stopped)
-                        {
-                            UIElements.Clear();
-                            game.ResetGame();
-                            Start();
-                        }
+                    case ConsoleKey.R:
+                        Restart();
                         break;
                     case ConsoleKey.Escape:
                         game.status = Status.Stopped;
                         break;
+                    case ConsoleKey.Backspace:
+                        UIElements[ActiveElement].input = UIElements[ActiveElement].input.Remove(UIElements[ActiveElement].input.Length - 1);
+                        break;
                     default:
+                        if (Char.IsNumber(UserInput.KeyChar))
+                        {
+                            UIElements[ActiveElement].input += UserInput.KeyChar;
+                        }
                         break;
                 }
             }
@@ -205,6 +200,15 @@ namespace GameOfLife
         public bool Exit()
         {
             game.status = Status.Stopped;
+            return true;
+        }
+        public bool Restart()
+        {
+            int.TryParse(UIElements[GetUIElementByName("X")].input, out game.xsize);
+            int.TryParse(UIElements[GetUIElementByName("Y")].input, out game.ysize);
+            UIElements.Clear();
+            game.ResetGame();
+            Start();
             return true;
         }
 
