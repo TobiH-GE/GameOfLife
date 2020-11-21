@@ -72,7 +72,7 @@ namespace GameOfLife
                 }
             }
 
-            ActiveElement = 15;
+            activeElement = 4;
         }
         public override void WaitForInput()
         {

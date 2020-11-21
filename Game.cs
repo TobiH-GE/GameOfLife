@@ -105,7 +105,13 @@ namespace GameOfLife
         {
             cycleNumber = 1;
             currentField = false;
-            SetFieldSize(xsize, ysize);
+            if (xsize > 0 && xsize < 100 & ysize > 0 && ysize < 100)
+                SetFieldSize(xsize, ysize);
+            else
+            {
+                xsize = 30;
+                ysize = 10;
+            }
             fieldAB.Clear();
         }   
     }
