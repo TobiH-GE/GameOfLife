@@ -22,7 +22,7 @@ namespace GameOfLife
                 {
                     Console.SetCursorPosition(x+x1, y+y1);
                     if (field[y1, x1] == false)
-                        Console.Write(".");
+                        Console.Write("-");
                     else
                         Console.Write("X");
                 }

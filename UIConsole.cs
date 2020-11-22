@@ -47,28 +47,27 @@ namespace GameOfLife
             Console.CursorVisible = false;
             game.StartGame(game.xsize, game.ysize);
 
-            UIElements.Add(new UILogo("Logo", "Logo.txt", 5, 1, 96, 7));
-            UIElements.Add(new UIText("Titel", "(c) by TobiH ", 99, 7));
-            UIElements.Add(new UIText("Status", $"cylce #: {game.cycleNumber}", 5, 22, true));
+            UIElements.Add(new UILogo("Logo", "Logo.txt", 5, 1, 88, 3));
+            UIElements.Add(new UIText("Titel", "(c) by TobiH ", 99, 3));
+            UIElements.Add(new UIText("Status", $"cylce #: {game.cycleNumber}", 10, 0, true));
+            
+            UIElements.Add(new UIInput("X", "X", 5, game.ysize + 6, true, Next));
+            UIElements.Add(new UIInput("Y", "Y", 15, game.ysize + 6, true, Restart));
+
+            UIElements.Add(new UIButton("New",    "[R] Restart", 5, game.ysize + 8, true, Restart));
+            UIElements.Add(new UIButton("Toggle", "[ ] Toggle ", 20, game.ysize + 8, true, Toggle));
+            UIElements.Add(new UIButton("Cycle",  "[C] Cycle  ", 35, game.ysize + 8, true, Cycle));
+            UIElements.Add(new UIButton("Auto",   "[A] Auto   ", 50, game.ysize + 8, true, Cycle));
+            UIElements.Add(new UIButton("Exit",   "[ESC] Exit ", 65, game.ysize + 8, true, Exit));
             
 
-            UIElements.Add(new UIText("Info", "[SPACE] toggle [C] cycle [A] auto [<>^v] nav [R] restart [ESC] exit", 5, 23));
-            UIElements.Add(new UIText("Error", "", 20, 24));
-
-            UIElements.Add(new UIInput("X", "X", 5, 26, true, Next));
-            UIElements.Add(new UIInput("Y", "Y", 5, 27, true, Restart));
-
-            UIElements.Add(new UIButton("Ok", "OK", 20, 28, true, Ok));
-            UIElements.Add(new UIButton("Exit", "Exit", 30, 28, true, Exit));
-            
-
-            UIElements.Add(new UIField("Field", "GameOfLife", 10, 10, game.fieldAB[game.currentField ? 1 : 0], game.xsize, game.ysize));
+            UIElements.Add(new UIField("Field", "GameOfLife", 5,5, game.fieldAB[game.currentField ? 1 : 0], game.xsize, game.ysize));
 
             for (byte y = 0; y < game.ysize; y++)
             {
                 for (byte x = 0; x < game.xsize; x++)
                 {
-                    UIElements.Add(new UIButton($"Button {x},{y}", "", 10 + x, 10 + y, true, Toggle));
+                    UIElements.Add(new UIButton($"Button {x},{y}", "", 5 + x, 5 + y, true, Toggle));
                 }
             }
 
@@ -79,14 +78,14 @@ namespace GameOfLife
             Draw();
 
             // Debug - Ausgabe von Infos
-            Console.SetCursorPosition(50, 24);
-            Console.WriteLine(" " + FindNextUIElement(Direction.Up).ToString() + " ");
-            Console.SetCursorPosition(50, 26);
-            Console.WriteLine(" " + FindNextUIElement(Direction.Down).ToString() + " ");
-            Console.SetCursorPosition(47, 25);
-            Console.WriteLine(" " + FindNextUIElement(Direction.Left).ToString() + " ");
-            Console.SetCursorPosition(53, 25);
-            Console.WriteLine(" " + FindNextUIElement(Direction.Right).ToString() + " ");
+            //Console.SetCursorPosition(50, 24);
+            //Console.WriteLine(" " + FindNextUIElement(Direction.Up).ToString() + " ");
+            //Console.SetCursorPosition(50, 26);
+            //Console.WriteLine(" " + FindNextUIElement(Direction.Down).ToString() + " ");
+            //Console.SetCursorPosition(47, 25);
+            //Console.WriteLine(" " + FindNextUIElement(Direction.Left).ToString() + " ");
+            //Console.SetCursorPosition(53, 25);
+            //Console.WriteLine(" " + FindNextUIElement(Direction.Right).ToString() + " ");
             //
 
             if (Console.KeyAvailable)
@@ -108,7 +107,7 @@ namespace GameOfLife
                         ActiveElement = FindNextUIElement(Direction.Right);
                         break;
                     case ConsoleKey.C:
-                        Ok();
+                        Cycle();
                         break;
                     case ConsoleKey.Enter:
                         UIElements[ActiveElement].Action();
@@ -139,6 +138,34 @@ namespace GameOfLife
             UIObject active = UIElements[activeElement];
             int found = -1;
             double foundDistance = 9999;
+
+            for (int i = 0; i < UIElements.Count; i++)
+            {
+                if (UIElements[i].visible && UIElements[i].selectable)
+                {
+                    if (direction == Direction.Up && UIElements[i].y < active.y && UIElements[i].x == active.x && DistanceTo(UIElements[i]) < foundDistance)
+                    {
+                        found = i;
+                        foundDistance = DistanceTo(UIElements[i]);
+                    }
+                    else if (direction == Direction.Down && UIElements[i].y > active.y && UIElements[i].x == active.x && DistanceTo(UIElements[i]) < foundDistance)
+                    {
+                        found = i;
+                        foundDistance = DistanceTo(UIElements[i]);
+                    }
+                    else if (direction == Direction.Left && UIElements[i].x < active.x && UIElements[i].y == active.y && DistanceTo(UIElements[i]) < foundDistance)
+                    {
+                        found = i;
+                        foundDistance = DistanceTo(UIElements[i]);
+                    }
+                    else if (direction == Direction.Right && UIElements[i].x > active.x && UIElements[i].y == active.y && DistanceTo(UIElements[i]) < foundDistance)
+                    {
+                        found = i;
+                        foundDistance = DistanceTo(UIElements[i]);
+                    }
+                }
+            }
+            if (found != -1) return found;
 
             for (int i = 0; i < UIElements.Count; i++)
             {
@@ -182,7 +209,7 @@ namespace GameOfLife
         }
         public bool Toggle()
         {
-            game.TogglePosition((UIElements[activeElement].x - 10), (UIElements[activeElement].y - 10));
+            game.TogglePosition((UIElements[activeElement].x - 5), (UIElements[activeElement].y - 5));
             return true;
         }
         public bool Next()
@@ -190,7 +217,7 @@ namespace GameOfLife
             ActiveElement = FindNextUIElement(Direction.Down);
             return true;
         }
-        public bool Ok()
+        public bool Cycle()
         {
             game.NextCycle();
             UIElements[GetUIElementByName("Field")].field = game.fieldAB[game.currentField ? 1 : 0];
