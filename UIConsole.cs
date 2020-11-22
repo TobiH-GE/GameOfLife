@@ -9,6 +9,8 @@ namespace GameOfLife
         
         FPS fpsCounter = new FPS();
         Point input = new Point();
+        DateTime lastUpdate = DateTime.Now;
+        bool AutoCycleMode = false;
         ConsoleKeyInfo UserInput = new ConsoleKeyInfo();
         ConsoleColor[] pColor = new ConsoleColor[2] { ConsoleColor.Red, ConsoleColor.Blue };
         private int activeElement;
@@ -57,7 +59,7 @@ namespace GameOfLife
             UIElements.Add(new UIButton("New",    "[R] Restart", 5, game.ysize + 8, true, Restart));
             UIElements.Add(new UIButton("Toggle", "[ ] Toggle ", 20, game.ysize + 8, true, Toggle));
             UIElements.Add(new UIButton("Cycle",  "[C] Cycle  ", 35, game.ysize + 8, true, Cycle));
-            UIElements.Add(new UIButton("Auto",   "[A] Auto   ", 50, game.ysize + 8, true, Cycle));
+            UIElements.Add(new UIButton("Auto",   "[A] Auto   ", 50, game.ysize + 8, true, () => { AutoCycleMode=!AutoCycleMode; return true; }));
             UIElements.Add(new UIButton("Exit",   "[ESC] Exit ", 65, game.ysize + 8, true, Exit));
             
 
@@ -76,7 +78,7 @@ namespace GameOfLife
         public override void WaitForInput()
         {
             Draw();
-
+            AutoCycle();
             // Debug - Ausgabe von Infos
             //Console.SetCursorPosition(50, 24);
             //Console.WriteLine(" " + FindNextUIElement(Direction.Up).ToString() + " ");
@@ -106,14 +108,17 @@ namespace GameOfLife
                     case ConsoleKey.RightArrow:
                         ActiveElement = FindNextUIElement(Direction.Right);
                         break;
-                    case ConsoleKey.C:
-                        Cycle();
-                        break;
                     case ConsoleKey.Enter:
                         UIElements[ActiveElement].Action();
                         break;
                     case ConsoleKey.Spacebar:
                         UIElements[ActiveElement].Action();
+                        break;
+                    case ConsoleKey.A:
+                        AutoCycleMode = !AutoCycleMode;
+                        break;
+                    case ConsoleKey.C:
+                        Cycle();
                         break;
                     case ConsoleKey.R:
                         Restart();
@@ -130,6 +135,17 @@ namespace GameOfLife
                             UIElements[ActiveElement].input += UserInput.KeyChar;
                         }
                         break;
+                }
+            }
+        }
+        public void AutoCycle()
+        {
+            if (AutoCycleMode)
+            {
+                if ((DateTime.Now - lastUpdate).TotalMilliseconds >= 1000)
+                {
+                    Cycle();
+                    lastUpdate = DateTime.Now;
                 }
             }
         }
