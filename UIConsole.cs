@@ -60,9 +60,9 @@ namespace GameOfLife
             UIElements.Add(new UIButton("Toggle", "[ ] Toggle ", 20, game.ysize + 8, true, Toggle));
             UIElements.Add(new UIButton("Cycle",  "[C] Cycle  ", 35, game.ysize + 8, true, Cycle));
             UIElements.Add(new UIButton("Auto",   "[A] Auto   ", 50, game.ysize + 8, true, () => { AutoCycleMode=!AutoCycleMode; return true; }));
-            UIElements.Add(new UIButton("Exit",   "[ESC] Exit ", 65, game.ysize + 8, true, Exit));
+            UIElements.Add(new UIButton("Messy",  "[M] Messy  ", 65, game.ysize + 8, true, Messy));
+            UIElements.Add(new UIButton("Exit",   "[ESC] Exit ", 80, game.ysize + 8, true, Exit));
             
-
             UIElements.Add(new UIField("Field", "GameOfLife", 5,5, game.fieldAB[game.currentField ? 1 : 0], game.xsize, game.ysize));
 
             for (byte y = 0; y < game.ysize; y++)
@@ -73,7 +73,7 @@ namespace GameOfLife
                 }
             }
 
-            activeElement = 4;
+            ActiveElement = game.xsize * game.ysize + 11;
         }
         public override void WaitForInput()
         {
@@ -119,6 +119,9 @@ namespace GameOfLife
                         break;
                     case ConsoleKey.C:
                         Cycle();
+                        break;
+                    case ConsoleKey.M:
+                        Messy();
                         break;
                     case ConsoleKey.R:
                         Restart();
@@ -226,6 +229,19 @@ namespace GameOfLife
         public bool Toggle()
         {
             game.TogglePosition((UIElements[activeElement].x - 5), (UIElements[activeElement].y - 5));
+            return true;
+        }
+        public bool Messy()
+        {
+            Random rnd = new Random();
+            for (byte y = 0; y < game.ysize; y++)
+            {
+                for (byte x = 0; x < game.xsize; x++)
+                {
+                    if (rnd.Next(0, 2) == 1)
+                        game.TogglePosition(x, y);
+                }
+            }
             return true;
         }
         public bool Next()
