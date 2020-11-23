@@ -161,7 +161,7 @@ namespace GameOfLife
             SaveGame("savegame.xml");
             return true;
         }
-        public void LoadGame(string file) //TODO: Load / Save / Restart mit dem richtigen, aktiven Feld
+        public void LoadGame(string file) //TODO: Load / Save / Restart mit dem richtigen, aktiven Feld (Bug)
         {
             GameObject gobject = new GameObject();
 

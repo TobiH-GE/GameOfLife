@@ -17,7 +17,7 @@ namespace GameOfLife
         {
 
         }
-        public bool[,] GetField() // noch keine Verwendung
+        public bool[,] GetField() // noch keine Verwendung entfernen
         {
             return fieldAB[currentField ? 1 : 0];
         }
