@@ -3,17 +3,23 @@ using System.Collections.Generic;
 
 namespace GameOfLife
 {
-    class UIConsole : UI
+    class GameScene : Scene
     {
         public List<UIObject> UIElements = new List<UIObject>();
         
         FPS fpsCounter = new FPS();
+        GameLogic game;
         Point input = new Point();
         DateTime lastUpdate = DateTime.Now;
         bool AutoCycleMode = false;
         ConsoleKeyInfo UserInput = new ConsoleKeyInfo();
         ConsoleColor[] pColor = new ConsoleColor[2] { ConsoleColor.Red, ConsoleColor.Blue };
-        private int activeElement;
+        int activeElement = 0;
+
+        public GameScene()
+        {
+            Start();
+        }
         public int ActiveElement
         {
             get
@@ -31,23 +37,17 @@ namespace GameOfLife
             }
         }
 
-        public override void PrintStatus(ref Game game)
+        public override void PrintStatus(ref GameLogic game)
         {
             UIElements[GetUIElementByName("Status")] = (new UIText("Status", $"cylce {game.cycleNumber}!\n", 10, 2, true));
         }
-        public override void PrintError(string str)
+        public override void Start(int x = 30, int y = 10)
         {
-            UIElements[GetUIElementByName("Error")].text = str;
-        }
-        public override void PrintInfo(string str)
-        {
-            UIElements[GetUIElementByName("Hint")].text = str;
-        }
-        public override void Start()
-        {
+            UIElements.Clear();
             Console.Clear();
             Console.CursorVisible = false;
-            game.StartGame(game.xsize, game.ysize);
+            game = new GameLogic();
+            game.StartGame(x, y);
 
             UIElements.Add(new UILogo("Logo", "Logo.txt", 5, 1, 88, 3));
             UIElements.Add(new UIText("Titel", "(c) by TobiH ", 99, 3));
@@ -65,17 +65,17 @@ namespace GameOfLife
             
             UIElements.Add(new UIField("Field", "GameOfLife", 5,5, game.fieldAB[game.currentField ? 1 : 0], game.xsize, game.ysize));
 
-            for (byte y = 0; y < game.ysize; y++)
+            for (byte yb = 0; yb < game.ysize; yb++)
             {
-                for (byte x = 0; x < game.xsize; x++)
+                for (byte xb = 0; xb < game.xsize; xb++)
                 {
-                    UIElements.Add(new UIButton($"Button {x},{y}", "", 5 + x, 5 + y, true, Toggle));
+                    UIElements.Add(new UIButton($"Button {xb},{yb}", "", 5 + xb, 5 + yb, true, Toggle));
                 }
             }
 
-            ActiveElement = game.xsize * game.ysize + 11;
+            ActiveElement = 3;
         }
-        public override void WaitForInput()
+        public override void Update()
         {
             Draw();
             AutoCycle();
@@ -127,7 +127,7 @@ namespace GameOfLife
                         Restart();
                         break;
                     case ConsoleKey.Escape:
-                        game.status = Status.Stopped;
+                        Program.Scenes.Pop();
                         break;
                     case ConsoleKey.Backspace:
                         UIElements[ActiveElement].input = UIElements[ActiveElement].input.Remove(UIElements[ActiveElement].input.Length - 1);
@@ -263,11 +263,13 @@ namespace GameOfLife
         }
         public bool Restart()
         {
-            int.TryParse(UIElements[GetUIElementByName("X")].input, out game.xsize);
-            int.TryParse(UIElements[GetUIElementByName("Y")].input, out game.ysize);
-            UIElements.Clear();
-            game.ResetGame();
-            Start();
+            int x;
+            int y;
+            if (int.TryParse(UIElements[GetUIElementByName("X")].input, out x) &&
+                int.TryParse(UIElements[GetUIElementByName("Y")].input, out y))
+                Start(x, y);
+            else
+                Start();
             return true;
         }
 

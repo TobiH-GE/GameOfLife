@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GameOfLife
 {
@@ -9,17 +10,17 @@ namespace GameOfLife
     }
     class Program                               // *** GameOfLife von TobiH ***
     {
+        public static Stack<Scene> Scenes = new Stack<Scene>();
         static void Main(string[] args)
         {
-            UI UIGame = new UIConsole();
-            Game game = new Game(UIGame);
+            Scenes.Push(new GameScene());
 
             do
             {
-                UIGame.WaitForInput();
-            } while (game.status != Status.Stopped);
+                Scenes.Peek().Update();
+            } while (Scenes.Count > 0);
 
-        Console.Clear();
+            Console.Clear();
         }
     }
 }

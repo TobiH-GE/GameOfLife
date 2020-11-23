@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GameOfLife
 {
-    enum Status
+    public enum Status
     {
         Started, Stopped
     }

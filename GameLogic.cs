@@ -2,23 +2,20 @@
 
 namespace GameOfLife
 {
-    partial class Game
+    public class GameLogic
     {
         public bool[,] fieldA;
         public bool[,] fieldB;
         public List<bool[,]> fieldAB = new List<bool[,]>();
         public int cycleNumber = 1;
-        public UI UIGame;               // UserInterface des Spiels
         public Status status;
         public bool currentField = false;
         public int xsize = 30;
         public int ysize = 10;
 
-        public Game (UI uigame)
+        public GameLogic ()
         {
-            UIGame = uigame;
-            UIGame.game = this;
-            UIGame.Start();         // UserInterface starten
+
         }
         public bool[,] GetField() // noch keine Verwendung
         {
@@ -76,6 +73,8 @@ namespace GameOfLife
         }
         public void SetFieldSize(int x, int y)
         {
+            xsize = x;
+            ysize = y;
             fieldA = new bool[y, x];
             fieldB = new bool[y, x];
         }
