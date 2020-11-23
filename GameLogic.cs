@@ -23,6 +23,8 @@ namespace GameOfLife
         }
         public void StartGame(int x, int y)
         {
+            currentField = false;
+
             status = Status.Started;
 
             xsize = x;

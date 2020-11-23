@@ -203,7 +203,7 @@ namespace GameOfLife
             {
                 for (int x = 0; x < game.xsize; x++)
                 {
-                    gobject.field[i] = game.fieldA[y, x];
+                    gobject.field[i] = game.fieldAB[game.currentField ? 1 : 0][y, x];
                     i++;
                 }
             }
@@ -339,6 +339,7 @@ namespace GameOfLife
         {
             int x;
             int y;
+            game.ResetGame();
             if (int.TryParse(UIElements[GetUIElementByName("X")].input, out x) &&
                 int.TryParse(UIElements[GetUIElementByName("Y")].input, out y))
                 Start(x, y);
