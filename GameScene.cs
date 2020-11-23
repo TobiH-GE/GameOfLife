@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace GameOfLife
 {
@@ -8,8 +10,8 @@ namespace GameOfLife
         public List<UIObject> UIElements = new List<UIObject>();
         
         FPS fpsCounter = new FPS();
-        GameLogic game;
-        Point input = new Point();
+        public GameLogic game = new GameLogic();
+
         DateTime lastUpdate = DateTime.Now;
         bool AutoCycleMode = false;
         ConsoleKeyInfo UserInput = new ConsoleKeyInfo();
@@ -46,7 +48,7 @@ namespace GameOfLife
             UIElements.Clear();
             Console.Clear();
             Console.CursorVisible = false;
-            game = new GameLogic();
+            
             game.StartGame(x, y);
 
             UIElements.Add(new UILogo("Logo", "Logo.txt", 5, 1, 88, 3));
@@ -61,7 +63,9 @@ namespace GameOfLife
             UIElements.Add(new UIButton("Cycle",  "[C] Cycle  ", 35, game.ysize + 8, true, Cycle));
             UIElements.Add(new UIButton("Auto",   "[A] Auto   ", 50, game.ysize + 8, true, () => { AutoCycleMode=!AutoCycleMode; return true; }));
             UIElements.Add(new UIButton("Messy",  "[M] Messy  ", 65, game.ysize + 8, true, Messy));
-            UIElements.Add(new UIButton("Exit",   "[ESC] Exit ", 80, game.ysize + 8, true, Exit));
+            UIElements.Add(new UIButton("Load",  "[L] Load  ", 80, game.ysize + 8, true, Load));
+            UIElements.Add(new UIButton("Save",  "[S] Save  ", 95, game.ysize + 8, true, Save));
+            UIElements.Add(new UIButton("Exit",   "[ESC] Exit ", 110, game.ysize + 8, true, Exit));
             
             UIElements.Add(new UIField("Field", "GameOfLife", 5,5, game.fieldAB[game.currentField ? 1 : 0], game.xsize, game.ysize));
 
@@ -120,11 +124,17 @@ namespace GameOfLife
                     case ConsoleKey.C:
                         Cycle();
                         break;
+                    case ConsoleKey.L:
+                        Load();
+                        break;
                     case ConsoleKey.M:
                         Messy();
                         break;
                     case ConsoleKey.R:
                         Restart();
+                        break;
+                    case ConsoleKey.S:
+                        Save();
                         break;
                     case ConsoleKey.Escape:
                         Program.Scenes.Pop();
@@ -139,6 +149,70 @@ namespace GameOfLife
                         }
                         break;
                 }
+            }
+        }
+        public bool Load()
+        {
+            LoadGame("savegame.xml");
+            return true;
+        }
+        public bool Save()
+        {
+            SaveGame("savegame.xml");
+            return true;
+        }
+        public void LoadGame(string file) //TODO: Load / Save / Restart mit dem richtigen, aktiven Feld
+        {
+            GameObject gobject = new GameObject();
+
+            XmlSerializer serializer = new XmlSerializer(typeof(GameObject));
+            int i = 0;
+
+            using (Stream load = new FileStream(file, FileMode.Open, FileAccess.Read))
+            {
+                gobject = (GameObject)serializer.Deserialize(load);
+            }
+
+            AutoCycleMode = false;
+            game.currentField = false;
+            game.fieldAB.Clear();
+            game.cycleNumber = gobject.cycle;
+            Start(gobject.width, gobject.height);
+
+            for (int y = 0; y < gobject.height; y++)
+            {
+                for (int x = 0; x < gobject.width; x++)
+                {
+                    game.fieldAB[0][y, x] = gobject.field[i];
+                    i++;
+                }
+            }
+            
+        }
+        public void SaveGame(string file)
+        {
+            GameObject gobject = new GameObject();
+            gobject.name = "Test";
+            gobject.cycle = game.cycleNumber;
+            gobject.width = game.xsize;
+            gobject.height = game.ysize;
+            gobject.datetime = DateTime.Now;
+            gobject.field = new bool[game.ysize * game.xsize];
+            int i = 0;
+            for (int y = 0; y < game.ysize; y++)
+            {
+                for (int x = 0; x < game.xsize; x++)
+                {
+                    gobject.field[i] = game.fieldA[y, x];
+                    i++;
+                }
+            }
+
+            XmlSerializer serializer = new XmlSerializer(typeof(GameObject));
+
+            using (Stream save = new FileStream(file, FileMode.Create, FileAccess.Write))
+            {
+                serializer.Serialize(save, gobject);
             }
         }
         public void AutoCycle()

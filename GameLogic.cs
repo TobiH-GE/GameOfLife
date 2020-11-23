@@ -25,7 +25,10 @@ namespace GameOfLife
         {
             status = Status.Started;
 
-            SetFieldSize(x, y); // Feldgrösse
+            xsize = x;
+            ysize = y;
+            fieldA = new bool[y, x];
+            fieldB = new bool[y, x];
 
             fieldAB.Add(fieldA);
             fieldAB.Add(fieldB);
@@ -71,12 +74,13 @@ namespace GameOfLife
             currentField = !currentField;
             cycleNumber++;
         }
-        public void SetFieldSize(int x, int y)
+        public bool[,] SetFieldSize(int x, int y)
         {
             xsize = x;
             ysize = y;
             fieldA = new bool[y, x];
             fieldB = new bool[y, x];
+            return fieldA;
         }
         public bool GetPosition(int x, int y)
         {
