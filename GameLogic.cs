@@ -17,13 +17,10 @@ namespace GameOfLife
         {
 
         }
-        public bool[,] GetField() // noch keine Verwendung entfernen
-        {
-            return fieldAB[currentField ? 1 : 0];
-        }
         public void StartGame(int x, int y)
         {
             currentField = false;
+            fieldAB.Clear();
             status = Status.Started;
             width = x;
             height = y;
@@ -74,13 +71,6 @@ namespace GameOfLife
             currentField = !currentField;
             cycleNumber++;
         }
-        public void SetFieldSize(int x, int y)
-        {
-            width = x;
-            height = y;
-            fieldA = new bool[y, x];
-            fieldB = new bool[y, x];
-        }
         public bool GetPosition(int x, int y)
         {
             if (x < 0 || x >= fieldA.GetLength(1) ||
@@ -102,19 +92,5 @@ namespace GameOfLife
         {
             fieldAB[!currentField ? 1 : 0][y, x] = false;
         }
-
-        public void ResetGame()
-        {
-            cycleNumber = 1;
-            currentField = false;
-            if (width > 0 && width < System.Console.WindowWidth - 10 & height > 0 && height < System.Console.WindowHeight - 10)
-                SetFieldSize(width, height);
-            else
-            {
-                width = 30;
-                height = 10;
-            }
-            fieldAB.Clear();
-        }   
     }
 }

@@ -46,8 +46,10 @@ namespace GameOfLife
             UIElements.Clear();
             Console.Clear();
             Console.CursorVisible = false;
-            
-            game.StartGame(x, y);
+
+            autoCycleMode = false;
+            if (x > 0 && x < System.Console.WindowWidth - 10 & y > 0 && y < System.Console.WindowHeight - 10) game.StartGame(30, 10);
+            else game.StartGame(x, y);
 
             UIElements.Add(new UILogo("Logo", "Logo.txt", 5, 1, 88, 3));
             UIElements.Add(new UIText("Titel", "(c) by TobiH ", 99, 3));
@@ -63,7 +65,7 @@ namespace GameOfLife
             UIElements.Add(new UIButton("Messy",  "[M] Messy  ", 65, game.height + 8, true, Messy));
             UIElements.Add(new UIButton("Load",  "[L] Load  ", 80, game.height + 8, true, Load));
             UIElements.Add(new UIButton("Save",  "[S] Save  ", 95, game.height + 8, true, Save));
-            UIElements.Add(new UIButton("Exit",   "[ESC] Exit ", 110, game.height + 8, true, Exit));
+            UIElements.Add(new UIButton("Exit",   "[ESC] Exit ", 110, game.height + 8, true, Escape));
             
             UIElements.Add(new UIField("Field", "GameOfLife", 5,5, game.fieldAB[game.currentField ? 1 : 0], game.width, game.height));
 
@@ -159,7 +161,7 @@ namespace GameOfLife
             SaveGame("savegame.xml");
             return true;
         }
-        public void LoadGame(string file) //TODO: Load / Save / Restart mit dem richtigen, aktiven Feld (Bug)
+        public void LoadGame(string file)
         {
             GameObject gobject = new GameObject();
 
@@ -171,9 +173,6 @@ namespace GameOfLife
                 gobject = (GameObject)serializer.Deserialize(load);
             }
 
-            autoCycleMode = false;
-            game.currentField = false;
-            game.fieldAB.Clear();
             game.cycleNumber = gobject.cycle;
             Start(gobject.width, gobject.height);
 
@@ -224,7 +223,7 @@ namespace GameOfLife
                 }
             }
         }
-        public int FindNextUIElement(Direction direction)
+        public int FindNextUIElement(Direction direction) // TODO: optimize
         {
             UIObject active = UIElements[_activeElement];
             int found = -1;
@@ -328,16 +327,16 @@ namespace GameOfLife
             UIElements[GetUIElementByName("Status")].text = $"cylce #: {game.cycleNumber}";
             return true;
         }
-        public bool Exit()
+        public bool Escape()
         {
             game.status = Status.Stopped;
             return true;
         }
         public bool Restart()
         {
+            game.cycleNumber = 1;
             int x;
             int y;
-            game.ResetGame();
             if (int.TryParse(UIElements[GetUIElementByName("X")].input, out x) &&
                 int.TryParse(UIElements[GetUIElementByName("Y")].input, out y))
                 Start(x, y);
