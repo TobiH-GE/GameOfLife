@@ -6,12 +6,12 @@ namespace GameOfLife
     {
         public bool[,] fieldA;
         public bool[,] fieldB;
-        public List<bool[,]> fieldAB = new List<bool[,]>();
-        public int cycleNumber = 1;
-        public Status status;
         public bool currentField = false;
-        public int xsize = 30;
-        public int ysize = 10;
+        public int cycleNumber = 1;
+        public int width = 30;
+        public int height = 10;
+        public List<bool[,]> fieldAB = new List<bool[,]>();
+        public Status status;
 
         public GameLogic ()
         {
@@ -24,11 +24,9 @@ namespace GameOfLife
         public void StartGame(int x, int y)
         {
             currentField = false;
-
             status = Status.Started;
-
-            xsize = x;
-            ysize = y;
+            width = x;
+            height = y;
             fieldA = new bool[y, x];
             fieldB = new bool[y, x];
 
@@ -76,13 +74,12 @@ namespace GameOfLife
             currentField = !currentField;
             cycleNumber++;
         }
-        public bool[,] SetFieldSize(int x, int y)
+        public void SetFieldSize(int x, int y)
         {
-            xsize = x;
-            ysize = y;
+            width = x;
+            height = y;
             fieldA = new bool[y, x];
             fieldB = new bool[y, x];
-            return fieldA;
         }
         public bool GetPosition(int x, int y)
         {
@@ -110,12 +107,12 @@ namespace GameOfLife
         {
             cycleNumber = 1;
             currentField = false;
-            if (xsize > 0 && xsize < System.Console.WindowWidth - 10 & ysize > 0 && ysize < System.Console.WindowHeight - 10)
-                SetFieldSize(xsize, ysize);
+            if (width > 0 && width < System.Console.WindowWidth - 10 & height > 0 && height < System.Console.WindowHeight - 10)
+                SetFieldSize(width, height);
             else
             {
-                xsize = 30;
-                ysize = 10;
+                width = 30;
+                height = 10;
             }
             fieldAB.Clear();
         }   

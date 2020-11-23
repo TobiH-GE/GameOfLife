@@ -8,34 +8,32 @@ namespace GameOfLife
     class GameScene : Scene
     {
         public List<UIObject> UIElements = new List<UIObject>();
-        
-        FPS fpsCounter = new FPS();
         public GameLogic game = new GameLogic();
-
+        FPS fpsCounter = new FPS();
         DateTime lastUpdate = DateTime.Now;
-        bool AutoCycleMode = false;
+        bool autoCycleMode = false;
+        int _activeElement = 0;
         ConsoleKeyInfo UserInput = new ConsoleKeyInfo();
         ConsoleColor[] pColor = new ConsoleColor[2] { ConsoleColor.Red, ConsoleColor.Blue };
-        int activeElement = 0;
 
         public GameScene()
         {
             Start();
         }
-        public int ActiveElement
+        public int activeElement
         {
             get
             {
-                return activeElement;
+                return _activeElement;
             }
             set
             {
                 if (value >= UIElements.Count) value = 0;
                 if (value < 0) value = UIElements.Count - 1;
 
-                UIElements[activeElement].selected = false;
-                activeElement = value;
-                UIElements[activeElement].selected = true;
+                UIElements[_activeElement].selected = false;
+                _activeElement = value;
+                UIElements[_activeElement].selected = true;
             }
         }
 
@@ -55,29 +53,29 @@ namespace GameOfLife
             UIElements.Add(new UIText("Titel", "(c) by TobiH ", 99, 3));
             UIElements.Add(new UIText("Status", $"cylce #: {game.cycleNumber}", 10, 0, true));
             
-            UIElements.Add(new UIInput("X", "X", 5, game.ysize + 6, true, Next));
-            UIElements.Add(new UIInput("Y", "Y", 15, game.ysize + 6, true, Restart));
+            UIElements.Add(new UIInput("X", "X", 5, game.height + 6, true, Next));
+            UIElements.Add(new UIInput("Y", "Y", 15, game.height + 6, true, Restart));
 
-            UIElements.Add(new UIButton("New",    "[R] Restart", 5, game.ysize + 8, true, Restart));
-            UIElements.Add(new UIButton("Toggle", "[ ] Toggle ", 20, game.ysize + 8, true, Toggle));
-            UIElements.Add(new UIButton("Cycle",  "[C] Cycle  ", 35, game.ysize + 8, true, Cycle));
-            UIElements.Add(new UIButton("Auto",   "[A] Auto   ", 50, game.ysize + 8, true, () => { AutoCycleMode=!AutoCycleMode; return true; }));
-            UIElements.Add(new UIButton("Messy",  "[M] Messy  ", 65, game.ysize + 8, true, Messy));
-            UIElements.Add(new UIButton("Load",  "[L] Load  ", 80, game.ysize + 8, true, Load));
-            UIElements.Add(new UIButton("Save",  "[S] Save  ", 95, game.ysize + 8, true, Save));
-            UIElements.Add(new UIButton("Exit",   "[ESC] Exit ", 110, game.ysize + 8, true, Exit));
+            UIElements.Add(new UIButton("New",    "[R] Restart", 5, game.height + 8, true, Restart));
+            UIElements.Add(new UIButton("Toggle", "[ ] Toggle ", 20, game.height + 8, true, Toggle));
+            UIElements.Add(new UIButton("Cycle",  "[C] Cycle  ", 35, game.height + 8, true, Cycle));
+            UIElements.Add(new UIButton("Auto",   "[A] Auto   ", 50, game.height + 8, true, () => { autoCycleMode=!autoCycleMode; return true; }));
+            UIElements.Add(new UIButton("Messy",  "[M] Messy  ", 65, game.height + 8, true, Messy));
+            UIElements.Add(new UIButton("Load",  "[L] Load  ", 80, game.height + 8, true, Load));
+            UIElements.Add(new UIButton("Save",  "[S] Save  ", 95, game.height + 8, true, Save));
+            UIElements.Add(new UIButton("Exit",   "[ESC] Exit ", 110, game.height + 8, true, Exit));
             
-            UIElements.Add(new UIField("Field", "GameOfLife", 5,5, game.fieldAB[game.currentField ? 1 : 0], game.xsize, game.ysize));
+            UIElements.Add(new UIField("Field", "GameOfLife", 5,5, game.fieldAB[game.currentField ? 1 : 0], game.width, game.height));
 
-            for (byte yb = 0; yb < game.ysize; yb++)
+            for (byte yb = 0; yb < game.height; yb++)
             {
-                for (byte xb = 0; xb < game.xsize; xb++)
+                for (byte xb = 0; xb < game.width; xb++)
                 {
                     UIElements.Add(new UIButton($"Button {xb},{yb}", "", 5 + xb, 5 + yb, true, Toggle));
                 }
             }
 
-            ActiveElement = 3;
+            activeElement = 3;
         }
         public override void Update()
         {
@@ -101,25 +99,25 @@ namespace GameOfLife
                 switch (UserInput.Key)
                 {
                     case ConsoleKey.UpArrow:
-                        ActiveElement = FindNextUIElement(Direction.Up);
+                        activeElement = FindNextUIElement(Direction.Up);
                         break;
                     case ConsoleKey.DownArrow:
-                        ActiveElement = FindNextUIElement(Direction.Down);
+                        activeElement = FindNextUIElement(Direction.Down);
                         break;
                     case ConsoleKey.LeftArrow:
-                        ActiveElement = FindNextUIElement(Direction.Left);
+                        activeElement = FindNextUIElement(Direction.Left);
                         break;
                     case ConsoleKey.RightArrow:
-                        ActiveElement = FindNextUIElement(Direction.Right);
+                        activeElement = FindNextUIElement(Direction.Right);
                         break;
                     case ConsoleKey.Enter:
-                        UIElements[ActiveElement].Action();
+                        UIElements[activeElement].Action();
                         break;
                     case ConsoleKey.Spacebar:
-                        UIElements[ActiveElement].Action();
+                        UIElements[activeElement].Action();
                         break;
                     case ConsoleKey.A:
-                        AutoCycleMode = !AutoCycleMode;
+                        autoCycleMode = !autoCycleMode;
                         break;
                     case ConsoleKey.C:
                         Cycle();
@@ -140,12 +138,12 @@ namespace GameOfLife
                         Program.Scenes.Pop();
                         break;
                     case ConsoleKey.Backspace:
-                        UIElements[ActiveElement].input = UIElements[ActiveElement].input.Remove(UIElements[ActiveElement].input.Length - 1);
+                        UIElements[activeElement].input = UIElements[activeElement].input.Remove(UIElements[activeElement].input.Length - 1);
                         break;
                     default:
                         if (Char.IsNumber(UserInput.KeyChar))
                         {
-                            UIElements[ActiveElement].input += UserInput.KeyChar;
+                            UIElements[activeElement].input += UserInput.KeyChar;
                         }
                         break;
                 }
@@ -173,7 +171,7 @@ namespace GameOfLife
                 gobject = (GameObject)serializer.Deserialize(load);
             }
 
-            AutoCycleMode = false;
+            autoCycleMode = false;
             game.currentField = false;
             game.fieldAB.Clear();
             game.cycleNumber = gobject.cycle;
@@ -194,14 +192,14 @@ namespace GameOfLife
             GameObject gobject = new GameObject();
             gobject.name = "Test";
             gobject.cycle = game.cycleNumber;
-            gobject.width = game.xsize;
-            gobject.height = game.ysize;
+            gobject.width = game.width;
+            gobject.height = game.height;
             gobject.datetime = DateTime.Now;
-            gobject.field = new bool[game.ysize * game.xsize];
+            gobject.field = new bool[game.height * game.width];
             int i = 0;
-            for (int y = 0; y < game.ysize; y++)
+            for (int y = 0; y < game.height; y++)
             {
-                for (int x = 0; x < game.xsize; x++)
+                for (int x = 0; x < game.width; x++)
                 {
                     gobject.field[i] = game.fieldAB[game.currentField ? 1 : 0][y, x];
                     i++;
@@ -217,7 +215,7 @@ namespace GameOfLife
         }
         public void AutoCycle()
         {
-            if (AutoCycleMode)
+            if (autoCycleMode)
             {
                 if ((DateTime.Now - lastUpdate).TotalMilliseconds >= 1000)
                 {
@@ -228,7 +226,7 @@ namespace GameOfLife
         }
         public int FindNextUIElement(Direction direction)
         {
-            UIObject active = UIElements[activeElement];
+            UIObject active = UIElements[_activeElement];
             int found = -1;
             double foundDistance = 9999;
 
@@ -298,19 +296,19 @@ namespace GameOfLife
         }
         public double DistanceTo(UIObject uobject)
         {
-            return Math.Sqrt(Math.Pow(uobject.x - UIElements[activeElement].x, 2) + Math.Pow((uobject.y - UIElements[activeElement].y) * 2, 2)); // * 2 Hack, vertikale Distanz optisch grösser als rechnerische Distanz
+            return Math.Sqrt(Math.Pow(uobject.x - UIElements[_activeElement].x, 2) + Math.Pow((uobject.y - UIElements[_activeElement].y) * 2, 2)); // * 2 Hack, vertikale Distanz optisch grösser als rechnerische Distanz
         }
         public bool Toggle()
         {
-            game.TogglePosition((UIElements[activeElement].x - 5), (UIElements[activeElement].y - 5));
+            game.TogglePosition((UIElements[_activeElement].x - 5), (UIElements[_activeElement].y - 5));
             return true;
         }
         public bool Messy()
         {
             Random rnd = new Random();
-            for (byte y = 0; y < game.ysize; y++)
+            for (byte y = 0; y < game.height; y++)
             {
-                for (byte x = 0; x < game.xsize; x++)
+                for (byte x = 0; x < game.width; x++)
                 {
                     if (rnd.Next(0, 2) == 1)
                         game.TogglePosition(x, y);
@@ -320,7 +318,7 @@ namespace GameOfLife
         }
         public bool Next()
         {
-            ActiveElement = FindNextUIElement(Direction.Down);
+            activeElement = FindNextUIElement(Direction.Down);
             return true;
         }
         public bool Cycle()
