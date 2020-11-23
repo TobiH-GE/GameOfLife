@@ -105,7 +105,7 @@ namespace GameOfLife
         {
             cycleNumber = 1;
             currentField = false;
-            if (xsize > 0 && xsize < System.Console.WindowHeight - 10 & ysize > 0 && ysize < System.Console.WindowHeight - 10)
+            if (xsize > 0 && xsize < System.Console.WindowWidth - 10 & ysize > 0 && ysize < System.Console.WindowHeight - 10)
                 SetFieldSize(xsize, ysize);
             else
             {
