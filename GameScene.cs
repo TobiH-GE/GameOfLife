@@ -48,8 +48,8 @@ namespace GameOfLife
             Console.CursorVisible = false;
 
             autoCycleMode = false;
-            if (x > 0 && x < System.Console.WindowWidth - 10 & y > 0 && y < System.Console.WindowHeight - 10) game.StartGame(30, 10);
-            else game.StartGame(x, y);
+            if (x > 0 && x < System.Console.WindowWidth - 10 & y > 0 && y < System.Console.WindowHeight - 10) game.StartGame(x, y);
+            else game.StartGame(30, 10);
 
             UIElements.Add(new UILogo("Logo", "Logo.txt", 5, 1, 88, 3));
             UIElements.Add(new UIText("Titel", "(c) by TobiH ", 99, 3));
@@ -59,13 +59,13 @@ namespace GameOfLife
             UIElements.Add(new UIInput("Y", "Y", 15, game.height + 6, true, Restart));
 
             UIElements.Add(new UIButton("New",    "[R] Restart", 5, game.height + 8, true, Restart));
-            UIElements.Add(new UIButton("Toggle", "[ ] Toggle ", 20, game.height + 8, true, Toggle));
-            UIElements.Add(new UIButton("Cycle",  "[C] Cycle  ", 35, game.height + 8, true, Cycle));
-            UIElements.Add(new UIButton("Auto",   "[A] Auto   ", 50, game.height + 8, true, () => { autoCycleMode=!autoCycleMode; return true; }));
-            UIElements.Add(new UIButton("Messy",  "[M] Messy  ", 65, game.height + 8, true, Messy));
-            UIElements.Add(new UIButton("Load",  "[L] Load  ", 80, game.height + 8, true, Load));
-            UIElements.Add(new UIButton("Save",  "[S] Save  ", 95, game.height + 8, true, Save));
-            UIElements.Add(new UIButton("Exit",   "[ESC] Exit ", 110, game.height + 8, true, Escape));
+            UIElements.Add(new UIButton("Toggle", "[ ] Toggle ", 19, game.height + 8, true, Toggle));
+            UIElements.Add(new UIButton("Cycle",  "[C] Cycle  ", 33, game.height + 8, true, Cycle));
+            UIElements.Add(new UIButton("Auto",   "[A] Auto   ", 47, game.height + 8, true, () => { autoCycleMode=!autoCycleMode; return true; }));
+            UIElements.Add(new UIButton("Messy",  "[M] Messy  ", 61, game.height + 8, true, Messy));
+            UIElements.Add(new UIButton("Load",  "[L] Load  ", 75, game.height + 8, true, Load));
+            UIElements.Add(new UIButton("Save",  "[S] Save  ", 89, game.height + 8, true, Save));
+            UIElements.Add(new UIButton("Exit",   "[ESC] Exit ", 103, game.height + 8, true, Escape));
             
             UIElements.Add(new UIField("Field", "GameOfLife", 5,5, game.fieldAB[game.currentField ? 1 : 0], game.width, game.height));
 
@@ -151,12 +151,12 @@ namespace GameOfLife
                 }
             }
         }
-        public bool Load()
+        public bool Load() // TODO: Eingabe im Userinterface
         {
             LoadGame("savegame.xml");
             return true;
         }
-        public bool Save()
+        public bool Save() // TODO: Eingabe im Userinterface
         {
             SaveGame("savegame.xml");
             return true;
@@ -196,11 +196,12 @@ namespace GameOfLife
             gobject.datetime = DateTime.Now;
             gobject.field = new bool[game.height * game.width];
             int i = 0;
+            int c = game.currentField ? 1 : 0;
             for (int y = 0; y < game.height; y++)
             {
                 for (int x = 0; x < game.width; x++)
                 {
-                    gobject.field[i] = game.fieldAB[game.currentField ? 1 : 0][y, x];
+                    gobject.field[i] = game.fieldAB[c][y, x];
                     i++;
                 }
             }
@@ -216,7 +217,7 @@ namespace GameOfLife
         {
             if (autoCycleMode)
             {
-                if ((DateTime.Now - lastUpdate).TotalMilliseconds >= 1000)
+                if ((DateTime.Now - lastUpdate).TotalMilliseconds >= 500)
                 {
                     Cycle();
                     lastUpdate = DateTime.Now;
