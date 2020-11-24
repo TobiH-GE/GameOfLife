@@ -16,16 +16,20 @@ namespace GameOfLife
         }
         public override void Draw()
         {
+            string fieldString; // wir bauen uns ein String -> schneller bei der Ausgabe
+
             for (int y1 = 0; y1 < height; y1++)
             {
+                fieldString = "";
                 for (int x1 = 0; x1 < width; x1++)
                 {
-                    Console.SetCursorPosition(x+x1, y+y1);
                     if (field[y1, x1] == false)
-                        Console.Write("-");
+                        fieldString = fieldString + "-";
                     else
-                        Console.Write("X");
+                        fieldString = fieldString + "X";
                 }
+                Console.SetCursorPosition(x, y + y1);
+                Console.Write(fieldString);
             }
         }
     }
