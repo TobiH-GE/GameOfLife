@@ -4,10 +4,10 @@ namespace GameOfLife
 {
     class UIInput : UIObject
     {
-        Func<bool> methodName;
-        public UIInput(string name, string text, int x, int y, bool visible = true, Func<bool> methodName = null, ConsoleColor fColor = ConsoleColor.White, ConsoleColor bColor = ConsoleColor.Black, bool selected = false) : base (name, text, x, y, visible, fColor, bColor, selected)
+        readonly private Action _execute;
+        public UIInput(string name, string text, int x, int y, bool visible = true, Action execute = null, ConsoleColor fColor = ConsoleColor.White, ConsoleColor bColor = ConsoleColor.Black, bool selected = false) : base (name, text, x, y, visible, fColor, bColor, selected)
         {
-            this.methodName = methodName;
+            _execute = execute;
             selectable = true;
         }
         public override void Draw()
@@ -34,7 +34,7 @@ namespace GameOfLife
         }
         public override void Action()
         {
-            methodName();
+            _execute();
         }
     }
 }

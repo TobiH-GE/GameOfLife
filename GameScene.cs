@@ -8,10 +8,12 @@ namespace GameOfLife
     class GameScene : Scene
     {
         public List<UIObject> UIElements = new List<UIObject>();
+        public UICursor cursor;
         public GameLogic gameLogic = new GameLogic();
         FPS fpsCounter = new FPS();
         DateTime lastUpdate = DateTime.Now;
         bool autoCycleMode = false;
+        bool cursorMode = false;
         int _activeElement = 0;
         ConsoleKeyInfo UserInput = new ConsoleKeyInfo();
         ConsoleColor[] pColor = new ConsoleColor[2] { ConsoleColor.Red, ConsoleColor.Blue };
@@ -61,12 +63,12 @@ namespace GameOfLife
             UIElements.Add(new UIButton("New",    "[R] Restart", 5, gameLogic.height + 8, true, Restart));
             UIElements.Add(new UIButton("Toggle", "[ ] Toggle ", 19, gameLogic.height + 8, true, Toggle));
             UIElements.Add(new UIButton("Cycle",  "[C] Cycle  ", 33, gameLogic.height + 8, true, Cycle));
-            UIElements.Add(new UIButton("Auto",   "[A] Auto   ", 47, gameLogic.height + 8, true, () => { autoCycleMode=!autoCycleMode; return true; }));
+            UIElements.Add(new UIButton("Auto",   "[A] Auto   ", 47, gameLogic.height + 8, true, () => { autoCycleMode = !autoCycleMode;}));
             UIElements.Add(new UIButton("Messy",  "[M] Messy  ", 61, gameLogic.height + 8, true, Messy));
             UIElements.Add(new UIButton("Load",  "[L] Load  ", 75, gameLogic.height + 8, true, Load));
             UIElements.Add(new UIButton("Save",  "[S] Save  ", 89, gameLogic.height + 8, true, Save));
             UIElements.Add(new UIButton("Exit",   "[ESC] Exit ", 103, gameLogic.height + 8, true, Escape));
-            
+
             UIElements.Add(new UIField("Field", "GameOfLife", 5,5, gameLogic.fieldAB[gameLogic.currentField ? 1 : 0], gameLogic.width, gameLogic.height));
 
             for (byte yb = 0; yb < gameLogic.height; yb++)
@@ -77,11 +79,14 @@ namespace GameOfLife
                 }
             }
 
+            cursor = new UICursor("Cursor", " ", 5, 5, true, () => { Click(cursor.x, cursor.y); });
+
             activeElement = 3;
         }
         public override void Update()
         {
             Draw();
+            cursor.Draw();
             AutoCycle();
             // Debug - Ausgabe von Infos
             //Console.SetCursorPosition(50, 24);
@@ -101,22 +106,31 @@ namespace GameOfLife
                 switch (UserInput.Key)
                 {
                     case ConsoleKey.UpArrow:
-                        activeElement = FindNextUIElement(Direction.Up);
+                        if (cursorMode) cursor.Move(Direction.Up);
+                        else activeElement = FindNextUIElement(Direction.Up);
                         break;
                     case ConsoleKey.DownArrow:
-                        activeElement = FindNextUIElement(Direction.Down);
+                        if (cursorMode) cursor.Move(Direction.Down);
+                        else activeElement = FindNextUIElement(Direction.Down);
                         break;
                     case ConsoleKey.LeftArrow:
-                        activeElement = FindNextUIElement(Direction.Left);
+                        if (cursorMode) cursor.Move(Direction.Left);
+                        else activeElement = FindNextUIElement(Direction.Left);
                         break;
                     case ConsoleKey.RightArrow:
-                        activeElement = FindNextUIElement(Direction.Right);
+                        if (cursorMode) cursor.Move(Direction.Right);
+                        else activeElement = FindNextUIElement(Direction.Right);
                         break;
                     case ConsoleKey.Enter:
-                        UIElements[activeElement].Action();
+                        if (cursorMode) cursor.Action();
+                        else UIElements[activeElement].Action();
                         break;
                     case ConsoleKey.Spacebar:
-                        UIElements[activeElement].Action();
+                        if (cursorMode) cursor.Action();
+                        else UIElements[activeElement].Action();
+                        break;
+                    case ConsoleKey.Tab:
+                        cursorMode = !cursorMode;
                         break;
                     case ConsoleKey.A:
                         autoCycleMode = !autoCycleMode;
@@ -151,15 +165,17 @@ namespace GameOfLife
                 }
             }
         }
-        public bool Load() // TODO: Eingabe im Userinterface
+        public void Click(int x, int y) // TODO: einbauen
+        {
+            gameLogic.TogglePosition(x - 5, y - 5);
+        }
+        public void Load() // TODO: Eingabe im Userinterface
         {
             LoadGame("savegame.xml");
-            return true;
         }
-        public bool Save() // TODO: Eingabe im Userinterface
+        public void Save() // TODO: Eingabe im Userinterface
         {
             SaveGame("savegame.xml");
-            return true;
         }
         public void LoadGame(string file)
         {
@@ -298,12 +314,11 @@ namespace GameOfLife
         {
             return Math.Sqrt(Math.Pow(uobject.x - UIElements[_activeElement].x, 2) + Math.Pow((uobject.y - UIElements[_activeElement].y) * 2, 2)); // * 2 Hack, vertikale Distanz optisch grösser als rechnerische Distanz
         }
-        public bool Toggle()
+        public void Toggle()
         {
             gameLogic.TogglePosition((UIElements[_activeElement].x - 5), (UIElements[_activeElement].y - 5));
-            return true;
         }
-        public bool Messy()
+        public void Messy()
         {
             Random rnd = new Random();
             for (byte y = 0; y < gameLogic.height; y++)
@@ -314,26 +329,22 @@ namespace GameOfLife
                         gameLogic.TogglePosition(x, y);
                 }
             }
-            return true;
         }
-        public bool Next()
+        public void Next()
         {
             activeElement = FindNextUIElement(Direction.Down);
-            return true;
         }
-        public bool Cycle()
+        public void Cycle()
         {
             gameLogic.NextCycle();
             UIElements[GetUIElementByName("Field")].field = gameLogic.fieldAB[gameLogic.currentField ? 1 : 0];
             UIElements[GetUIElementByName("Status")].text = $"cylce #: {gameLogic.cycleNumber}";
-            return true;
         }
-        public bool Escape()
+        public void Escape()
         {
             gameLogic.status = Status.Stopped;
-            return true;
         }
-        public bool Restart()
+        public void Restart()
         {
             gameLogic.cycleNumber = 1;
             int x;
@@ -343,7 +354,6 @@ namespace GameOfLife
                 Start(x, y);
             else
                 Start();
-            return true;
         }
 
         public override void Draw()

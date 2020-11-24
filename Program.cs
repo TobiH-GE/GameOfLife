@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace GameOfLife
 {
+    public delegate void Action();
+
     struct Point
     {
         public sbyte x;
