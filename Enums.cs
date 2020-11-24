@@ -8,7 +8,7 @@ namespace GameOfLife
     {
         Started, Stopped
     }
-    enum Direction
+    public enum Direction
     {
         Up, Down, Left, Right
     }

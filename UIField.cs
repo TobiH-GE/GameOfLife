@@ -13,6 +13,7 @@ namespace GameOfLife
             this.field = field;
             this.width = width;
             this.height = height;
+            selectable = false;
         }
         public override void Draw()
         {

@@ -8,15 +8,13 @@ namespace GameOfLife
     class GameScene : Scene
     {
         public List<UIObject> UIElements = new List<UIObject>();
-        public UICursor cursor;
+        public UIObject cursor;
         public GameLogic gameLogic = new GameLogic();
         FPS fpsCounter = new FPS();
         DateTime lastUpdate = DateTime.Now;
         bool autoCycleMode = false;
-        bool cursorMode = false;
-        int _activeElement = 0;
+        public int _activeElement = 0;
         ConsoleKeyInfo UserInput = new ConsoleKeyInfo();
-        ConsoleColor[] pColor = new ConsoleColor[2] { ConsoleColor.Red, ConsoleColor.Blue };
 
         public GameScene()
         {
@@ -34,8 +32,13 @@ namespace GameOfLife
                 if (value < 0) value = UIElements.Count - 1;
 
                 UIElements[_activeElement].selected = false;
-                _activeElement = value;
-                UIElements[_activeElement].selected = true;
+                if (UIElements[value].selectable)
+                {
+                    _activeElement = value;
+                    UIElements[_activeElement].selected = true;
+                }
+                if (activeElement == GetUIElementByName("Cursor")) cursor.cursorMode = true;
+                else cursor.cursorMode = false;
             }
         }
 
@@ -71,22 +74,21 @@ namespace GameOfLife
 
             UIElements.Add(new UIField("Field", "GameOfLife", 5,5, gameLogic.fieldAB[gameLogic.currentField ? 1 : 0], gameLogic.width, gameLogic.height));
 
-            for (byte yb = 0; yb < gameLogic.height; yb++)
-            {
-                for (byte xb = 0; xb < gameLogic.width; xb++)
-                {
-                    UIElements.Add(new UIButton($"Button {xb},{yb}", "", 5 + xb, 5 + yb, true, Toggle));
-                }
-            }
-
-            cursor = new UICursor("Cursor", " ", 5, 5, true, () => { Click(cursor.x, cursor.y); });
+            //for (byte yb = 0; yb < gameLogic.height; yb++) // alle Buttons auf dem Feld entfernt, dafür ein Cursor im Bereich aktiv wenn cursorMode = true
+            //{
+            //    for (byte xb = 0; xb < gameLogic.width; xb++)
+            //    {
+            //        UIElements.Add(new UIButton($"Button {xb},{yb}", "", 5 + xb, 5 + yb, true, Toggle));
+            //    }
+            //}
+            cursor = new UICursor("Cursor", " ", 5, 5, true, () => { Click(cursor.fieldX, cursor.fieldY); });
+            UIElements.Add(cursor);
 
             activeElement = 3;
         }
         public override void Update()
         {
             Draw();
-            cursor.Draw();
             AutoCycle();
             // Debug - Ausgabe von Infos
             //Console.SetCursorPosition(50, 24);
@@ -106,31 +108,34 @@ namespace GameOfLife
                 switch (UserInput.Key)
                 {
                     case ConsoleKey.UpArrow:
-                        if (cursorMode) cursor.Move(Direction.Up);
+                        if (cursor.cursorMode) cursor.Move(Direction.Up);
                         else activeElement = FindNextUIElement(Direction.Up);
                         break;
                     case ConsoleKey.DownArrow:
-                        if (cursorMode) cursor.Move(Direction.Down);
+                        if (cursor.cursorMode && cursor.fieldY == cursor.fieldMaxY - 1) activeElement = 3;
+                        else if (cursor.cursorMode) cursor.Move(Direction.Down);
                         else activeElement = FindNextUIElement(Direction.Down);
                         break;
                     case ConsoleKey.LeftArrow:
-                        if (cursorMode) cursor.Move(Direction.Left);
+                        if (cursor.cursorMode) cursor.Move(Direction.Left);
                         else activeElement = FindNextUIElement(Direction.Left);
                         break;
                     case ConsoleKey.RightArrow:
-                        if (cursorMode) cursor.Move(Direction.Right);
+                        if (cursor.cursorMode) cursor.Move(Direction.Right);
                         else activeElement = FindNextUIElement(Direction.Right);
                         break;
                     case ConsoleKey.Enter:
-                        if (cursorMode) cursor.Action();
+                        if (cursor.cursorMode) cursor.Action();
                         else UIElements[activeElement].Action();
                         break;
                     case ConsoleKey.Spacebar:
-                        if (cursorMode) cursor.Action();
+                        if (cursor.cursorMode) cursor.Action();
                         else UIElements[activeElement].Action();
                         break;
                     case ConsoleKey.Tab:
-                        cursorMode = !cursorMode;
+                        cursor.cursorMode = !cursor.cursorMode;
+                        if (cursor.cursorMode) activeElement = GetUIElementByName("Cursor");
+                        else activeElement = 3;
                         break;
                     case ConsoleKey.A:
                         autoCycleMode = !autoCycleMode;
@@ -167,7 +172,7 @@ namespace GameOfLife
         }
         public void Click(int x, int y) // TODO: einbauen
         {
-            gameLogic.TogglePosition(x - 5, y - 5);
+            gameLogic.TogglePosition(x, y);
         }
         public void Load() // TODO: Eingabe im Userinterface
         {

@@ -6,33 +6,28 @@ namespace GameOfLife
 {
     class UICursor : UIObject
     {
-        readonly private Action _execute;
-        int maxX;
-        int maxY;
-        int minX;
-        int minY;
+        readonly private Action _execute; 
 
         public UICursor(string name, string text, int x, int y, bool visible = true, Action execute = null, ConsoleColor fColor = ConsoleColor.White, ConsoleColor bColor = ConsoleColor.Black, bool selected = false) : base(name, text, x, y, visible, fColor, bColor, selected)
         {
             _execute = execute;
             selectable = true;
-            selected = true;
         }
-        public void Move(Direction direction)
+        public override void Move(Direction direction)
         {
             switch (direction)
             {
                 case Direction.Up:
-                    y--;
+                    if (fieldY > 0) fieldY--;
                     break;
                 case Direction.Down:
-                    y++;
+                    if (fieldY < fieldMaxY - 1) fieldY++;
                     break;
                 case Direction.Left:
-                    x--;
+                    if (fieldX > 0) fieldX--;
                     break;
                 case Direction.Right:
-                    x++;
+                    if (fieldX < fieldMaxX - 1) fieldX++;
                     break;
                 default:
                     break;
@@ -40,11 +35,11 @@ namespace GameOfLife
         }
         public override void Draw()
         {
-            if (true)
+            if (visible)
             {
-                Console.SetCursorPosition(x, y);
+                Console.SetCursorPosition(x + fieldX, y + fieldY);
                 Console.ForegroundColor = fColor;
-                if (true)
+                if (selected)
                 {
                     Console.BackgroundColor = ConsoleColor.Green;
                     if (text == "") text = " ";
@@ -59,7 +54,7 @@ namespace GameOfLife
                 Console.ResetColor();
             }
         }
-        public void Action()
+        public override void Action()
         {
             _execute();
         }
