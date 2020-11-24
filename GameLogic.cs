@@ -39,25 +39,13 @@ namespace GameOfLife
                         {
                             if (!(x1 == 0 && y1 == 0))
                             {
-                                if (GetPosition(x + x1, y + y1))
-                                    livingNeighbours++;
+                                if (GetPosition(x + x1, y + y1)) livingNeighbours++;
                             }
                         }
                     }
-                    if (fieldAB[currentField ? 1 : 0][y, x]) // Zelle mit Leben
-                    {
-                        if (livingNeighbours == 2 || livingNeighbours == 3)
-                            LifeToPosition(x, y);
-                        else
-                            DiePosition(x, y);
-                    }
-                    else // Zelle ohne Leben
-                    {
-                        if (livingNeighbours == 3)
-                            LifeToPosition(x, y);
-                        else
-                            DiePosition(x, y);
-                    }
+                    if (livingNeighbours == 3) LifeToPosition(x, y);
+                    else if (fieldAB[currentField ? 1 : 0][y, x] && livingNeighbours == 2) LifeToPosition(x, y);
+                    else DiePosition(x, y);
                 }
             }
             currentField = !currentField;
