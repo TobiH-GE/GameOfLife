@@ -33,15 +33,13 @@ namespace GameOfLife
                 for (int x = 0; x < fieldAB[currentField ? 1 : 0].GetLength(1); x++)
                 {
                     livingNeighbours = 0;
-                    for (int y1 = -1; y1 < 2; y1++)
+                    for (int y1 = -1; y1 < 2; y1+=2) // alle Positionen ausser x, y
                     {
                         for (int x1 = -1; x1 < 2; x1++)
                         {
-                            if (!(x1 == 0 && y1 == 0))
-                            {
-                                if (GetPosition(x + x1, y + y1)) livingNeighbours++;
-                            }
+                            if (GetPosition(x + x1, y + y1)) livingNeighbours++;
                         }
+                        if (GetPosition(x + y1, y)) livingNeighbours++;
                     }
                     if (livingNeighbours == 3) LifeToPosition(x, y);
                     else if (fieldAB[currentField ? 1 : 0][y, x] && livingNeighbours == 2) LifeToPosition(x, y);
