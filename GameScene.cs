@@ -44,7 +44,7 @@ namespace GameOfLife
 
         public override void PrintStatus(ref GameLogic game)
         {
-            UIElements[GetUIElementByName("Status")] = (new UIText("Status", $"cylce {game.cycleNumber}!\n", 10, 2, true));
+            UIElements[GetUIElementByName("Status")] = (new UIText("Status", $"cycle {game.cycleNumber}!\n", 10, 2, true));
         }
         public override void Start(int x = 30, int y = 10)
         {
