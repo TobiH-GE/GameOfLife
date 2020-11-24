@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GameOfLife
 {
-    public class GameObject
+    public class SaveGame
     {
         public string name;
         public int cycle;

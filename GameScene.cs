@@ -8,7 +8,7 @@ namespace GameOfLife
     class GameScene : Scene
     {
         public List<UIObject> UIElements = new List<UIObject>();
-        public GameLogic game = new GameLogic();
+        public GameLogic gameLogic = new GameLogic();
         FPS fpsCounter = new FPS();
         DateTime lastUpdate = DateTime.Now;
         bool autoCycleMode = false;
@@ -48,30 +48,30 @@ namespace GameOfLife
             Console.CursorVisible = false;
 
             autoCycleMode = false;
-            if (x > 0 && x < System.Console.WindowWidth - 10 & y > 0 && y < System.Console.WindowHeight - 10) game.StartGame(x, y);
-            else game.StartGame(30, 10);
+            if (x > 0 && x < System.Console.WindowWidth - 10 & y > 0 && y < System.Console.WindowHeight - 10) gameLogic.StartGame(x, y);
+            else gameLogic.StartGame(30, 10);
 
             UIElements.Add(new UILogo("Logo", "Logo.txt", 5, 1, 88, 3));
             UIElements.Add(new UIText("Titel", "(c) by TobiH ", 99, 3));
-            UIElements.Add(new UIText("Status", $"cylce #: {game.cycleNumber}", 10, 0, true));
+            UIElements.Add(new UIText("Status", $"cylce #: {gameLogic.cycleNumber}", 10, 0, true));
             
-            UIElements.Add(new UIInput("X", "X", 5, game.height + 6, true, Next));
-            UIElements.Add(new UIInput("Y", "Y", 15, game.height + 6, true, Restart));
+            UIElements.Add(new UIInput("X", "X", 5, gameLogic.height + 6, true, Next));
+            UIElements.Add(new UIInput("Y", "Y", 15, gameLogic.height + 6, true, Restart));
 
-            UIElements.Add(new UIButton("New",    "[R] Restart", 5, game.height + 8, true, Restart));
-            UIElements.Add(new UIButton("Toggle", "[ ] Toggle ", 19, game.height + 8, true, Toggle));
-            UIElements.Add(new UIButton("Cycle",  "[C] Cycle  ", 33, game.height + 8, true, Cycle));
-            UIElements.Add(new UIButton("Auto",   "[A] Auto   ", 47, game.height + 8, true, () => { autoCycleMode=!autoCycleMode; return true; }));
-            UIElements.Add(new UIButton("Messy",  "[M] Messy  ", 61, game.height + 8, true, Messy));
-            UIElements.Add(new UIButton("Load",  "[L] Load  ", 75, game.height + 8, true, Load));
-            UIElements.Add(new UIButton("Save",  "[S] Save  ", 89, game.height + 8, true, Save));
-            UIElements.Add(new UIButton("Exit",   "[ESC] Exit ", 103, game.height + 8, true, Escape));
+            UIElements.Add(new UIButton("New",    "[R] Restart", 5, gameLogic.height + 8, true, Restart));
+            UIElements.Add(new UIButton("Toggle", "[ ] Toggle ", 19, gameLogic.height + 8, true, Toggle));
+            UIElements.Add(new UIButton("Cycle",  "[C] Cycle  ", 33, gameLogic.height + 8, true, Cycle));
+            UIElements.Add(new UIButton("Auto",   "[A] Auto   ", 47, gameLogic.height + 8, true, () => { autoCycleMode=!autoCycleMode; return true; }));
+            UIElements.Add(new UIButton("Messy",  "[M] Messy  ", 61, gameLogic.height + 8, true, Messy));
+            UIElements.Add(new UIButton("Load",  "[L] Load  ", 75, gameLogic.height + 8, true, Load));
+            UIElements.Add(new UIButton("Save",  "[S] Save  ", 89, gameLogic.height + 8, true, Save));
+            UIElements.Add(new UIButton("Exit",   "[ESC] Exit ", 103, gameLogic.height + 8, true, Escape));
             
-            UIElements.Add(new UIField("Field", "GameOfLife", 5,5, game.fieldAB[game.currentField ? 1 : 0], game.width, game.height));
+            UIElements.Add(new UIField("Field", "GameOfLife", 5,5, gameLogic.fieldAB[gameLogic.currentField ? 1 : 0], gameLogic.width, gameLogic.height));
 
-            for (byte yb = 0; yb < game.height; yb++)
+            for (byte yb = 0; yb < gameLogic.height; yb++)
             {
-                for (byte xb = 0; xb < game.width; xb++)
+                for (byte xb = 0; xb < gameLogic.width; xb++)
                 {
                     UIElements.Add(new UIButton($"Button {xb},{yb}", "", 5 + xb, 5 + yb, true, Toggle));
                 }
@@ -163,24 +163,24 @@ namespace GameOfLife
         }
         public void LoadGame(string file)
         {
-            GameObject gobject = new GameObject();
+            SaveGame gobject = new SaveGame();
 
-            XmlSerializer serializer = new XmlSerializer(typeof(GameObject));
+            XmlSerializer serializer = new XmlSerializer(typeof(SaveGame));
             int i = 0;
 
             using (Stream load = new FileStream(file, FileMode.Open, FileAccess.Read))
             {
-                gobject = (GameObject)serializer.Deserialize(load);
+                gobject = (SaveGame)serializer.Deserialize(load);
             }
 
-            game.cycleNumber = gobject.cycle;
+            gameLogic.cycleNumber = gobject.cycle;
             Start(gobject.width, gobject.height);
 
             for (int y = 0; y < gobject.height; y++)
             {
                 for (int x = 0; x < gobject.width; x++)
                 {
-                    game.fieldAB[0][y, x] = gobject.field[i];
+                    gameLogic.fieldAB[0][y, x] = gobject.field[i];
                     i++;
                 }
             }
@@ -188,25 +188,25 @@ namespace GameOfLife
         }
         public void SaveGame(string file)
         {
-            GameObject gobject = new GameObject();
+            SaveGame gobject = new SaveGame();
             gobject.name = "Test";
-            gobject.cycle = game.cycleNumber;
-            gobject.width = game.width;
-            gobject.height = game.height;
+            gobject.cycle = gameLogic.cycleNumber;
+            gobject.width = gameLogic.width;
+            gobject.height = gameLogic.height;
             gobject.datetime = DateTime.Now;
-            gobject.field = new bool[game.height * game.width];
+            gobject.field = new bool[gameLogic.height * gameLogic.width];
             int i = 0;
-            int c = game.currentField ? 1 : 0;
-            for (int y = 0; y < game.height; y++)
+            int c = gameLogic.currentField ? 1 : 0;
+            for (int y = 0; y < gameLogic.height; y++)
             {
-                for (int x = 0; x < game.width; x++)
+                for (int x = 0; x < gameLogic.width; x++)
                 {
-                    gobject.field[i] = game.fieldAB[c][y, x];
+                    gobject.field[i] = gameLogic.fieldAB[c][y, x];
                     i++;
                 }
             }
 
-            XmlSerializer serializer = new XmlSerializer(typeof(GameObject));
+            XmlSerializer serializer = new XmlSerializer(typeof(SaveGame));
 
             using (Stream save = new FileStream(file, FileMode.Create, FileAccess.Write))
             {
@@ -300,18 +300,18 @@ namespace GameOfLife
         }
         public bool Toggle()
         {
-            game.TogglePosition((UIElements[_activeElement].x - 5), (UIElements[_activeElement].y - 5));
+            gameLogic.TogglePosition((UIElements[_activeElement].x - 5), (UIElements[_activeElement].y - 5));
             return true;
         }
         public bool Messy()
         {
             Random rnd = new Random();
-            for (byte y = 0; y < game.height; y++)
+            for (byte y = 0; y < gameLogic.height; y++)
             {
-                for (byte x = 0; x < game.width; x++)
+                for (byte x = 0; x < gameLogic.width; x++)
                 {
                     if (rnd.Next(0, 2) == 1)
-                        game.TogglePosition(x, y);
+                        gameLogic.TogglePosition(x, y);
                 }
             }
             return true;
@@ -323,19 +323,19 @@ namespace GameOfLife
         }
         public bool Cycle()
         {
-            game.NextCycle();
-            UIElements[GetUIElementByName("Field")].field = game.fieldAB[game.currentField ? 1 : 0];
-            UIElements[GetUIElementByName("Status")].text = $"cylce #: {game.cycleNumber}";
+            gameLogic.NextCycle();
+            UIElements[GetUIElementByName("Field")].field = gameLogic.fieldAB[gameLogic.currentField ? 1 : 0];
+            UIElements[GetUIElementByName("Status")].text = $"cylce #: {gameLogic.cycleNumber}";
             return true;
         }
         public bool Escape()
         {
-            game.status = Status.Stopped;
+            gameLogic.status = Status.Stopped;
             return true;
         }
         public bool Restart()
         {
-            game.cycleNumber = 1;
+            gameLogic.cycleNumber = 1;
             int x;
             int y;
             if (int.TryParse(UIElements[GetUIElementByName("X")].input, out x) &&

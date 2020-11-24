@@ -4,13 +4,11 @@ namespace GameOfLife
 {
     public class GameLogic
     {
-        public bool[,] fieldA;
-        public bool[,] fieldB;
         public bool currentField = false;
         public int cycleNumber = 1;
         public int width = 30;
         public int height = 10;
-        public List<bool[,]> fieldAB = new List<bool[,]>();
+        public List<bool[,]> fieldAB;
         public Status status;
 
         public GameLogic ()
@@ -20,15 +18,11 @@ namespace GameOfLife
         public void StartGame(int x, int y)
         {
             currentField = false;
-            fieldAB.Clear();
+            if (fieldAB != null) fieldAB.Clear();
             status = Status.Started;
             width = x;
             height = y;
-            fieldA = new bool[y, x];
-            fieldB = new bool[y, x];
-
-            fieldAB.Add(fieldA);
-            fieldAB.Add(fieldB);
+            fieldAB = new List<bool[,]>() { new bool[y, x], new bool[y, x] };
         }
         public void NextCycle()
         {
@@ -52,9 +46,7 @@ namespace GameOfLife
                     }
                     if (fieldAB[currentField ? 1 : 0][y, x]) // Zelle mit Leben
                     {
-                        if (livingNeighbours < 2)
-                            DiePosition(x, y);
-                        else if (livingNeighbours == 2 || livingNeighbours == 3)
+                        if (livingNeighbours == 2 || livingNeighbours == 3)
                             LifeToPosition(x, y);
                         else
                             DiePosition(x, y);
@@ -73,8 +65,8 @@ namespace GameOfLife
         }
         public bool GetPosition(int x, int y)
         {
-            if (x < 0 || x >= fieldA.GetLength(1) ||
-                y < 0 || y >= fieldA.GetLength(0))
+            if (x < 0 || x >= fieldAB[0].GetLength(1) ||
+                y < 0 || y >= fieldAB[0].GetLength(0))
                 
                 return false;
 
