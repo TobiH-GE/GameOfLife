@@ -41,9 +41,9 @@ namespace GameOfLife
                         }
                         if (GetPosition(x + y1, y)) livingNeighbours++;
                     }
-                    if (livingNeighbours == 3) LifeToPosition(x, y);
-                    else if (fieldAB[currentField ? 1 : 0][y, x] && livingNeighbours == 2) LifeToPosition(x, y);
-                    else DiePosition(x, y);
+                    if (livingNeighbours == 3) SetPosition(x, y);
+                    else if (fieldAB[currentField ? 1 : 0][y, x] && livingNeighbours == 2) SetPosition(x, y);
+                    else SetPosition(x, y, false);
                 }
             }
             currentField = !currentField;
@@ -62,13 +62,9 @@ namespace GameOfLife
         {
             fieldAB[currentField ? 1 : 0][y, x] = !fieldAB[currentField ? 1 : 0][y, x];
         }
-        public void LifeToPosition(int x, int y)
+        public void SetPosition(int x, int y, bool l = true)
         {
-            fieldAB[!currentField ? 1 : 0][y, x] = true;
-        }
-        public void DiePosition(int x, int y)
-        {
-            fieldAB[!currentField ? 1 : 0][y, x] = false;
+            fieldAB[!currentField ? 1 : 0][y, x] = l;
         }
     }
 }
