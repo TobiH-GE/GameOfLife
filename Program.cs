@@ -3,13 +3,6 @@ using System.Collections.Generic;
 
 namespace GameOfLife
 {
-    public delegate void Action();
-
-    struct Point
-    {
-        public sbyte x;
-        public sbyte y;
-    }
     class Program                               // *** GameOfLife von TobiH ***
     {
         public static Stack<Scene> Scenes = new Stack<Scene>();

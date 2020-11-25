@@ -10,26 +10,23 @@ namespace GameOfLife
         public GameLogic gameLogic = new GameLogic();
         FPS fpsCounter = new FPS();
         DateTime lastUpdate = DateTime.Now;
-        bool autoCycleMode = false;
+        bool autoCycleMode;
         ConsoleKeyInfo UserInput = new ConsoleKeyInfo();
-
         public GameScene()
         {
+            gameLogic = new GameLogic();
             Start();
         }
         public override void PrintStatus(ref GameLogic game)
         {
             UIElements[GetUIElementByName("Status")] = (new UIText("Status", $"cycle {game.cycleNumber}!\n", 10, 2, true));
         }
-        public override void Start(int x = 30, int y = 10)
+        public override void Start()
         {
             UIElements.Clear();
             Console.Clear();
             Console.CursorVisible = false;
-
             autoCycleMode = false;
-            if (x > 0 && x < System.Console.WindowWidth - 10 & y > 0 && y < System.Console.WindowHeight - 10) gameLogic.StartGame(x, y);
-            else gameLogic.StartGame(30, 10);
 
             UIElements.Add(new UILogo("Logo", "Logo.txt", 5, 1, 88, 3));
             UIElements.Add(new UIText("Titel", "(c) by TobiH ", 99, 3));
@@ -133,7 +130,7 @@ namespace GameOfLife
                         Save();
                         break;
                     case ConsoleKey.Escape:
-                        Program.Scenes.Pop();
+                        Escape();
                         break;
                     case ConsoleKey.Backspace:
                         UIElements[activeElement].input = UIElements[activeElement].input.Remove(UIElements[activeElement].input.Length - 1);
@@ -170,19 +167,17 @@ namespace GameOfLife
             {
                 gobject = (SaveGame)serializer.Deserialize(load);
             }
-
-            gameLogic.cycleNumber = gobject.cycle;
-            Start(gobject.width, gobject.height);
-
+            bool[,] fieldA = new bool[gobject.height, gobject.width];
             for (int y = 0; y < gobject.height; y++)
             {
                 for (int x = 0; x < gobject.width; x++)
                 {
-                    gameLogic.fieldAB[0][y, x] = gobject.field[i];
+                    fieldA[y, x] = gobject.field[i];
                     i++;
                 }
             }
-            
+            gameLogic = new GameLogic(gobject.width, gobject.height, fieldA, gobject.cycle);
+            Start();
         }
         public void SaveGame(string file)
         {
@@ -316,18 +311,23 @@ namespace GameOfLife
         }
         public void Escape()
         {
-            gameLogic.status = Status.Stopped;
+            Program.Scenes.Pop();
         }
         public void Restart()
         {
-            gameLogic.cycleNumber = 1;
             int x;
             int y;
             if (int.TryParse(UIElements[GetUIElementByName("X")].input, out x) &&
                 int.TryParse(UIElements[GetUIElementByName("Y")].input, out y))
-                Start(x, y);
-            else
+            {
+                gameLogic = new GameLogic(x, y);
                 Start();
+            }
+            else
+            {
+                gameLogic = new GameLogic();
+                Start();
+            }
         }
 
         public override void Draw()

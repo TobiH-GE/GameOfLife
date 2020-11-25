@@ -38,7 +38,7 @@ namespace GameOfLife
             return -1;
         }
         public abstract void PrintStatus(ref GameLogic game);
-        public abstract void Start(int x, int y);
+        public abstract void Start();
         public abstract void Update();
         public abstract void Draw();
     }

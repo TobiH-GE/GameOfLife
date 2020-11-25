@@ -11,18 +11,16 @@ namespace GameOfLife
         public List<bool[,]> fieldAB;
         public Status status;
 
-        public GameLogic ()
+        public GameLogic (int width = 30, int height = 10, bool[,] fieldA = null, int cycleNumber = 1)
         {
-
-        }
-        public void StartGame(int x, int y)
-        {
+            // if (x > 0 && x < System.Console.WindowWidth - 10 & y > 0 && y < System.Console.WindowHeight - 10)
             currentField = false;
-            if (fieldAB != null) fieldAB.Clear();
+            //if (fieldAB != null) fieldAB.Clear();
             status = Status.Started;
-            width = x;
-            height = y;
-            fieldAB = new List<bool[,]>() { new bool[y, x], new bool[y, x] };
+            this.width = width;
+            this.height = height;
+            fieldAB = new List<bool[,]>() { new bool[height, width], new bool[height, width] };
+            if (fieldA != null) fieldAB[0] = fieldA;
         }
         public void NextCycle()
         {
