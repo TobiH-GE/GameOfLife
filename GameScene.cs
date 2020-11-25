@@ -10,9 +10,10 @@ namespace GameOfLife
         public GameLogic gameLogic;
         DateTime lastUpdate = DateTime.Now;
         bool autoCycleMode;
-        public GameScene()
+        public GameScene(GameLogic gameLogic = null)
         {
-            gameLogic = new GameLogic();
+            if (gameLogic == null) this.gameLogic = new GameLogic();
+            else this.gameLogic = gameLogic;
             Start();
         }
         public override void Start()
@@ -112,7 +113,7 @@ namespace GameOfLife
                         Cycle();
                         break;
                     case ConsoleKey.D: // TODO: entfernen, nur zum Test
-                        Program.Scenes.Push(new LoadAndSaveScene());
+                        Program.Scenes.Push(new LoadAndSaveScene(ref gameLogic));
                         break;
                     case ConsoleKey.L:
                         Load();
