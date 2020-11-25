@@ -7,41 +7,16 @@ namespace GameOfLife
 {
     class GameScene : Scene
     {
-        public List<UIObject> UIElements = new List<UIObject>();
-        public UIObject cursor;
         public GameLogic gameLogic = new GameLogic();
         FPS fpsCounter = new FPS();
         DateTime lastUpdate = DateTime.Now;
         bool autoCycleMode = false;
-        public int _activeElement = 0;
         ConsoleKeyInfo UserInput = new ConsoleKeyInfo();
 
         public GameScene()
         {
             Start();
         }
-        public int activeElement
-        {
-            get
-            {
-                return _activeElement;
-            }
-            set
-            {
-                if (value >= UIElements.Count) value = 0;
-                if (value < 0) value = UIElements.Count - 1;
-
-                UIElements[_activeElement].selected = false;
-                if (UIElements[value].selectable)
-                {
-                    _activeElement = value;
-                    UIElements[_activeElement].selected = true;
-                }
-                if (activeElement == GetUIElementByName("Cursor")) cursor.cursorMode = true;
-                else cursor.cursorMode = false;
-            }
-        }
-
         public override void PrintStatus(ref GameLogic game)
         {
             UIElements[GetUIElementByName("Status")] = (new UIText("Status", $"cycle {game.cycleNumber}!\n", 10, 2, true));
@@ -64,7 +39,7 @@ namespace GameOfLife
             UIElements.Add(new UIInput("Y", "Y", 15, gameLogic.height + 6, true, Restart));
 
             UIElements.Add(new UIButton("New",    "[R] Restart", 5, gameLogic.height + 8, true, Restart));
-            UIElements.Add(new UIButton("Toggle", "[ ] Toggle ", 19, gameLogic.height + 8, true, Toggle));
+            UIElements.Add(new UIButton("Toggle", "[ ] Toggle ", 19, gameLogic.height + 8, true, () => { })); // TODO: macht nichts
             UIElements.Add(new UIButton("Cycle",  "[C] Cycle  ", 33, gameLogic.height + 8, true, Cycle));
             UIElements.Add(new UIButton("Auto",   "[A] Auto   ", 47, gameLogic.height + 8, true, () => { autoCycleMode = !autoCycleMode;}));
             UIElements.Add(new UIButton("Messy",  "[M] Messy  ", 61, gameLogic.height + 8, true, Messy));
@@ -74,6 +49,7 @@ namespace GameOfLife
 
             UIElements.Add(new UIField("Field", "GameOfLife", 5,5, gameLogic.fieldAB[gameLogic.currentField ? 1 : 0], gameLogic.width, gameLogic.height));
 
+            #region entfernte Buttons
             //for (byte yb = 0; yb < gameLogic.height; yb++) // alle Buttons auf dem Feld entfernt, dafür ein Cursor im Bereich aktiv wenn cursorMode = true
             //{
             //    for (byte xb = 0; xb < gameLogic.width; xb++)
@@ -81,6 +57,7 @@ namespace GameOfLife
             //        UIElements.Add(new UIButton($"Button {xb},{yb}", "", 5 + xb, 5 + yb, true, Toggle));
             //    }
             //}
+            #endregion
             cursor = new UICursor("Cursor", " ", 5, 5, true, () => { Click(cursor.fieldX, cursor.fieldY); });
             UIElements.Add(cursor);
 
@@ -90,7 +67,7 @@ namespace GameOfLife
         {
             Draw();
             AutoCycle();
-            // Debug - Ausgabe von Infos
+            #region Debug - Ausgabe von Infos
             //Console.SetCursorPosition(50, 24);
             //Console.WriteLine(" " + FindNextUIElement(Direction.Up).ToString() + " ");
             //Console.SetCursorPosition(50, 26);
@@ -99,7 +76,7 @@ namespace GameOfLife
             //Console.WriteLine(" " + FindNextUIElement(Direction.Left).ToString() + " ");
             //Console.SetCursorPosition(53, 25);
             //Console.WriteLine(" " + FindNextUIElement(Direction.Right).ToString() + " ");
-            //
+            #endregion
 
             if (Console.KeyAvailable)
             {
@@ -170,7 +147,7 @@ namespace GameOfLife
                 }
             }
         }
-        public void Click(int x, int y) // TODO: einbauen
+        public void Click(int x, int y)
         {
             gameLogic.TogglePosition(x, y);
         }
@@ -306,14 +283,6 @@ namespace GameOfLife
                 }
             }
             return found;
-        }
-        public int GetUIElementByName(string name)
-        {
-            for (int i = 0; i < UIElements.Count; i++)
-            {
-                if (UIElements[i].name == name) return i;
-            }
-            return -1;
         }
         public double DistanceTo(UIObject uobject)
         {
