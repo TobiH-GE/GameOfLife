@@ -27,8 +27,8 @@ namespace GameOfLife
             UIElements.Add(new UIText("Titel", "(c) by TobiH ", 99, 3));
             UIElements.Add(new UIText("Status", $"cycle #: {gameLogic.cycleNumber}", 10, 0, true));
 
-            UIElements.Add(new UIInput("X", "X", 5, gameLogic.height + 6, true, Next));
-            UIElements.Add(new UIInput("Y", "Y", 15, gameLogic.height + 6, true, Restart));
+            UIElements.Add(new UIInput("X", "X-Size", 5, gameLogic.height + 6, true, Next));
+            UIElements.Add(new UIInput("Y", "Y-Size", 20, gameLogic.height + 6, true, Restart));
 
             UIElements.Add(new UIButton("Empty", "[  E Empty  ]", 5, gameLogic.height + 8, true, Restart));
             UIElements.Add(new UIButton("Cycle", "[  C Cycle  ]", 19, gameLogic.height + 8, true, Cycle));

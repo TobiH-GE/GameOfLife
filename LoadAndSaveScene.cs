@@ -23,18 +23,19 @@ namespace GameOfLife
             UIElements.Add(new UIText("LoadAndSave", $"select a game to load or enter filename for new savegame", 10, 5, true));
             UIElements.Add(new UIInput("Filename", "Filename", 10, 7, true, () => { }));
             UIElements.Add(new UIButton("Load", "Load", 10, 9, true, () => { LoadGame(UIElements[1].input); }));
-            UIElements.Add(new UIButton("Save", "Save", 10, 10, true, () => { SaveGame(UIElements[1].input); }));
+            UIElements.Add(new UIButton("Save", "Save", 10, 10, true, () => { SaveGame(UIElements[1].input+".xml"); }));
 
+            UIElements.Add(new UIText("Found", $"found savegames:", 10, 12, true));
             string[] fileNames = Directory.GetFiles(@".\", "*.xml");
 
             for (int i = 0; i < fileNames.Length; i++)
             {
                 int e = new int();
                 e = i;
-                UIElements.Add(new UIButton($"File {i}", $"{fileNames[i]}", 10, 12 + i, true, () => { UIElements[1].input = fileNames[e]; }));
+                UIElements.Add(new UIButton($"File {i}", $"{fileNames[i]}", 13, 14 + i, true, () => { UIElements[1].input = fileNames[e]; }));
             }
 
-            cursor = new UICursor("Cursor", " ", 5, 5, true, () => { });
+            cursor = new UICursor("Cursor", " ", 12, 7, true, () => { }); // TODO: set cursor at input position
             UIElements.Add(cursor);
             activeElement = 1;
         }
@@ -66,7 +67,14 @@ namespace GameOfLife
                     case ConsoleKey.Escape:
                         Escape();
                         break;
+                    case ConsoleKey.Backspace:
+                        UIElements[activeElement].input = UIElements[activeElement].input.Remove(UIElements[activeElement].input.Length - 1);
+                        break;
                     default:
+                        if (Char.IsLetterOrDigit(UserInput.KeyChar))
+                        {
+                            UIElements[activeElement].input += UserInput.KeyChar;
+                        }
                         break;
                 }
             }
