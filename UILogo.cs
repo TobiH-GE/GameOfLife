@@ -41,6 +41,8 @@ namespace GameOfLife
                     Console.SetCursorPosition(x, y + i);
                     Console.Write(line);
                     i++;
+                    if (i == 1) Console.ForegroundColor = ConsoleColor.Gray;
+                    if (i >= 2) Console.ForegroundColor = ConsoleColor.DarkGray;
                 }
                 Console.ResetColor();
                 drawUpdate = false; // Logo nur einmal zeichnen

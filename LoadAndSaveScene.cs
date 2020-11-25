@@ -91,6 +91,8 @@ namespace GameOfLife
                 }
             }
             Program.Scenes.Pop();
+            Program.Scenes.Pop();
+            Console.Clear();
             Program.Scenes.Push(new GameScene(new GameLogic(gobject.width, gobject.height, fieldA, gobject.cycle)));
         }
         public void SaveGame(string file)
