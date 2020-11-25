@@ -31,7 +31,7 @@ namespace GameOfLife
             {
                 int e = new int();
                 e = i;
-                UIElements.Add(new UIButton($"File {i}", $"{fileNames[i]}", 10, 12 + i, true, () => { UIElements[1].input = fileNames[e];}));
+                UIElements.Add(new UIButton($"File {i}", $"{fileNames[i]}", 10, 12 + i, true, () => { UIElements[1].input = fileNames[e]; }));
             }
 
             cursor = new UICursor("Cursor", " ", 5, 5, true, () => { });
@@ -91,6 +91,8 @@ namespace GameOfLife
                 }
             }
             Program.Scenes.Pop();
+            Program.Scenes.Pop();
+            Console.Clear();
             Program.Scenes.Push(new GameScene(new GameLogic(gobject.width, gobject.height, fieldA, gobject.cycle)));
         }
         public void SaveGame(string file)

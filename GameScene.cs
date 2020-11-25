@@ -26,20 +26,20 @@ namespace GameOfLife
             UIElements.Add(new UILogo("Logo", "Logo.txt", 5, 1, 88, 3));
             UIElements.Add(new UIText("Titel", "(c) by TobiH ", 99, 3));
             UIElements.Add(new UIText("Status", $"cycle #: {gameLogic.cycleNumber}", 10, 0, true));
-            
+
             UIElements.Add(new UIInput("X", "X", 5, gameLogic.height + 6, true, Next));
             UIElements.Add(new UIInput("Y", "Y", 15, gameLogic.height + 6, true, Restart));
 
-            UIElements.Add(new UIButton("New",    "[R] Restart", 5, gameLogic.height + 8, true, Restart));
-            UIElements.Add(new UIButton("Toggle", "[ ] Toggle ", 19, gameLogic.height + 8, true, () => { })); // TODO: macht nichts
-            UIElements.Add(new UIButton("Cycle",  "[C] Cycle  ", 33, gameLogic.height + 8, true, Cycle));
-            UIElements.Add(new UIButton("Auto",   "[A] Auto   ", 47, gameLogic.height + 8, true, () => { autoCycleMode = !autoCycleMode;}));
-            UIElements.Add(new UIButton("Messy",  "[M] Messy  ", 61, gameLogic.height + 8, true, Messy));
-            UIElements.Add(new UIButton("Load",  "[L] Load  ", 75, gameLogic.height + 8, true, Load));
-            UIElements.Add(new UIButton("Save",  "[S] Save  ", 89, gameLogic.height + 8, true, Save));
-            UIElements.Add(new UIButton("Exit",   "[ESC] Exit ", 103, gameLogic.height + 8, true, Escape));
+            UIElements.Add(new UIButton("Empty", "[  E Empty  ]", 5, gameLogic.height + 8, true, Restart));
+            UIElements.Add(new UIButton("Cycle", "[  C Cycle  ]", 19, gameLogic.height + 8, true, Cycle));
+            UIElements.Add(new UIButton("LoadSave", "[D Load/Save]", 33, gameLogic.height + 8, true, () => { Program.Scenes.Push(new LoadAndSaveScene(ref gameLogic)); }));
+            UIElements.Add(new UIButton("Auto", "[  A Auto   ]", 47, gameLogic.height + 8, true, () => { autoCycleMode = !autoCycleMode; }));
+            UIElements.Add(new UIButton("Random", "[ R Random  ]", 61, gameLogic.height + 8, true, Random));
+            UIElements.Add(new UIButton("Load", "[L QuickLoad]", 75, gameLogic.height + 8, true, Load));
+            UIElements.Add(new UIButton("Save", "[S QuickSave]", 89, gameLogic.height + 8, true, Save));
+            UIElements.Add(new UIButton("Quit", "[ ESC Quit  ]", 103, gameLogic.height + 8, true, Quit));
 
-            UIElements.Add(new UIField("Field", "GameOfLife", 5,5, gameLogic.fieldAB[gameLogic.currentField ? 1 : 0], gameLogic.width, gameLogic.height));
+            UIElements.Add(new UIField("Field", "GameOfLife", 5, 5, gameLogic.fieldAB[gameLogic.currentField ? 1 : 0], gameLogic.width, gameLogic.height));
 
             #region entfernte Buttons
             //for (byte yb = 0; yb < gameLogic.height; yb++) // alle Buttons auf dem Feld entfernt, dafür ein Cursor im Bereich aktiv wenn cursorMode = true
@@ -118,17 +118,17 @@ namespace GameOfLife
                     case ConsoleKey.L:
                         Load();
                         break;
-                    case ConsoleKey.M:
-                        Messy();
-                        break;
                     case ConsoleKey.R:
+                        Random();
+                        break;
+                    case ConsoleKey.E:
                         Restart();
                         break;
                     case ConsoleKey.S:
                         Save();
                         break;
                     case ConsoleKey.Escape:
-                        Escape();
+                        Quit();
                         break;
                     case ConsoleKey.Backspace:
                         UIElements[activeElement].input = UIElements[activeElement].input.Remove(UIElements[activeElement].input.Length - 1);
@@ -218,7 +218,7 @@ namespace GameOfLife
         {
             gameLogic.TogglePosition((UIElements[_activeElement].x - 5), (UIElements[_activeElement].y - 5));
         }
-        public void Messy()
+        public void Random()
         {
             Random rnd = new Random();
             for (byte y = 0; y < gameLogic.height; y++)
@@ -240,7 +240,7 @@ namespace GameOfLife
             UIElements[GetUIElementByName("Field")].field = gameLogic.fieldAB[gameLogic.currentField ? 1 : 0];
             UIElements[GetUIElementByName("Status")].text = $"cylce #: {gameLogic.cycleNumber}";
         }
-        public void Escape()
+        public void Quit()
         {
             Program.Scenes.Pop();
         }
