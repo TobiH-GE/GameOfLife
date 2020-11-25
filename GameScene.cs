@@ -7,19 +7,13 @@ namespace GameOfLife
 {
     class GameScene : Scene
     {
-        public GameLogic gameLogic = new GameLogic();
-        FPS fpsCounter = new FPS();
+        public GameLogic gameLogic;
         DateTime lastUpdate = DateTime.Now;
         bool autoCycleMode;
-        ConsoleKeyInfo UserInput = new ConsoleKeyInfo();
         public GameScene()
         {
             gameLogic = new GameLogic();
             Start();
-        }
-        public override void PrintStatus(ref GameLogic game)
-        {
-            UIElements[GetUIElementByName("Status")] = (new UIText("Status", $"cycle {game.cycleNumber}!\n", 10, 2, true));
         }
         public override void Start()
         {
@@ -117,6 +111,9 @@ namespace GameOfLife
                     case ConsoleKey.C:
                         Cycle();
                         break;
+                    case ConsoleKey.D: // TODO: entfernen, nur zum Test
+                        Program.Scenes.Push(new LoadAndSaveScene());
+                        break;
                     case ConsoleKey.L:
                         Load();
                         break;
@@ -159,7 +156,6 @@ namespace GameOfLife
         public void LoadGame(string file)
         {
             SaveGame gobject = new SaveGame();
-
             XmlSerializer serializer = new XmlSerializer(typeof(SaveGame));
             int i = 0;
 
@@ -217,72 +213,6 @@ namespace GameOfLife
                 }
             }
         }
-        public int FindNextUIElement(Direction direction) // TODO: optimize
-        {
-            UIObject active = UIElements[_activeElement];
-            int found = -1;
-            double foundDistance = 9999;
-
-            for (int i = 0; i < UIElements.Count; i++)
-            {
-                if (UIElements[i].visible && UIElements[i].selectable)
-                {
-                    if (direction == Direction.Up && UIElements[i].y < active.y && UIElements[i].x == active.x && DistanceTo(UIElements[i]) < foundDistance)
-                    {
-                        found = i;
-                        foundDistance = DistanceTo(UIElements[i]);
-                    }
-                    else if (direction == Direction.Down && UIElements[i].y > active.y && UIElements[i].x == active.x && DistanceTo(UIElements[i]) < foundDistance)
-                    {
-                        found = i;
-                        foundDistance = DistanceTo(UIElements[i]);
-                    }
-                    else if (direction == Direction.Left && UIElements[i].x < active.x && UIElements[i].y == active.y && DistanceTo(UIElements[i]) < foundDistance)
-                    {
-                        found = i;
-                        foundDistance = DistanceTo(UIElements[i]);
-                    }
-                    else if (direction == Direction.Right && UIElements[i].x > active.x && UIElements[i].y == active.y && DistanceTo(UIElements[i]) < foundDistance)
-                    {
-                        found = i;
-                        foundDistance = DistanceTo(UIElements[i]);
-                    }
-                }
-            }
-            if (found != -1) return found;
-
-            for (int i = 0; i < UIElements.Count; i++)
-            {
-                if (UIElements[i].visible && UIElements[i].selectable)
-                {
-                    if (direction == Direction.Up && UIElements[i].y < active.y && DistanceTo(UIElements[i]) < foundDistance)
-                    {
-                        found = i;
-                        foundDistance = DistanceTo(UIElements[i]);
-                    }
-                    else if (direction == Direction.Down && UIElements[i].y > active.y && DistanceTo(UIElements[i]) < foundDistance)
-                    {
-                        found = i;
-                        foundDistance = DistanceTo(UIElements[i]);
-                    }
-                    else if (direction == Direction.Left && UIElements[i].x < active.x && DistanceTo(UIElements[i]) < foundDistance)
-                    {
-                        found = i;
-                        foundDistance = DistanceTo(UIElements[i]);
-                    }
-                    else if (direction == Direction.Right && UIElements[i].x > active.x && DistanceTo(UIElements[i]) < foundDistance)
-                    {
-                        found = i;
-                        foundDistance = DistanceTo(UIElements[i]);
-                    }
-                }
-            }
-            return found;
-        }
-        public double DistanceTo(UIObject uobject)
-        {
-            return Math.Sqrt(Math.Pow(uobject.x - UIElements[_activeElement].x, 2) + Math.Pow((uobject.y - UIElements[_activeElement].y) * 2, 2)); // * 2 Hack, vertikale Distanz optisch grösser als rechnerische Distanz
-        }
         public void Toggle()
         {
             gameLogic.TogglePosition((UIElements[_activeElement].x - 5), (UIElements[_activeElement].y - 5));
@@ -327,16 +257,6 @@ namespace GameOfLife
             {
                 gameLogic = new GameLogic();
                 Start();
-            }
-        }
-
-        public override void Draw()
-        {
-            fpsCounter.Draw();
-
-            for (int i = 0; i < UIElements.Count; i++)
-            {
-                UIElements[i].Draw();
             }
         }
     }

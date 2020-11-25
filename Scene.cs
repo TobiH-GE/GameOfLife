@@ -5,6 +5,8 @@ namespace GameOfLife
 {
     abstract class Scene
     {
+        public ConsoleKeyInfo UserInput = new ConsoleKeyInfo();
+        FPS fpsCounter = new FPS();
         public List<UIObject> UIElements = new List<UIObject>();
         public UIObject cursor;
         public int _activeElement = 0;
@@ -37,9 +39,82 @@ namespace GameOfLife
             }
             return -1;
         }
-        public abstract void PrintStatus(ref GameLogic game);
+        public int FindNextUIElement(Direction direction) // TODO: optimize
+        {
+            UIObject active = UIElements[_activeElement];
+            int found = -1;
+            double foundDistance = 9999;
+
+            for (int i = 0; i < UIElements.Count; i++)
+            {
+                if (UIElements[i].visible && UIElements[i].selectable)
+                {
+                    if (direction == Direction.Up && UIElements[i].y < active.y && UIElements[i].x == active.x && DistanceTo(UIElements[i]) < foundDistance)
+                    {
+                        found = i;
+                        foundDistance = DistanceTo(UIElements[i]);
+                    }
+                    else if (direction == Direction.Down && UIElements[i].y > active.y && UIElements[i].x == active.x && DistanceTo(UIElements[i]) < foundDistance)
+                    {
+                        found = i;
+                        foundDistance = DistanceTo(UIElements[i]);
+                    }
+                    else if (direction == Direction.Left && UIElements[i].x < active.x && UIElements[i].y == active.y && DistanceTo(UIElements[i]) < foundDistance)
+                    {
+                        found = i;
+                        foundDistance = DistanceTo(UIElements[i]);
+                    }
+                    else if (direction == Direction.Right && UIElements[i].x > active.x && UIElements[i].y == active.y && DistanceTo(UIElements[i]) < foundDistance)
+                    {
+                        found = i;
+                        foundDistance = DistanceTo(UIElements[i]);
+                    }
+                }
+            }
+            if (found != -1) return found;
+
+            for (int i = 0; i < UIElements.Count; i++)
+            {
+                if (UIElements[i].visible && UIElements[i].selectable)
+                {
+                    if (direction == Direction.Up && UIElements[i].y < active.y && DistanceTo(UIElements[i]) < foundDistance)
+                    {
+                        found = i;
+                        foundDistance = DistanceTo(UIElements[i]);
+                    }
+                    else if (direction == Direction.Down && UIElements[i].y > active.y && DistanceTo(UIElements[i]) < foundDistance)
+                    {
+                        found = i;
+                        foundDistance = DistanceTo(UIElements[i]);
+                    }
+                    else if (direction == Direction.Left && UIElements[i].x < active.x && DistanceTo(UIElements[i]) < foundDistance)
+                    {
+                        found = i;
+                        foundDistance = DistanceTo(UIElements[i]);
+                    }
+                    else if (direction == Direction.Right && UIElements[i].x > active.x && DistanceTo(UIElements[i]) < foundDistance)
+                    {
+                        found = i;
+                        foundDistance = DistanceTo(UIElements[i]);
+                    }
+                }
+            }
+            return found;
+        }
+        public double DistanceTo(UIObject uobject)
+        {
+            return Math.Sqrt(Math.Pow(uobject.x - UIElements[_activeElement].x, 2) + Math.Pow((uobject.y - UIElements[_activeElement].y) * 2, 2)); // * 2 Hack, vertikale Distanz optisch grösser als rechnerische Distanz
+        }
         public abstract void Start();
         public abstract void Update();
-        public abstract void Draw();
+        public void Draw()
+        {
+            fpsCounter.Draw();
+
+            for (int i = 0; i < UIElements.Count; i++)
+            {
+                UIElements[i].Draw();
+            }
+        }
     }
 }

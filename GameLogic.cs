@@ -13,12 +13,11 @@ namespace GameOfLife
 
         public GameLogic (int width = 30, int height = 10, bool[,] fieldA = null, int cycleNumber = 1)
         {
-            // if (x > 0 && x < System.Console.WindowWidth - 10 & y > 0 && y < System.Console.WindowHeight - 10)
-            currentField = false;
-            //if (fieldAB != null) fieldAB.Clear();
+            // TODO: Feldgrösse checken, alter Check: if (x > 0 && x < System.Console.WindowWidth - 10 & y > 0 && y < System.Console.WindowHeight - 10)
             status = Status.Started;
             this.width = width;
             this.height = height;
+            this.cycleNumber = cycleNumber;
             fieldAB = new List<bool[,]>() { new bool[height, width], new bool[height, width] };
             if (fieldA != null) fieldAB[0] = fieldA;
         }
