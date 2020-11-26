@@ -32,7 +32,7 @@ namespace GameOfLife
             {
                 int e = new int();
                 e = i;
-                UIElements.Add(new UIButton($"File {i}", $"{fileNames[i]}", 13, 14 + i, true, () => { UIElements[1].input = fileNames[e]; }));
+                UIElements.Add(new UIButton($"File {i}", $"{fileNames[i]}", 13, 14 + i, true, () => { if (UIElements[1].input == fileNames[e]) LoadGame(UIElements[1].input); else UIElements[1].input = fileNames[e]; }));
             }
 
             cursor = new UICursor("Cursor", " ", 12, 7, true, () => { }); // TODO: set cursor at input position
