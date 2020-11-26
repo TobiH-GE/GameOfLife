@@ -9,6 +9,7 @@ namespace GameOfLife
     class LoadAndSaveScene : Scene
     {
         public GameLogic gameLogic;
+        string[] fileNames;
         public LoadAndSaveScene(ref GameLogic gameLogic)
         {
             this.gameLogic = gameLogic;
@@ -22,22 +23,38 @@ namespace GameOfLife
 
             UIElements.Add(new UIText("LoadAndSave", $"select a game to load or enter filename for new savegame", 10, 5, true));
             UIElements.Add(new UIInput("Filename", "Filename", 10, 7, true, () => { }));
-            UIElements.Add(new UIButton("Load", "Load", 10, 9, true, () => { LoadGame(UIElements[1].input); }));
-            UIElements.Add(new UIButton("Save", "Save", 10, 10, true, () => { SaveGame(UIElements[1].input+".xml"); }));
+            UIElements.Add(new UIButton("Load", "Load", 10, 11, true, () => { LoadGame(UIElements[1].input); }));
+            UIElements.Add(new UIButton("Save", "Save", 10, 12, true, () => { SaveGame(UIElements[1].input+".xml"); }));
 
-            UIElements.Add(new UIText("Found", $"found savegames:", 10, 12, true));
-            string[] fileNames = Directory.GetFiles(@".\", "*.xml");
+            UIElements.Add(new UIText("Found", $"found savegames:", 30, 9, true));
+            fileNames = Directory.GetFiles(@".\", "*.xml");
 
-            for (int i = 0; i < fileNames.Length; i++)
+            for (int i = 0; i < 10; i++)
             {
-                int e = new int();
-                e = i;
-                UIElements.Add(new UIButton($"File {i}", $"{fileNames[i]}", 13, 14 + i, true, () => { if (UIElements[1].input == fileNames[e]) LoadGame(UIElements[1].input); else UIElements[1].input = fileNames[e]; }));
+                //int e = new int();
+                //e = i;
+                //UIElements.Add(new UIButton($"File {i}", $"{fileNames[i]}", 30, 11 + i, true, () => { if (UIElements[1].input == fileNames[e]) LoadGame(UIElements[1].input); else UIElements[1].input = fileNames[e]; }));
+                UIElements.Add(new UIButton($"File {i}", $"{i}.", 30, 11 + i, true, () => { }));
             }
 
             cursor = new UICursor("Cursor", " ", 12, 7, true, () => { }); // TODO: set cursor at input position
             UIElements.Add(cursor);
             activeElement = 1;
+            ListFiles();
+        }
+        public void ListFiles()
+        {
+            for (int i = 0; i < 10 && i < fileNames.Length; i++)
+            {
+                if (fileNames[i] != "")
+                {
+                    int e = new int();
+                    e = i;
+                    UIElements[GetUIElementByName($"File {i}")] = new UIButton($"File {i}", $"{fileNames[i]}", 30, 11 + i, true, () => { if (UIElements[1].input == fileNames[e]) LoadGame(UIElements[1].input); else UIElements[1].input = fileNames[e]; });
+                }
+                else
+                    UIElements[GetUIElementByName($"File {i}")].text = $"{i}.";
+            }
         }
         public override void Update()
         {
@@ -133,6 +150,7 @@ namespace GameOfLife
         }
         public void Escape()
         {
+            Console.Clear();
             Program.Scenes.Pop();
         }
     }

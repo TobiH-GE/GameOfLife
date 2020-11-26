@@ -4,12 +4,23 @@ namespace GameOfLife
 {
     class UIButton : UIObject
     {
-        readonly private Action _execute;
+        private Action _execute;
 
-        public UIButton(string name, string text, int x, int y, bool visible = true, Action execute = null, ConsoleColor fColor = ConsoleColor.White, ConsoleColor bColor = ConsoleColor.Black, bool selected = false) : base (name, text, x, y, visible, fColor, bColor, selected)
+        public UIButton(string name, string text, int x, int y, bool visible = true, Action execute = null, ConsoleColor fColor = ConsoleColor.White, ConsoleColor bColor = ConsoleColor.Black, bool selected = false) : base(name, text, x, y, visible, fColor, bColor, selected)
         {
             _execute = execute;
             selectable = true;
+        }
+        public Action Execute
+        {
+            get
+            {
+                return _execute;
+            }
+            set
+            {
+                _execute = value;
+            }
         }
         public override void Draw()
         {
