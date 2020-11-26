@@ -29,19 +29,20 @@ namespace GameOfLife
                     Console.SetCursorPosition(x + x1, y + y1);
                     if (field[y1, x1] == false)
                     {
-                        if (backupField[y1, x1] == 0)
+                        if (backupField[y1, x1] == -1)
                         {
                             Console.ForegroundColor = ConsoleColor.DarkGray;
-                            backupField[y1, x1] = -128;
                         }
-                        else if (backupField[y1, x1] > 0)
+                        else if (backupField[y1, x1] >= 0)
                         {
                             Console.ForegroundColor = ConsoleColor.Gray;
+                            backupField[y1, x1] = -128;
                         }
                         else
                         {
-                            Console.ForegroundColor = ConsoleColor.DarkGray;
+                            Console.ForegroundColor = ConsoleColor.Gray;
                         }
+
                         Console.Write("-");
                     }
                         //fieldString = fieldString + "-";
@@ -50,21 +51,21 @@ namespace GameOfLife
                         if (backupField[y1, x1] == 0)
                         {
                             Console.ForegroundColor = ConsoleColor.Green;
-                            backupField[y1, x1] = 127;
                         }
                         else if (backupField[y1, x1] < 0)
                         {
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
+                            backupField[y1, x1] = 127;
                         }
                         else
                         {
-                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
                         }
                         Console.Write("+");
                         //fieldString = fieldString + "X";
                     }
                     if (backupField[y1, x1] > 0) backupField[y1, x1]--;
-                    else if (backupField[y1, x1] < 0) backupField[y1, x1]++;
+                    else if (backupField[y1, x1] < -1) backupField[y1, x1]++;
                 }
                 //Console.SetCursorPosition(x, y + y1);
                 //Console.Write(fieldString);
