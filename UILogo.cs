@@ -50,23 +50,19 @@ namespace GameOfLife
                 Console.SetCursorPosition(x + effectPosition, y + 1);
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write(logo[1].Substring(effectPosition, 1));
-                Console.ForegroundColor = ConsoleColor.Gray;
+
+                // Line 3
+                Console.SetCursorPosition(x + effectPosition - 1, y + 2);
+                Console.Write(logo[2].Substring(effectPosition - 1, 1));
 
                 Console.SetCursorPosition(x + effectPosition - 1, y + 1);
                 Console.ForegroundColor = ConsoleColor.Gray;
                 Console.Write(logo[1].Substring(effectPosition - 1, 1));
 
-                // Line 3
-                Console.SetCursorPosition(x + effectPosition - 1, y + 2);
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write(logo[2].Substring(effectPosition- 1, 1));
-
                 Console.SetCursorPosition(x + effectPosition - 2, y + 2);
-                Console.ForegroundColor = ConsoleColor.Gray;
                 Console.Write(logo[2].Substring(effectPosition - 2, 1));
 
                 Console.SetCursorPosition(x + effectPosition, y + 2);
-                Console.ForegroundColor = ConsoleColor.Gray;
                 Console.Write(logo[2].Substring(effectPosition, 1));
 
                 Console.SetCursorPosition(x + effectPosition - 3, y + 2);

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GameOfLife
 {
-    class UIField : UIObject
+    class UIField : UIObject // TODO: Random-Effekt: zappelnde Zelle
     {
         DateTime lastUpdate; // FPS limiter
         sbyte[,] backupField;
@@ -18,7 +18,7 @@ namespace GameOfLife
             selectable = false;
             backupField = new sbyte[height,width];
         }
-        public override void Draw() // TODO: Random-Effekt zappelnde Zelle
+        public override void Draw() // TODO: nur zeichnen wenn notwendig, evtl. über mehrere Frames verteilt
         {
             //string fieldString; // wir bauen uns ein String -> schneller bei der Ausgabe
             if ((DateTime.Now - lastUpdate).TotalMilliseconds <= effectDelay) return;
