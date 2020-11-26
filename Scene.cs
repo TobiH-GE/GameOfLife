@@ -31,6 +31,12 @@ namespace GameOfLife
                 else cursor.cursorMode = false;
             }
         }
+        public void ConsoleClear()
+        {
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Clear();
+            Console.CursorVisible = false;
+        }
         public int GetUIElementByName(string name)
         {
             for (int i = 0; i < UIElements.Count; i++)

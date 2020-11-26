@@ -17,8 +17,7 @@ namespace GameOfLife
         public override void Start()
         {
             UIElements.Clear();
-            Console.Clear();
-            Console.CursorVisible = false;
+            ConsoleClear();
 
             UIElements.Add(new UIText("LoadAndSave", $"select a game to load or enter filename for new savegame", 10, 5, true));
             UIElements.Add(new UIInput("Filename", "Filename", 10, 7, true, () => { }));
@@ -92,7 +91,7 @@ namespace GameOfLife
             }
             Program.Scenes.Pop();
             Program.Scenes.Pop();
-            Console.Clear();
+            ConsoleClear();
             Program.Scenes.Push(new GameScene(new GameLogic(gobject.width, gobject.height, fieldA, gobject.cycle)));
         }
         public void SaveGame(string file)
@@ -125,6 +124,7 @@ namespace GameOfLife
         }
         public void Escape()
         {
+            ConsoleClear();
             Program.Scenes.Pop();
         }
     }

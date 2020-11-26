@@ -17,6 +17,8 @@ namespace GameOfLife
             framesSinceLastUpdate++;
             if ((DateTime.Now - lastUpdate).TotalMilliseconds >= 5000)
             {
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.SetCursorPosition(0, 0);
                 Console.Write("{0,0} fps", framesSinceLastUpdate / 5);
                 framesSinceLastUpdate = 0;

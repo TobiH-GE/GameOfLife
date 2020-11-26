@@ -38,6 +38,7 @@ namespace GameOfLife
         }
         public override void Draw()
         {
+            Console.BackgroundColor = ConsoleColor.Black;
             if (DateTime.Now >= nextRandomEffectUpdate)
             {
                 playEffect = true;

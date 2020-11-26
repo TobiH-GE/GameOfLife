@@ -20,6 +20,7 @@ namespace GameOfLife
         }
         public override void Draw() // TODO: nur zeichnen wenn notwendig, evtl. über mehrere Frames verteilt
         {
+            Console.BackgroundColor = ConsoleColor.Black;
             //string fieldString; // wir bauen uns ein String -> schneller bei der Ausgabe
             if ((DateTime.Now - lastUpdate).TotalMilliseconds <= effectDelay) return;
             lastUpdate = DateTime.Now;

@@ -19,8 +19,7 @@ namespace GameOfLife
         public override void Start()
         {
             UIElements.Clear();
-            Console.Clear();
-            Console.CursorVisible = false;
+            ConsoleClear();
             autoCycleMode = false;
 
             UIElements.Add(new UILogo("Logo", "Logo.txt", 5, 1, 88, 3));
