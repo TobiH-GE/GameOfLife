@@ -43,7 +43,12 @@ namespace GameOfLife
                             backupField[y1, x1] = -128;
                             Console.Write("·"); // ┼
                         }
-                        else if (backupField[y1, x1] > -128 && backupField[y1, x1] < -100)
+                        else if (backupField[y1, x1] > -128 && backupField[y1, x1] <= -110)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write("·"); // ┼
+                        }
+                        else if (backupField[y1, x1] > -110 && backupField[y1, x1] < -100)
                         {
                             Console.ForegroundColor = ConsoleColor.DarkRed;
                             Console.Write("·");
