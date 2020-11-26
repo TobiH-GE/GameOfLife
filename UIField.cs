@@ -41,7 +41,7 @@ namespace GameOfLife
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                             backupField[y1, x1] = -128;
-                            Console.Write("┼");
+                            Console.Write("·"); // ┼
                         }
                         else if (backupField[y1, x1] > -128 && backupField[y1, x1] < -100)
                         {
@@ -57,21 +57,26 @@ namespace GameOfLife
                         //fieldString = fieldString + "-";
                     else
                     {
-                        if (backupField[y1, x1] >= 0 && backupField[y1, x1] < 100)
+                        if (backupField[y1, x1] >= 0 && backupField[y1, x1] < 50)
                         {
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.Write("┼");
+                            Console.Write("O"); // ┼
+                        }
+                        else if (backupField[y1, x1] > 50 && backupField[y1, x1] < 115)
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
+                            Console.Write("O"); // ┼
                         }
                         else if (backupField[y1, x1] < 0)
                         {
-                            Console.ForegroundColor = ConsoleColor.DarkGreen;
+                            Console.ForegroundColor = ConsoleColor.White;
                             backupField[y1, x1] = 127;
-                            Console.Write("+");
+                            Console.Write("o");
                         }
                         else
                         {
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
-                            Console.Write("+");
+                            Console.Write("o");
                         }
                         
                         //fieldString = fieldString + "X";
