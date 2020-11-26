@@ -18,7 +18,7 @@ namespace GameOfLife
             selectable = false;
             backupField = new sbyte[height,width];
         }
-        public override void Draw() // TODO: Bug, Zelle ab und zu ausserhalb des Spielfelds
+        public override void Draw() // TODO: Random-Effekt zappelnde Zelle
         {
             //string fieldString; // wir bauen uns ein String -> schneller bei der Ausgabe
             if ((DateTime.Now - lastUpdate).TotalMilliseconds <= effectDelay) return;
@@ -41,12 +41,12 @@ namespace GameOfLife
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                             backupField[y1, x1] = -128;
-                            Console.Write("·"); // ┼
+                            Console.Write("·");
                         }
                         else if (backupField[y1, x1] > -128 && backupField[y1, x1] <= -123)
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Write("·"); // ┼
+                            Console.Write("·");
                         }
                         else if (backupField[y1, x1] > -123 && backupField[y1, x1] < -100)
                         {
@@ -62,20 +62,15 @@ namespace GameOfLife
                         //fieldString = fieldString + "-";
                     else
                     {
-                        if (backupField[y1, x1] >= 0 && backupField[y1, x1] < 26)
+                        if (backupField[y1, x1] >= 0 && backupField[y1, x1] < 100)
                         {
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.Write("O"); // ┼
+                            Console.Write("O");
                         }
-                        if (backupField[y1, x1] > 25 && backupField[y1, x1] < 70)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.Write("O"); // ┼
-                        }
-                        else if (backupField[y1, x1] > 70 && backupField[y1, x1] < 115) // TODO: 70 selbst fehlt, dadurch zappelt die Zelle ab und zu noch, evtl. als Random-Effekt einbauen?
+                        else if (backupField[y1, x1] >= 100 && backupField[y1, x1] < 115)
                         {
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
-                            Console.Write("O"); // ┼
+                            Console.Write("O");
                         }
                         else if (backupField[y1, x1] < 0)
                         {
@@ -83,7 +78,7 @@ namespace GameOfLife
                             backupField[y1, x1] = 127;
                             Console.Write("o");
                         }
-                        else
+                        else if (backupField[y1, x1] >= 115 && backupField[y1, x1] < 127)
                         {
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
                             Console.Write("o");
