@@ -32,36 +32,45 @@ namespace GameOfLife
                         if (backupField[y1, x1] == -1)
                         {
                             Console.ForegroundColor = ConsoleColor.DarkGray;
+                            Console.Write("·");
                         }
                         else if (backupField[y1, x1] >= 0)
                         {
-                            Console.ForegroundColor = ConsoleColor.Gray;
+                            Console.ForegroundColor = ConsoleColor.Red;
                             backupField[y1, x1] = -128;
+                            Console.Write("┼");
+                        }
+                        else if (backupField[y1, x1] > -128 && backupField[y1, x1] < -100)
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            Console.Write("·");
                         }
                         else
                         {
                             Console.ForegroundColor = ConsoleColor.Gray;
+                            Console.Write("·");
                         }
-
-                        Console.Write("-");
                     }
                         //fieldString = fieldString + "-";
                     else
                     {
-                        if (backupField[y1, x1] == 0)
+                        if (backupField[y1, x1] >= 0 && backupField[y1, x1] < 100)
                         {
                             Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write("┼");
                         }
                         else if (backupField[y1, x1] < 0)
                         {
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
                             backupField[y1, x1] = 127;
+                            Console.Write("+");
                         }
                         else
                         {
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
+                            Console.Write("+");
                         }
-                        Console.Write("+");
+                        
                         //fieldString = fieldString + "X";
                     }
                     if (backupField[y1, x1] > 0) backupField[y1, x1]--;
