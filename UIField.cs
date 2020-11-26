@@ -18,7 +18,7 @@ namespace GameOfLife
             selectable = false;
             backupField = new sbyte[height,width];
         }
-        public override void Draw()
+        public override void Draw() // TODO: Bug, Zelle ab und zu ausserhalb des Spielfelds
         {
             //string fieldString; // wir bauen uns ein String -> schneller bei der Ausgabe
             if ((DateTime.Now - lastUpdate).TotalMilliseconds <= effectDelay) return;
@@ -43,12 +43,12 @@ namespace GameOfLife
                             backupField[y1, x1] = -128;
                             Console.Write("·"); // ┼
                         }
-                        else if (backupField[y1, x1] > -128 && backupField[y1, x1] <= -110)
+                        else if (backupField[y1, x1] > -128 && backupField[y1, x1] <= -123)
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.Write("·"); // ┼
                         }
-                        else if (backupField[y1, x1] > -110 && backupField[y1, x1] < -100)
+                        else if (backupField[y1, x1] > -123 && backupField[y1, x1] < -100)
                         {
                             Console.ForegroundColor = ConsoleColor.DarkRed;
                             Console.Write("·");

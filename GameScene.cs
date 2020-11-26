@@ -24,7 +24,6 @@ namespace GameOfLife
             autoCycleMode = false;
 
             UIElements.Add(new UILogo("Logo", "Logo.txt", 5, 1, 88, 3));
-            UIElements.Add(new UIText("Titel", "(c) by TobiH ", 99, 3));
             UIElements.Add(new UIText("Status", $"cycle #: {gameLogic.cycleNumber}", 10, 0, true));
             
             UIElements.Add(new UIInput("X", "X", 5, gameLogic.height + 6, true, Next));
