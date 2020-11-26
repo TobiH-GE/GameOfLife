@@ -21,7 +21,7 @@ namespace GameOfLife
         public override void Draw()
         {
             //string fieldString; // wir bauen uns ein String -> schneller bei der Ausgabe
-            if ((DateTime.Now - lastUpdate).TotalMilliseconds <= 50) return;
+            if ((DateTime.Now - lastUpdate).TotalMilliseconds <= effectDelay) return;
             lastUpdate = DateTime.Now;
 
             for (int y1 = 0; y1 < height; y1++)

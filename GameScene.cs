@@ -127,6 +127,12 @@ namespace GameOfLife
                     case ConsoleKey.S:
                         Save();
                         break;
+                    case ConsoleKey.Add:
+                        UIElements[GetUIElementByName("Field")].effectDelay++;
+                        break;
+                    case ConsoleKey.Subtract:
+                        UIElements[GetUIElementByName("Field")].effectDelay--;
+                        break;
                     case ConsoleKey.Escape:
                         Quit();
                         break;
@@ -238,7 +244,7 @@ namespace GameOfLife
         {
             gameLogic.NextCycle();
             UIElements[GetUIElementByName("Field")].field = gameLogic.fieldAB[gameLogic.currentField ? 1 : 0];
-            UIElements[GetUIElementByName("Status")].text = $"cylce #: {gameLogic.cycleNumber}";
+            UIElements[GetUIElementByName("Status")].text = $"cylce #: {gameLogic.cycleNumber}  effectDelay +/-: {UIElements[GetUIElementByName("Field")].effectDelay}";
         }
         public void Quit()
         {
