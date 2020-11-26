@@ -62,7 +62,7 @@ namespace GameOfLife
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.Write("O"); // ┼
                         }
-                        else if (backupField[y1, x1] > 50 && backupField[y1, x1] < 115)
+                        else if (backupField[y1, x1] > 50 && backupField[y1, x1] < 115) // TODO: 50 selbst fehlt, dadurch zappelt die Zelle ab und zu noch, evtl. als Random-Effekt einbauen?
                         {
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
                             Console.Write("O"); // ┼
