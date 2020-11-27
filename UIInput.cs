@@ -9,6 +9,7 @@ namespace GameOfLife
         {
             _execute = execute;
             selectable = true;
+            Program.DrawUpdates.Add(this);
         }
         public new string input
         {

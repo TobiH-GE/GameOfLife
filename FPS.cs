@@ -20,7 +20,7 @@ namespace GameOfLife
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.SetCursorPosition(0, 0);
-                Console.Write("{0,0} fps", framesSinceLastUpdate / 5);
+                Console.Write("{0,0} fps ", framesSinceLastUpdate / 5);
                 framesSinceLastUpdate = 0;
                 lastUpdate = DateTime.Now;
             }

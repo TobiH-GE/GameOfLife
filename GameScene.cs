@@ -60,16 +60,6 @@ namespace GameOfLife
             GetUIElementByName("Field").Draw();
             logo.DrawEffect();
             AutoCycle();
-            #region Debug - Ausgabe von Infos
-            //Console.SetCursorPosition(50, 24);
-            //Console.WriteLine(" " + FindNextUIElement(Direction.Up).ToString() + " ");
-            //Console.SetCursorPosition(50, 26);
-            //Console.WriteLine(" " + FindNextUIElement(Direction.Down).ToString() + " ");
-            //Console.SetCursorPosition(47, 25);
-            //Console.WriteLine(" " + FindNextUIElement(Direction.Left).ToString() + " ");
-            //Console.SetCursorPosition(53, 25);
-            //Console.WriteLine(" " + FindNextUIElement(Direction.Right).ToString() + " ");
-            #endregion
 
             if (Console.KeyAvailable)
             {

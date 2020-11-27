@@ -32,6 +32,7 @@ namespace GameOfLife
                 default:
                     break;
             }
+            Program.DrawUpdates.Add(this);
         }
         public override void Draw()
         {
