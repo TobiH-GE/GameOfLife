@@ -10,6 +10,7 @@ namespace GameOfLife
         public GameLogic gameLogic;
         DateTime lastUpdate = DateTime.Now;
         bool autoCycleMode = false;
+        int randomCells = 50;
         public GameScene(GameLogic gameLogic = null)
         {
             if (gameLogic == null) this.gameLogic = new GameLogic();
@@ -28,6 +29,7 @@ namespace GameOfLife
 
             UIElements.Add(new UIInput("X", "X-Size", 5, gameLogic.height + 6, gameLogic.width.ToString(), true, () => { activeElement = GetUIElementIDByName("Y"); }));
             UIElements.Add(new UIInput("Y", "Y-Size", 20, gameLogic.height + 6, gameLogic.height.ToString(), true, Restart));
+            UIElements.Add(new UIInput("Random", "Random %", 35, gameLogic.height + 6, randomCells.ToString(), true, () => Random()));
 
             UIElements.Add(new UIButton("Empty",    "[  E Empty  ]", 5, gameLogic.height + 8, true, Restart));
             UIElements.Add(new UIButton("Cycle",    "[  C Cycle  ]", 19, gameLogic.height + 8, true, Cycle));
@@ -219,11 +221,15 @@ namespace GameOfLife
         public void Random()
         {
             Random rnd = new Random();
+
+            if (int.TryParse(GetUIElementByName("Random").input, out randomCells)) { }
+            else { randomCells = 50; field.input = randomCells.ToString(); }
+
             for (byte y = 0; y < gameLogic.height; y++)
             {
                 for (byte x = 0; x < gameLogic.width; x++)
                 {
-                    if (rnd.Next(0, 2) == 1)
+                    if (rnd.Next(0, 101) < randomCells)
                         gameLogic.TogglePosition(x, y);
                 }
             }
