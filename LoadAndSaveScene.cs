@@ -41,6 +41,8 @@ namespace GameOfLife
             UIElements.Add(cursor);
             activeElement = 1;
             ListFiles();
+
+            DrawUIElements();
         }
         public void ListFiles()
         {
