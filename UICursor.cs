@@ -7,16 +7,19 @@ namespace GameOfLife
     class UICursor : UIObject, IDrawable // TODO: Cursor-Bereich an Feld-Bereich anpassen
     {
         readonly private Action _execute;
+        readonly private Action _executeAfterMove;
 
-        public UICursor(string name, string text, int x, int y, int fieldMaxX, int fieldMaxY, bool visible = true, Action execute = null, ConsoleColor fColor = ConsoleColor.White, ConsoleColor bColor = ConsoleColor.Black, bool selected = false) : base(name, text, x, y, visible, fColor, bColor, selected)
+        public UICursor(string name, string text, int x, int y, int fieldMaxX, int fieldMaxY, bool visible = true, Action execute = null, Action executeAfterMove = null, ConsoleColor fColor = ConsoleColor.White, ConsoleColor bColor = ConsoleColor.Black, bool selected = false) : base(name, text, x, y, visible, fColor, bColor, selected)
         {
             _execute = execute;
+            _executeAfterMove = executeAfterMove;
             selectable = true;
             base.fieldMaxX = fieldMaxX;
             base.fieldMaxY = fieldMaxY;
         }
         public override void Move(Direction direction)
         {
+            ActionAfterMove();
             switch (direction)
             {
                 case Direction.Up:
@@ -60,6 +63,10 @@ namespace GameOfLife
         public override void Action()
         {
             _execute();
+        }
+        public override void ActionAfterMove()
+        {
+            _executeAfterMove();
         }
     }
 }

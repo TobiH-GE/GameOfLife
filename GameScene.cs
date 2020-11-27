@@ -38,9 +38,10 @@ namespace GameOfLife
             UIElements.Add(new UIButton("Save",     "[S QuickSave]", 89, gameLogic.height + 8, true, Save));
             UIElements.Add(new UIButton("Quit",     "[ ESC Quit  ]", 103, gameLogic.height + 8, true, Quit));
 
-            UIElements.Add(new UIField("Field", "GameOfLife", 5,5, gameLogic.fieldAB[gameLogic.currentField ? 1 : 0], gameLogic.width, gameLogic.height));
+            field = new UIField("Field", "GameOfLife", 5, 5, gameLogic.fieldAB[gameLogic.currentField ? 1 : 0], gameLogic.width, gameLogic.height);
+            UIElements.Add(field);
 
-            cursor = new UICursor("Cursor", " ", 5, 5, gameLogic.width, gameLogic.height, true, () => { Click(cursor.fieldX, cursor.fieldY); });
+            cursor = new UICursor("Cursor", " ", 5, 5, gameLogic.width, gameLogic.height, true, () => { Click(cursor.fieldX, cursor.fieldY); }, () => { UpdatePosition(cursor.fieldX, cursor.fieldY); });
             UIElements.Add(cursor);
 
             DrawUIElements();
@@ -53,6 +54,10 @@ namespace GameOfLife
             {
                 Program.DrawUpdates.Add(UIElements[i]); // TODO: aus den einzelnen Konstruktoren entfernen
             }
+        }
+        public void UpdatePosition(int x, int y)
+        {
+            field.DrawPosition(x, y);
         }
         public override void Update()
         {
@@ -72,7 +77,7 @@ namespace GameOfLife
                         else activeElement = FindNextUIElement(Direction.Up);
                         break;
                     case ConsoleKey.DownArrow:
-                        if (cursor.cursorMode && cursor.fieldY == cursor.fieldMaxY - 1) activeElement = 3;
+                        if (cursor.cursorMode && cursor.fieldY == cursor.fieldMaxY - 1) { activeElement = 3; UpdatePosition(cursor.fieldX, cursor.fieldY); }
                         else if (cursor.cursorMode) cursor.Move(Direction.Down);
                         else activeElement = FindNextUIElement(Direction.Down);
                         break;
@@ -135,7 +140,7 @@ namespace GameOfLife
                         if (Char.IsNumber(UserInput.KeyChar))
                         {
                             UIElements[activeElement].input += UserInput.KeyChar;
-                            Program.DrawUpdates.Add(GetUIElementByID(activeElement));
+                            //Program.DrawUpdates.Add(GetUIElementByID(activeElement));
                         }
                         break;
                 }

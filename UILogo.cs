@@ -84,6 +84,7 @@ namespace GameOfLife
         {
             int i = 0;
 
+            Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = fColor;
             foreach (string line in logo)
             {

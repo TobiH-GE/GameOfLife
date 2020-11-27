@@ -10,6 +10,7 @@ namespace GameOfLife
         public List<UIObject> UIElements = new List<UIObject>();
         public UILogo logo;
         public UICursor cursor;
+        public UIField field;
         public int _activeElement = 0;
         public int activeElement
         {

@@ -11,18 +11,7 @@ namespace GameOfLife
             selectable = true;
             Program.DrawUpdates.Add(this);
         }
-        public new string input
-        {
-            get
-            {
-                return base.input;
-            }
-            set
-            {
-                base.input = value;
-                Program.DrawUpdates.Add(this);
-            }
-        }
+        
         public new string text
         {
             get

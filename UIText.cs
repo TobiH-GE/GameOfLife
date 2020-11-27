@@ -8,18 +8,6 @@ namespace GameOfLife
         {
             selectable = false;
         }
-        public new string text
-        {
-            get
-            {
-                return base.text;
-            }
-            set
-            {
-                base.text = value;
-                Program.DrawUpdates.Add(this);
-            }
-        }
         public override void Draw()
         {
             Console.SetCursorPosition(x, y);
