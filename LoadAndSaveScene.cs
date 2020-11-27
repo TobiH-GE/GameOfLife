@@ -22,7 +22,7 @@ namespace GameOfLife
             Console.CursorVisible = false;
 
             UIElements.Add(new UIText("LoadAndSave", $"select a game to load or enter filename for new savegame", 10, 5, true));
-            UIElements.Add(new UIInput("Filename", "Filename", 10, 7, true, () => { }));
+            UIElements.Add(new UIInput("Filename", "Filename", 10, 7, "", true, () => { }));
             UIElements.Add(new UIButton("Load", "Load", 10, 11, true, () => { LoadGame(UIElements[1].input); }));
             UIElements.Add(new UIButton("Save", "Save", 10, 12, true, () => { SaveGame(UIElements[1].input + ".xml"); }));
 

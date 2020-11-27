@@ -26,14 +26,14 @@ namespace GameOfLife
 
             UIElements.Add(new UIText("Status", $"cycle #: {gameLogic.cycleNumber}", 10, 0, true));
 
-            UIElements.Add(new UIInput("X", "X-Size", 5, gameLogic.height + 6, true, () => { activeElement = GetUIElementIDByName("Y"); }));
-            UIElements.Add(new UIInput("Y", "Y-Size", 20, gameLogic.height + 6, true, Restart));
+            UIElements.Add(new UIInput("X", "X-Size", 5, gameLogic.height + 6, gameLogic.width.ToString(), true, () => { activeElement = GetUIElementIDByName("Y"); }));
+            UIElements.Add(new UIInput("Y", "Y-Size", 20, gameLogic.height + 6, gameLogic.height.ToString(), true, Restart));
 
             UIElements.Add(new UIButton("Empty",    "[  E Empty  ]", 5, gameLogic.height + 8, true, Restart));
             UIElements.Add(new UIButton("Cycle",    "[  C Cycle  ]", 19, gameLogic.height + 8, true, Cycle));
-            UIElements.Add(new UIButton("LoadSave", "[D Load/Save]", 33, gameLogic.height + 8, true, () => { Program.Scenes.Push(new LoadAndSaveScene(ref gameLogic)); }));
-            UIElements.Add(new UIButton("Auto",     "[  A Auto   ]", 47, gameLogic.height + 8, true, () => { autoCycleMode = !autoCycleMode;}));
-            UIElements.Add(new UIButton("Random",   "[ R Random  ]", 61, gameLogic.height + 8, true, Random));
+            UIElements.Add(new UIButton("Auto",     "[  A Auto   ]", 33, gameLogic.height + 8, true, () => { autoCycleMode = !autoCycleMode;}));
+            UIElements.Add(new UIButton("Random",   "[ R Random  ]", 47, gameLogic.height + 8, true, Random));
+            UIElements.Add(new UIButton("LoadSave", "[D Load/Save]", 61, gameLogic.height + 8, true, () => { Program.Scenes.Push(new LoadAndSaveScene(ref gameLogic)); }));
             UIElements.Add(new UIButton("Load",     "[L QuickLoad]", 75, gameLogic.height + 8, true, Load));
             UIElements.Add(new UIButton("Save",     "[S QuickSave]", 89, gameLogic.height + 8, true, Save));
             UIElements.Add(new UIButton("Quit",     "[ ESC Quit  ]", 103, gameLogic.height + 8, true, Quit));
@@ -43,6 +43,8 @@ namespace GameOfLife
 
             cursor = new UICursor("Cursor", " ", 5, 5, gameLogic.width, gameLogic.height, true, () => { Click(cursor.fieldX, cursor.fieldY); }, () => { UpdatePosition(cursor.fieldX, cursor.fieldY); });
             UIElements.Add(cursor);
+
+            UIElements.Add(new UIText("Info", $"use cursor keys and space to drop some cells", 72, gameLogic.height + 6, true));
 
             DrawUIElements();
 
@@ -235,7 +237,7 @@ namespace GameOfLife
         {
             gameLogic.NextCycle();
             GetUIElementByName("Field").Set(gameLogic.fieldAB[gameLogic.currentField ? 1 : 0]);
-            GetUIElementByName("Status").text = $"cycle #: {gameLogic.cycleNumber}  effectDelay +/-: {field.effectDelay}";
+            GetUIElementByName("Status").text = $"cycle #: {gameLogic.cycleNumber}  effectDelay +/-: {field.effectDelay} ";
         }
         public void Quit()
         {

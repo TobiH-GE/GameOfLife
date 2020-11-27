@@ -39,13 +39,7 @@ namespace GameOfLife
         }
         public void DrawPosition(int x1, int y1)
         {
-            if (backupField[y1, x1] == -2 || backupField[y1, x1] == -1)
-            {
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.SetCursorPosition(x + x1, y + y1);
-                Console.Write("·");
-            }
-            else if (backupField[y1, x1] >= -128 && backupField[y1, x1] < -100)
+            if (backupField[y1, x1] >= -128 && backupField[y1, x1] < -100)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.SetCursorPosition(x + x1, y + y1);
@@ -60,6 +54,12 @@ namespace GameOfLife
             else if (backupField[y1, x1] >= -50 && backupField[y1, x1] < -2)
             {
                 Console.ForegroundColor = ConsoleColor.Gray;
+                Console.SetCursorPosition(x + x1, y + y1);
+                Console.Write("·");
+            }
+            else if (backupField[y1, x1] == -2 || backupField[y1, x1] == -1)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.SetCursorPosition(x + x1, y + y1);
                 Console.Write("·");
             }
@@ -94,13 +94,7 @@ namespace GameOfLife
                 {
                     if (field[y1, x1] == false)
                     {
-                        if (backupField[y1, x1] == -2)
-                        {
-                            Console.ForegroundColor = ConsoleColor.DarkGray;
-                            Console.SetCursorPosition(x + x1, y + y1);
-                            Console.Write("·");
-                        }
-                        else if (backupField[y1, x1] >= 0)
+                        if (backupField[y1, x1] >= 0)
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                             backupField[y1, x1] = -128;
@@ -119,22 +113,16 @@ namespace GameOfLife
                             Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("·");
                         }
+                        else if(backupField[y1, x1] == -2)
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkGray;
+                            Console.SetCursorPosition(x + x1, y + y1);
+                            Console.Write("·");
+                        }
                     }
                     else
                     {
-                        if (backupField[y1, x1] == 100)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.SetCursorPosition(x + x1, y + y1);
-                            Console.Write("O");
-                        }
-                        else if (backupField[y1, x1] == 115)
-                        {
-                            Console.ForegroundColor = ConsoleColor.DarkGreen;
-                            Console.SetCursorPosition(x + x1, y + y1);
-                            Console.Write("O");
-                        }
-                        else if (backupField[y1, x1] < 0)
+                        if (backupField[y1, x1] < 0)
                         {
                             Console.ForegroundColor = ConsoleColor.White;
                             backupField[y1, x1] = 127;
@@ -146,6 +134,18 @@ namespace GameOfLife
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
                             Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("o");
+                        }
+                        else if (backupField[y1, x1] == 115)
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
+                            Console.SetCursorPosition(x + x1, y + y1);
+                            Console.Write("O");
+                        }
+                        else if (backupField[y1, x1] == 100)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.SetCursorPosition(x + x1, y + y1);
+                            Console.Write("O");
                         }
                     }
                     if (backupField[y1, x1] > 0) backupField[y1, x1]--;
