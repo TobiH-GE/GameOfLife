@@ -21,7 +21,6 @@ namespace GameOfLife
 
             logo = new string[height];
             Load(text);
-            Program.DrawUpdates.Add(this);
         }
         public void Load(string filename)
         {

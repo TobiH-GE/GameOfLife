@@ -48,13 +48,7 @@ namespace GameOfLife
 
             activeElement = 2;
         }
-        public void DrawUIElements()
-        {
-            for (int i = 0; i < UIElements.Count; i++)
-            {
-                Program.DrawUpdates.Add(UIElements[i]); // TODO: aus den einzelnen Konstruktoren entfernen
-            }
-        }
+
         public void UpdatePosition(int x, int y)
         {
             field.DrawPosition(x, y);

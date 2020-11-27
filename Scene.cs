@@ -41,6 +41,13 @@ namespace GameOfLife
             Console.Clear();
             Console.CursorVisible = false;
         }
+        public void DrawUIElements()
+        {
+            for (int i = 0; i < UIElements.Count; i++)
+            {
+                Program.DrawUpdates.Add(UIElements[i]); // TODO: aus den einzelnen Konstruktoren entfernen
+            }
+        }
         public int GetUIElementIDByName(string name)
         {
             for (int i = 0; i < UIElements.Count; i++)
