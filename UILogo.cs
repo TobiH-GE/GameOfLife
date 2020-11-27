@@ -3,7 +3,7 @@ using System.IO;
 
 namespace GameOfLife
 {
-    public class UILogo : UIObject
+    public class UILogo : UIObject, IDrawable
     {
         DateTime lastUpdate;
         DateTime nextRandomEffectUpdate;
@@ -79,7 +79,7 @@ namespace GameOfLife
                 lastUpdate = DateTime.Now;
             }   
 
-            if (drawUpdate && visible)
+            if (drawUpdate)
             {
                 int i = 0;
 

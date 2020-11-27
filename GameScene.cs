@@ -24,7 +24,7 @@ namespace GameOfLife
 
             UIElements.Add(new UILogo("Logo", "Logo.txt", 5, 1, 88, 3));
             UIElements.Add(new UIText("Status", $"cycle #: {gameLogic.cycleNumber}", 10, 0, true));
-            
+
             UIElements.Add(new UIInput("X", "X", 5, gameLogic.height + 6, true, Next));
             UIElements.Add(new UIInput("Y", "Y", 15, gameLogic.height + 6, true, Restart));
 
@@ -50,6 +50,11 @@ namespace GameOfLife
             #endregion
             cursor = new UICursor("Cursor", " ", 5, 5, true, () => { Click(cursor.fieldX, cursor.fieldY); });
             UIElements.Add(cursor);
+
+            for (int i = 0; i < UIElements.Count; i++)
+            {
+                Program.DrawUpdates.Add(UIElements[i]);
+            }
 
             activeElement = 3;
         }
@@ -101,7 +106,7 @@ namespace GameOfLife
                         break;
                     case ConsoleKey.Tab:
                         cursor.cursorMode = !cursor.cursorMode;
-                        if (cursor.cursorMode) activeElement = GetUIElementByName("Cursor");
+                        if (cursor.cursorMode) activeElement = GetUIElementIDByName("Cursor");
                         else activeElement = 3;
                         break;
                     case ConsoleKey.A:
@@ -126,10 +131,10 @@ namespace GameOfLife
                         Save();
                         break;
                     case ConsoleKey.Add:
-                        UIElements[GetUIElementByName("Field")].effectDelay++;
+                        UIElements[GetUIElementIDByName("Field")].effectDelay++;
                         break;
                     case ConsoleKey.Subtract:
-                        UIElements[GetUIElementByName("Field")].effectDelay--;
+                        UIElements[GetUIElementIDByName("Field")].effectDelay--;
                         break;
                     case ConsoleKey.Escape:
                         Quit();
@@ -233,6 +238,7 @@ namespace GameOfLife
                         gameLogic.TogglePosition(x, y);
                 }
             }
+            Program.DrawUpdates.Add(GetUIElementByName("Field"));
         }
         public void Next()
         {
@@ -241,8 +247,8 @@ namespace GameOfLife
         public void Cycle()
         {
             gameLogic.NextCycle();
-            UIElements[GetUIElementByName("Field")].field = gameLogic.fieldAB[gameLogic.currentField ? 1 : 0];
-            UIElements[GetUIElementByName("Status")].text = $"cycle #: {gameLogic.cycleNumber}  effectDelay +/-: {UIElements[GetUIElementByName("Field")].effectDelay}";
+            GetUIElementByName("Field").Set(gameLogic.fieldAB[gameLogic.currentField ? 1 : 0]);
+            GetUIElementByName("Status").text = $"cycle #: {gameLogic.cycleNumber}  effectDelay +/-: {UIElements[GetUIElementIDByName("Field")].effectDelay}";
         }
         public void Quit()
         {
@@ -252,8 +258,8 @@ namespace GameOfLife
         {
             int x;
             int y;
-            if (int.TryParse(UIElements[GetUIElementByName("X")].input, out x) &&
-                int.TryParse(UIElements[GetUIElementByName("Y")].input, out y))
+            if (int.TryParse(UIElements[GetUIElementIDByName("X")].input, out x) &&
+                int.TryParse(UIElements[GetUIElementIDByName("Y")].input, out y))
             {
                 gameLogic = new GameLogic(x, y);
                 Start();

@@ -8,7 +8,7 @@ namespace GameOfLife
         public ConsoleKeyInfo UserInput = new ConsoleKeyInfo();
         FPS fpsCounter = new FPS();
         public List<UIObject> UIElements = new List<UIObject>();
-        public UIObject cursor;
+        public UICursor cursor;
         public int _activeElement = 0;
         public int activeElement
         {
@@ -27,7 +27,7 @@ namespace GameOfLife
                     _activeElement = value;
                     UIElements[_activeElement].selected = true;
                 }
-                if (activeElement == GetUIElementByName("Cursor")) cursor.cursorMode = true;
+                if (activeElement == GetUIElementIDByName("Cursor")) cursor.cursorMode = true;
                 else cursor.cursorMode = false;
             }
         }
@@ -37,13 +37,21 @@ namespace GameOfLife
             Console.Clear();
             Console.CursorVisible = false;
         }
-        public int GetUIElementByName(string name)
+        public int GetUIElementIDByName(string name)
         {
             for (int i = 0; i < UIElements.Count; i++)
             {
                 if (UIElements[i].name == name) return i;
             }
             return -1;
+        }
+        public UIObject GetUIElementByName(string name)
+        {
+            for (int i = 0; i < UIElements.Count; i++)
+            {
+                if (UIElements[i].name == name) return UIElements[i];
+            }
+            return null;
         }
         public int FindNextUIElement(Direction direction) // TODO: optimize
         {

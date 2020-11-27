@@ -4,94 +4,109 @@ using System.Text;
 
 namespace GameOfLife
 {
-    class UIField : UIObject // TODO: Random-Effekt: zappelnde Zelle
+    class UIField : UIObject, IDrawable // TODO: Random-Effekt: zappelnde Zelle
     {
         DateTime lastUpdate; // FPS limiter
+        public bool[,] _field;
         sbyte[,] backupField;
+        sbyte[,] backupFieldLastState;
         int width = 0;
         int height = 0;
         public UIField(string name, string text, int x, int y, bool[,] field, int width = 0, int height = 0, bool visible = true, ConsoleColor fColor = ConsoleColor.White, ConsoleColor bColor = ConsoleColor.Black, bool selected = false) : base(name, text, x, y, visible, fColor, bColor, selected)
         {
-            this.field = field;
+            _field = field;
             this.width = width;
             this.height = height;
             selectable = false;
             backupField = new sbyte[height,width];
+            //backupFieldLastState = new sbyte[height, width];
+        }
+        public bool[,] field
+        {
+            get
+            {
+                return _field;
+            }
+            set
+            {
+                _field = field;
+                drawUpdate = true;
+            }
+        }
+        public override void Set(bool[,] field)
+        {
+            _field = field;
         }
         public override void Draw() // TODO: nur zeichnen wenn notwendig, evtl. über mehrere Frames verteilt
         {
             Console.BackgroundColor = ConsoleColor.Black;
-            //string fieldString; // wir bauen uns ein String -> schneller bei der Ausgabe
             if ((DateTime.Now - lastUpdate).TotalMilliseconds <= effectDelay) return;
             lastUpdate = DateTime.Now;
 
             for (int y1 = 0; y1 < height; y1++)
             {
-                //fieldString = "";
                 for (int x1 = 0; x1 < width; x1++)
                 {
-                    Console.SetCursorPosition(x + x1, y + y1);
                     if (field[y1, x1] == false)
                     {
-                        if (backupField[y1, x1] == -1)
+                        if (backupField[y1, x1] == -2)
                         {
                             Console.ForegroundColor = ConsoleColor.DarkGray;
+                            Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("·");
                         }
                         else if (backupField[y1, x1] >= 0)
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                             backupField[y1, x1] = -128;
+                            Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("·");
                         }
-                        else if (backupField[y1, x1] > -128 && backupField[y1, x1] <= -123)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Write("·");
-                        }
-                        else if (backupField[y1, x1] > -123 && backupField[y1, x1] < -100)
+                        else if (backupField[y1, x1] == -100)
                         {
                             Console.ForegroundColor = ConsoleColor.DarkRed;
+                            Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("·");
                         }
-                        else
+                        else if (backupField[y1, x1] == -50)
                         {
                             Console.ForegroundColor = ConsoleColor.Gray;
+                            Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("·");
                         }
                     }
-                        //fieldString = fieldString + "-";
                     else
                     {
-                        if (backupField[y1, x1] >= 0 && backupField[y1, x1] < 100)
+                        if (backupField[y1, x1] == 100)
                         {
                             Console.ForegroundColor = ConsoleColor.Green;
+                            Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("O");
                         }
-                        else if (backupField[y1, x1] >= 100 && backupField[y1, x1] < 115)
+                        else if (backupField[y1, x1] == 115)
                         {
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
+                            Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("O");
                         }
                         else if (backupField[y1, x1] < 0)
                         {
                             Console.ForegroundColor = ConsoleColor.White;
                             backupField[y1, x1] = 127;
+                            Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("o");
                         }
-                        else if (backupField[y1, x1] >= 115 && backupField[y1, x1] < 127)
+                        else if (backupField[y1, x1] == 126)
                         {
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
+                            Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("o");
                         }
-                        
-                        //fieldString = fieldString + "X";
                     }
+                    //backupFieldLastState[y1, x1] = backupField[y1, x1];
                     if (backupField[y1, x1] > 0) backupField[y1, x1]--;
                     else if (backupField[y1, x1] < -1) backupField[y1, x1]++;
                 }
-                //Console.SetCursorPosition(x, y + y1);
-                //Console.Write(fieldString);
             }
         }
     }

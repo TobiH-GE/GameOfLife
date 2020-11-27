@@ -2,7 +2,7 @@
 
 namespace GameOfLife
 {
-    public class UIObject // TODO: Interface IDrawable und Liste needsRedraw
+    public class UIObject : IDrawable // TODO: Interface IDrawable und Liste needsRedraw
     {
         public string name;
         public string text;
@@ -15,7 +15,7 @@ namespace GameOfLife
         public bool selected;
         public bool active = true;
         public bool selectable;
-        public bool[,] field;
+        
         public bool drawUpdate = true;
         public int fieldX;
         public int fieldY;
@@ -40,6 +40,10 @@ namespace GameOfLife
         public virtual void Draw()
         {
             
+        }
+        public virtual void Set(bool [,] field)
+        {
+
         }
         public virtual void Action()
         {

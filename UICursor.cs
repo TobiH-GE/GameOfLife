@@ -4,9 +4,9 @@ using System.Text;
 
 namespace GameOfLife
 {
-    class UICursor : UIObject // TODO: Cursor-Bereich an Feld-Bereich anpassen
+    class UICursor : UIObject, IDrawable // TODO: Cursor-Bereich an Feld-Bereich anpassen
     {
-        readonly private Action _execute; 
+        readonly private Action _execute;
 
         public UICursor(string name, string text, int x, int y, bool visible = true, Action execute = null, ConsoleColor fColor = ConsoleColor.White, ConsoleColor bColor = ConsoleColor.Black, bool selected = false) : base(name, text, x, y, visible, fColor, bColor, selected)
         {

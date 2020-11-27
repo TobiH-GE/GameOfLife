@@ -2,7 +2,7 @@
 
 namespace GameOfLife
 {
-    class UIButton : UIObject
+    class UIButton : UIObject, IDrawable
     {
         readonly private Action _execute;
 
@@ -11,26 +11,35 @@ namespace GameOfLife
             _execute = execute;
             selectable = true;
         }
+        public new string text
+        {
+            get
+            {
+                return base.text;
+            }
+            set
+            {
+                base.text = text;
+                Program.DrawUpdates.Add(this);
+            }
+        }
         public override void Draw()
         {
-            if (visible)
+            Console.SetCursorPosition(x, y);
+            Console.ForegroundColor = fColor;
+            if (selected)
             {
-                Console.SetCursorPosition(x, y);
-                Console.ForegroundColor = fColor;
-                if (selected)
-                {
-                    Console.BackgroundColor = ConsoleColor.Green;
-                    if (text == "") text = " ";
-                }
-                else
-                {
-                    Console.BackgroundColor = bColor;
-                    if (text == " ") text = "";
-                }
-
-                Console.Write(text);
-                Console.ResetColor();
+                Console.BackgroundColor = ConsoleColor.Green;
+                if (text == "") text = " ";
             }
+            else
+            {
+                Console.BackgroundColor = bColor;
+                if (text == " ") text = "";
+            }
+
+            Console.Write(text);
+            Console.ResetColor(); 
         }
         public override void Action()
         {
