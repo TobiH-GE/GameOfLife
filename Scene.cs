@@ -22,12 +22,14 @@ namespace GameOfLife
                 if (value >= UIElements.Count) value = 0;
                 if (value < 0) value = UIElements.Count - 1;
 
+                Program.DrawUpdates.Add(UIElements[_activeElement]);
                 UIElements[_activeElement].selected = false;
                 if (UIElements[value].selectable)
                 {
                     _activeElement = value;
                     UIElements[_activeElement].selected = true;
                 }
+                Program.DrawUpdates.Add(UIElements[_activeElement]);
                 if (activeElement == GetUIElementIDByName("Cursor")) cursor.cursorMode = true;
                 else cursor.cursorMode = false;
             }

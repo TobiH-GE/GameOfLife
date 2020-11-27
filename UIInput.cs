@@ -10,6 +10,18 @@ namespace GameOfLife
             _execute = execute;
             selectable = true;
         }
+        public new string input
+        {
+            get
+            {
+                return base.input;
+            }
+            set
+            {
+                base.input = input;
+                Program.DrawUpdates.Add(this);
+            }
+        }
         public new string text
         {
             get
