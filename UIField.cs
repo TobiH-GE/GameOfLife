@@ -9,7 +9,6 @@ namespace GameOfLife
         DateTime lastUpdate; // FPS limiter
         public bool[,] _field;
         sbyte[,] backupField;
-        sbyte[,] backupFieldLastState;
         int width = 0;
         int height = 0;
         public UIField(string name, string text, int x, int y, bool[,] field, int width = 0, int height = 0, bool visible = true, ConsoleColor fColor = ConsoleColor.White, ConsoleColor bColor = ConsoleColor.Black, bool selected = false) : base(name, text, x, y, visible, fColor, bColor, selected)
@@ -19,7 +18,7 @@ namespace GameOfLife
             this.height = height;
             selectable = false;
             backupField = new sbyte[height,width];
-            //backupFieldLastState = new sbyte[height, width];
+            Program.DrawUpdates.Add(this);
         }
         public bool[,] field
         {
@@ -30,14 +29,14 @@ namespace GameOfLife
             set
             {
                 _field = field;
-                drawUpdate = true;
+                Program.DrawUpdates.Add(this);
             }
         }
         public override void Set(bool[,] field)
         {
             _field = field;
         }
-        public override void Draw() // TODO: nur zeichnen wenn notwendig, evtl. über mehrere Frames verteilt
+        public override void Draw()
         {
             Console.BackgroundColor = ConsoleColor.Black;
             if ((DateTime.Now - lastUpdate).TotalMilliseconds <= effectDelay) return;
@@ -103,7 +102,6 @@ namespace GameOfLife
                             Console.Write("o");
                         }
                     }
-                    //backupFieldLastState[y1, x1] = backupField[y1, x1];
                     if (backupField[y1, x1] > 0) backupField[y1, x1]--;
                     else if (backupField[y1, x1] < -1) backupField[y1, x1]++;
                 }

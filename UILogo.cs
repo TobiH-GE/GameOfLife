@@ -21,6 +21,7 @@ namespace GameOfLife
 
             logo = new string[height];
             Load(text);
+            Program.DrawUpdates.Add(this);
         }
         public void Load(string filename)
         {
@@ -36,7 +37,7 @@ namespace GameOfLife
                 }
             }
         }
-        public override void Draw()
+        public void DrawEffect()
         {
             Console.BackgroundColor = ConsoleColor.Black;
             if (DateTime.Now >= nextRandomEffectUpdate)
@@ -77,24 +78,22 @@ namespace GameOfLife
                     effectPosition = 3;
                 }
                 lastUpdate = DateTime.Now;
-            }   
-
-            if (drawUpdate)
-            {
-                int i = 0;
-
-                Console.ForegroundColor = fColor;
-                foreach (string line in logo)
-                {
-                    Console.SetCursorPosition(x, y + i);
-                    Console.Write(line);
-                    i++;
-                    if (i == 1) Console.ForegroundColor = ConsoleColor.Gray;
-                    if (i >= 2) Console.ForegroundColor = ConsoleColor.DarkGray;
-                }
-                Console.ResetColor();
-                drawUpdate = false; // Logo nur einmal zeichnen
             }
+        }
+        public override void Draw()
+        {
+            int i = 0;
+
+            Console.ForegroundColor = fColor;
+            foreach (string line in logo)
+            {
+                Console.SetCursorPosition(x, y + i);
+                Console.Write(line);
+                i++;
+                if (i == 1) Console.ForegroundColor = ConsoleColor.Gray;
+                if (i >= 2) Console.ForegroundColor = ConsoleColor.DarkGray;
+            }
+            Console.ResetColor();
         }
     }
 }

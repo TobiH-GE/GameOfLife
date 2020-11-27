@@ -8,6 +8,7 @@ namespace GameOfLife
         public ConsoleKeyInfo UserInput = new ConsoleKeyInfo();
         FPS fpsCounter = new FPS();
         public List<UIObject> UIElements = new List<UIObject>();
+        public UILogo logo;
         public UICursor cursor;
         public int _activeElement = 0;
         public int activeElement
@@ -124,11 +125,6 @@ namespace GameOfLife
         public void Draw()
         {
             fpsCounter.Draw();
-
-            for (int i = 0; i < UIElements.Count; i++)
-            {
-                UIElements[i].Draw();
-            }
         }
     }
 }

@@ -9,7 +9,7 @@ namespace GameOfLife
     {
         public GameLogic gameLogic;
         DateTime lastUpdate = DateTime.Now;
-        bool autoCycleMode;
+        bool autoCycleMode = false;
         public GameScene(GameLogic gameLogic = null)
         {
             if (gameLogic == null) this.gameLogic = new GameLogic();
@@ -20,9 +20,10 @@ namespace GameOfLife
         {
             UIElements.Clear();
             ConsoleClear();
-            autoCycleMode = false;
 
-            UIElements.Add(new UILogo("Logo", "Logo.txt", 5, 1, 88, 3));
+            logo = new UILogo("Logo", "Logo.txt", 5, 1, 88, 3);
+            UIElements.Add(logo);
+
             UIElements.Add(new UIText("Status", $"cycle #: {gameLogic.cycleNumber}", 10, 0, true));
 
             UIElements.Add(new UIInput("X", "X", 5, gameLogic.height + 6, true, Next));
@@ -39,28 +40,25 @@ namespace GameOfLife
 
             UIElements.Add(new UIField("Field", "GameOfLife", 5,5, gameLogic.fieldAB[gameLogic.currentField ? 1 : 0], gameLogic.width, gameLogic.height));
 
-            #region entfernte Buttons
-            //for (byte yb = 0; yb < gameLogic.height; yb++) // alle Buttons auf dem Feld entfernt, dafür ein Cursor im Bereich aktiv wenn cursorMode = true
-            //{
-            //    for (byte xb = 0; xb < gameLogic.width; xb++)
-            //    {
-            //        UIElements.Add(new UIButton($"Button {xb},{yb}", "", 5 + xb, 5 + yb, true, Toggle));
-            //    }
-            //}
-            #endregion
             cursor = new UICursor("Cursor", " ", 5, 5, true, () => { Click(cursor.fieldX, cursor.fieldY); });
             UIElements.Add(cursor);
 
+            DrawUIElements();
+
+            activeElement = 3;
+        }
+        public void DrawUIElements()
+        {
             for (int i = 0; i < UIElements.Count; i++)
             {
                 Program.DrawUpdates.Add(UIElements[i]);
             }
-
-            activeElement = 3;
         }
         public override void Update()
         {
             Draw();
+            GetUIElementByName("Field").Draw();
+            logo.DrawEffect();
             AutoCycle();
             #region Debug - Ausgabe von Infos
             //Console.SetCursorPosition(50, 24);
