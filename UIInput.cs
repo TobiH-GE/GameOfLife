@@ -16,15 +16,8 @@ namespace GameOfLife
         {
             Console.SetCursorPosition(x, y);
             Console.ForegroundColor = fColor;
-            if (selected)
-            {
-                Console.BackgroundColor = ConsoleColor.Green;
-            }
-            else
-            {
-                Console.BackgroundColor = bColor;
-            }
-
+            if (selected) Console.BackgroundColor = ConsoleColor.Green;
+            else Console.BackgroundColor = bColor;
             Console.Write(text + ":");
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;

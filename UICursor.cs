@@ -22,7 +22,7 @@ namespace GameOfLife
             this.fieldMaxX = fieldMaxX;
             this.fieldMaxY = fieldMaxY;
         }
-        public override void Move(Direction direction)
+        public void Move(Direction direction)
         {
             ActionAfterMove();
             switch (direction)
@@ -50,15 +50,8 @@ namespace GameOfLife
             {
                 Console.SetCursorPosition(x + fieldX, y + fieldY);
                 Console.ForegroundColor = fColor;
-                if (selected)
-                {
-                    Console.BackgroundColor = ConsoleColor.Green;
-                }
-                else
-                {
-                    Console.BackgroundColor = bColor;
-                }
-
+                if (selected) Console.BackgroundColor = ConsoleColor.Green;
+                else Console.BackgroundColor = bColor;
                 Console.Write(text);
                 Console.ResetColor();
             }
@@ -67,7 +60,7 @@ namespace GameOfLife
         {
             _execute();
         }
-        public override void ActionAfterMove()
+        public void ActionAfterMove()
         {
             _executeAfterMove();
         }

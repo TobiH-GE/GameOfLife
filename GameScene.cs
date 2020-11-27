@@ -236,7 +236,7 @@ namespace GameOfLife
         public void Cycle()
         {
             gameLogic.NextCycle();
-            GetUIElementByName("Field").Set(gameLogic.fieldAB[gameLogic.currentField ? 1 : 0]);
+            field.Set(gameLogic.fieldAB[gameLogic.currentField ? 1 : 0]);
             GetUIElementByName("Status").text = $"cycle #: {gameLogic.cycleNumber}  effectDelay +/-: {field.effectDelay} ";
         }
         public void Quit()

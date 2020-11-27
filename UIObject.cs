@@ -55,21 +55,9 @@ namespace GameOfLife
         {
             
         }
-        public virtual void Set(bool [,] field)
-        {
-
-        }
         public virtual void Action()
         {
 
-        }
-        public virtual void ActionAfterMove()
-        {
-
-        }
-        public virtual void Move(Direction up)
-        {
-            
         }
     }
 }

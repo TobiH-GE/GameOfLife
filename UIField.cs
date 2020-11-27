@@ -33,7 +33,7 @@ namespace GameOfLife
                 Program.DrawUpdates.Add(this);
             }
         }
-        public override void Set(bool[,] field)
+        public void Set(bool[,] field)
         {
             _field = field;
         }
