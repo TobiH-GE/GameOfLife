@@ -20,6 +20,13 @@ namespace GameOfLife
             selectable = false;
             backupField = new sbyte[height,width];
             Program.DrawUpdates.Add(this);
+            for (int y1 = 0; y1 < height; y1++)
+            {
+                for (int x1 = 0; x1 < width; x1++)
+                {
+                    backupField[y1, x1] = -2;
+                }
+            }
         }
         public bool[,] field
         {

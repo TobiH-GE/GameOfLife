@@ -31,8 +31,11 @@ namespace GameOfLife
                     UIElements[_activeElement].selected = true;
                 }
                 Program.DrawUpdates.Add(UIElements[_activeElement]);
-                if (activeElement == GetUIElementIDByName("Cursor")) cursor.cursorMode = true;
-                else cursor.cursorMode = false;
+                if (GetUIElementByName("Cursor") != null)
+                {
+                    if (activeElement == GetUIElementIDByName("Cursor")) cursor.cursorMode = true;
+                    else cursor.cursorMode = false;
+                }
             }
         }
         public void ConsoleClear()

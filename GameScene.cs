@@ -157,13 +157,13 @@ namespace GameOfLife
             }
             keyDown = DateTime.Now;
         }
-        public void Load() // TODO: Eingabe im Userinterface
+        public void Load()
         {
-            LoadGame("savegame.xml");
+            LoadGame("_quicksave.xml");
         }
-        public void Save() // TODO: Eingabe im Userinterface
+        public void Save()
         {
-            SaveGame("savegame.xml");
+            SaveGame("_quicksave.xml");
         }
         public void LoadGame(string file)
         {
