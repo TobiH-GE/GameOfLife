@@ -57,7 +57,8 @@ namespace GameOfLife
         }
         public void TogglePosition(int x, int y)
         {
-            fieldAB[currentField ? 1 : 0][y, x] = !fieldAB[currentField ? 1 : 0][y, x];
+            if (x >= 0 && x < width && y >= 0 && y < height)
+                fieldAB[currentField ? 1 : 0][y, x] = !fieldAB[currentField ? 1 : 0][y, x];
         }
         public void SetPosition(int x, int y, bool l = true)
         {

@@ -7,8 +7,10 @@ namespace GameOfLife
 {
     class GameScene : Scene
     {
+        Random rnd = new Random();
         public GameLogic gameLogic;
         DateTime lastUpdate = DateTime.Now;
+        DateTime keyDown; int addX, addY;
         bool autoCycleMode = false;
         int randomCells = 50;
         public GameScene(GameLogic gameLogic = null)
@@ -46,7 +48,7 @@ namespace GameOfLife
             cursor = new UICursor("Cursor", " ", 5, 5, gameLogic.width, gameLogic.height, true, () => { Click(cursor.fieldX, cursor.fieldY); }, () => { UpdatePosition(cursor.fieldX, cursor.fieldY); });
             UIElements.Add(cursor);
 
-            UIElements.Add(new UIText("Info", $"use cursor keys and space to drop some cells", 72, gameLogic.height + 6, true));
+            UIElements.Add(new UIText("Info", $"use cursor keys and press/ hold space to drop some cells", 60, gameLogic.height + 6, true));
 
             DrawUIElements();
 
@@ -145,6 +147,15 @@ namespace GameOfLife
         public void Click(int x, int y)
         {
             gameLogic.TogglePosition(x, y);
+            if ((DateTime.Now - keyDown).TotalMilliseconds <= 50)
+            {
+                gameLogic.TogglePosition(x - addX++ / 20 + rnd.Next(0, addX++/10), y - addY++ / 20 + rnd.Next(0, addY++/10));
+            }
+            else
+            {
+                addX = 0; addY = 0;
+            }
+            keyDown = DateTime.Now;
         }
         public void Load() // TODO: Eingabe im Userinterface
         {
@@ -213,10 +224,6 @@ namespace GameOfLife
                     lastUpdate = DateTime.Now;
                 }
             }
-        }
-        public void Toggle()
-        {
-            gameLogic.TogglePosition((UIElements[_activeElement].x - 5), (UIElements[_activeElement].y - 5));
         }
         public void Random()
         {
