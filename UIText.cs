@@ -16,7 +16,8 @@ namespace GameOfLife
             }
             set
             {
-                base.text = text;
+                base.text = value;
+                Program.DrawUpdates.Add(this);
             }
         }
         public override void Draw()

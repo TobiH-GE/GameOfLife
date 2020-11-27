@@ -56,6 +56,10 @@ namespace GameOfLife
             }
             return null;
         }
+        public UIObject GetUIElementByID(int id)
+        {
+            return UIElements[id];
+        }
         public int FindNextUIElement(Direction direction) // TODO: optimize
         {
             UIObject active = UIElements[_activeElement];

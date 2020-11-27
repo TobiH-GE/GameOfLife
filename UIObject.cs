@@ -20,8 +20,8 @@ namespace GameOfLife
         public int fieldX;
         public int fieldY;
         public bool cursorMode = false;
-        public int fieldMaxX = 30;
-        public int fieldMaxY = 10;
+        public int fieldMaxX = 100;
+        public int fieldMaxY = 20;
         public int effectDelay = 50;
 
         public UIObject(string name, string text, int x, int y, bool visible = true, ConsoleColor fColor = ConsoleColor.White, ConsoleColor bColor = ConsoleColor.Black, bool selected = false)

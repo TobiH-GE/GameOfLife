@@ -6,12 +6,12 @@ namespace GameOfLife
     {
         public bool currentField = false;
         public int cycleNumber = 1;
-        public int width = 30;
-        public int height = 10;
+        public int width = 100;
+        public int height = 20;
         public List<bool[,]> fieldAB;
         public Status status;
 
-        public GameLogic (int width = 30, int height = 10, bool[,] fieldA = null, int cycleNumber = 1)
+        public GameLogic (int width = 100, int height = 20, bool[,] fieldA = null, int cycleNumber = 1)
         {
             // TODO: Feldgrösse checken, alter Check: if (x > 0 && x < System.Console.WindowWidth - 10 & y > 0 && y < System.Console.WindowHeight - 10)
             status = Status.Started;

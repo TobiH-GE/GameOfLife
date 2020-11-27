@@ -37,7 +37,7 @@ namespace GameOfLife
                 UIElements.Add(new UIButton($"File {i}", $"{i}.", 30, 11 + i, true, () => { }));
             }
 
-            cursor = new UICursor("Cursor", " ", 12, 7, true, () => { }); // TODO: set cursor at input position
+            cursor = new UICursor("Cursor", " ", 12, 7, 0, 0, true, () => { }); // TODO: set cursor at input position
             UIElements.Add(cursor);
             activeElement = 1;
             ListFiles();

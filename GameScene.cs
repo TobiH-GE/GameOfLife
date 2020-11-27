@@ -26,8 +26,8 @@ namespace GameOfLife
 
             UIElements.Add(new UIText("Status", $"cycle #: {gameLogic.cycleNumber}", 10, 0, true));
 
-            UIElements.Add(new UIInput("X", "X", 5, gameLogic.height + 6, true, Next));
-            UIElements.Add(new UIInput("Y", "Y", 15, gameLogic.height + 6, true, Restart));
+            UIElements.Add(new UIInput("X", "X-Size", 5, gameLogic.height + 6, true, () => { activeElement = GetUIElementIDByName("Y"); }));
+            UIElements.Add(new UIInput("Y", "Y-Size", 20, gameLogic.height + 6, true, Restart));
 
             UIElements.Add(new UIButton("Empty",    "[  E Empty  ]", 5, gameLogic.height + 8, true, Restart));
             UIElements.Add(new UIButton("Cycle",    "[  C Cycle  ]", 19, gameLogic.height + 8, true, Cycle));
@@ -40,18 +40,18 @@ namespace GameOfLife
 
             UIElements.Add(new UIField("Field", "GameOfLife", 5,5, gameLogic.fieldAB[gameLogic.currentField ? 1 : 0], gameLogic.width, gameLogic.height));
 
-            cursor = new UICursor("Cursor", " ", 5, 5, true, () => { Click(cursor.fieldX, cursor.fieldY); });
+            cursor = new UICursor("Cursor", " ", 5, 5, gameLogic.width, gameLogic.height, true, () => { Click(cursor.fieldX, cursor.fieldY); });
             UIElements.Add(cursor);
 
             DrawUIElements();
 
-            activeElement = 3;
+            activeElement = 2;
         }
         public void DrawUIElements()
         {
             for (int i = 0; i < UIElements.Count; i++)
             {
-                Program.DrawUpdates.Add(UIElements[i]);
+                Program.DrawUpdates.Add(UIElements[i]); // TODO: aus den einzelnen Konstruktoren entfernen
             }
         }
         public override void Update()
@@ -129,11 +129,13 @@ namespace GameOfLife
                         break;
                     case ConsoleKey.Backspace:
                         UIElements[activeElement].input = UIElements[activeElement].input.Remove(UIElements[activeElement].input.Length - 1);
+                        Program.DrawUpdates.Add(GetUIElementByID(activeElement));
                         break;
                     default:
                         if (Char.IsNumber(UserInput.KeyChar))
                         {
                             UIElements[activeElement].input += UserInput.KeyChar;
+                            Program.DrawUpdates.Add(GetUIElementByID(activeElement));
                         }
                         break;
                 }
@@ -237,6 +239,7 @@ namespace GameOfLife
             gameLogic.NextCycle();
             GetUIElementByName("Field").Set(gameLogic.fieldAB[gameLogic.currentField ? 1 : 0]);
             GetUIElementByName("Status").text = $"cycle #: {gameLogic.cycleNumber}  effectDelay +/-: {UIElements[GetUIElementIDByName("Field")].effectDelay}";
+            Program.DrawUpdates.Add(GetUIElementByName("Status"));
         }
         public void Quit()
         {

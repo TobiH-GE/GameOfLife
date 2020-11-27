@@ -8,10 +8,12 @@ namespace GameOfLife
     {
         readonly private Action _execute;
 
-        public UICursor(string name, string text, int x, int y, bool visible = true, Action execute = null, ConsoleColor fColor = ConsoleColor.White, ConsoleColor bColor = ConsoleColor.Black, bool selected = false) : base(name, text, x, y, visible, fColor, bColor, selected)
+        public UICursor(string name, string text, int x, int y, int fieldMaxX, int fieldMaxY, bool visible = true, Action execute = null, ConsoleColor fColor = ConsoleColor.White, ConsoleColor bColor = ConsoleColor.Black, bool selected = false) : base(name, text, x, y, visible, fColor, bColor, selected)
         {
             _execute = execute;
             selectable = true;
+            base.fieldMaxX = fieldMaxX;
+            base.fieldMaxY = fieldMaxY;
         }
         public override void Move(Direction direction)
         {

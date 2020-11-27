@@ -19,7 +19,7 @@ namespace GameOfLife
             }
             set
             {
-                base.input = input;
+                base.input = value;
                 Program.DrawUpdates.Add(this);
             }
         }
@@ -31,7 +31,7 @@ namespace GameOfLife
             }
             set
             {
-                base.text = text;
+                base.text = value;
                 Program.DrawUpdates.Add(this);
             }
         }
