@@ -6,6 +6,7 @@ namespace GameOfLife
 {
     class UIField : UIObject, IDrawable // TODO: Random-Effekt: zappelnde Zelle
     {
+        Random rnd = new Random();
         DateTime lastUpdate; // FPS limiter
         public bool[,] _field;
         sbyte[,] backupField;
@@ -108,11 +109,15 @@ namespace GameOfLife
                             Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("·");
                         }
-                        else if (backupField[y1, x1] == -100)
+                        else if (backupField[y1, x1] == -120)
                         {
                             Console.ForegroundColor = ConsoleColor.DarkRed;
                             Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("·");
+                        }
+                        else if (backupField[y1, x1] == -100)
+                        {
+                            backupField[y1, x1] -= (sbyte)rnd.Next(0, 5);
                         }
                         else if (backupField[y1, x1] == -50)
                         {
@@ -141,6 +146,10 @@ namespace GameOfLife
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
                             Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("o");
+                        }
+                        else if (backupField[y1, x1] == 116)
+                        {
+                            backupField[y1, x1] += (sbyte)rnd.Next(0, 3);
                         }
                         else if (backupField[y1, x1] == 115)
                         {
