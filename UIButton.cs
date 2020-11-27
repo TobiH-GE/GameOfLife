@@ -31,12 +31,10 @@ namespace GameOfLife
             if (selected)
             {
                 Console.BackgroundColor = ConsoleColor.Green;
-                if (text == "") text = " ";
             }
             else
             {
                 Console.BackgroundColor = bColor;
-                if (text == " ") text = "";
             }
 
             Console.Write(text);

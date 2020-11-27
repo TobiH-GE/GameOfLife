@@ -124,23 +124,21 @@ namespace GameOfLife
                         Save();
                         break;
                     case ConsoleKey.Add:
-                        UIElements[GetUIElementIDByName("Field")].effectDelay++;
+                        field.effectDelay++;
                         break;
                     case ConsoleKey.Subtract:
-                        UIElements[GetUIElementIDByName("Field")].effectDelay--;
+                        field.effectDelay--;
                         break;
                     case ConsoleKey.Escape:
                         Quit();
                         break;
                     case ConsoleKey.Backspace:
                         UIElements[activeElement].input = UIElements[activeElement].input.Remove(UIElements[activeElement].input.Length - 1);
-                        Program.DrawUpdates.Add(GetUIElementByID(activeElement));
                         break;
                     default:
                         if (Char.IsNumber(UserInput.KeyChar))
                         {
                             UIElements[activeElement].input += UserInput.KeyChar;
-                            //Program.DrawUpdates.Add(GetUIElementByID(activeElement));
                         }
                         break;
                 }
@@ -243,8 +241,7 @@ namespace GameOfLife
         {
             gameLogic.NextCycle();
             GetUIElementByName("Field").Set(gameLogic.fieldAB[gameLogic.currentField ? 1 : 0]);
-            GetUIElementByName("Status").text = $"cycle #: {gameLogic.cycleNumber}  effectDelay +/-: {UIElements[GetUIElementIDByName("Field")].effectDelay}";
-            Program.DrawUpdates.Add(GetUIElementByName("Status"));
+            GetUIElementByName("Status").text = $"cycle #: {gameLogic.cycleNumber}  effectDelay +/-: {field.effectDelay}";
         }
         public void Quit()
         {

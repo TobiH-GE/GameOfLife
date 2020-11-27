@@ -13,17 +13,8 @@ namespace GameOfLife
         protected ConsoleColor fColor;
         protected ConsoleColor bColor;
         public bool selected;
-        public bool active = true;
         public bool selectable;
         
-        public bool drawUpdate = true;
-        public int fieldX;
-        public int fieldY;
-        public bool cursorMode = false;
-        public int fieldMaxX = 100;
-        public int fieldMaxY = 20;
-        public int effectDelay = 50;
-
         public string input
         {
             get
@@ -45,7 +36,7 @@ namespace GameOfLife
             set
             {
                 _text = value;
-                //Program.DrawUpdates.Add(this);
+                Program.DrawUpdates.Add(this);
             }
         }
         public UIObject(string name, string text, int x, int y, bool visible = true, ConsoleColor fColor = ConsoleColor.White, ConsoleColor bColor = ConsoleColor.Black, bool selected = false)
@@ -58,7 +49,6 @@ namespace GameOfLife
             this.fColor = fColor;
             this.bColor = bColor;
             this.selected = selected;
-            this.active = true;
         }
 
         public virtual void Draw()
@@ -77,11 +67,6 @@ namespace GameOfLife
         {
 
         }
-        public virtual void selectedToggle()
-        {
-            selected = !selected;
-        }
-
         public virtual void Move(Direction up)
         {
             

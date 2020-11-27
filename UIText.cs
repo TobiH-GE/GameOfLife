@@ -23,7 +23,6 @@ namespace GameOfLife
 
             Console.Write(text);
             Console.ResetColor();
-            drawUpdate = false;
         }
     }   
 }
