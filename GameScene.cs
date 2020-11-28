@@ -28,7 +28,7 @@ namespace GameOfLife
             }
             set
             {
-                if (cycleDelay > 0 && cycleDelay < 5000)
+                if (value >= 0 && value <= 5000)
                     _cycleDelay = value;
             }
         }
