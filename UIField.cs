@@ -11,7 +11,7 @@ namespace GameOfLife
             new ConsoleColor[]{ConsoleColor.White, ConsoleColor.Green, ConsoleColor.DarkGreen, ConsoleColor.DarkGreen, ConsoleColor.Red, ConsoleColor.DarkRed, ConsoleColor.Gray, ConsoleColor.DarkGray},
             new ConsoleColor[]{ConsoleColor.White, ConsoleColor.Magenta, ConsoleColor.DarkMagenta,ConsoleColor.DarkMagenta, ConsoleColor.Green, ConsoleColor.DarkGreen , ConsoleColor.Gray, ConsoleColor.DarkGray},
             new ConsoleColor[]{ConsoleColor.White, ConsoleColor.Yellow, ConsoleColor.DarkYellow, ConsoleColor.DarkYellow, ConsoleColor.Red, ConsoleColor.DarkRed, ConsoleColor.Gray, ConsoleColor.DarkGray},     
-            new ConsoleColor[]{ConsoleColor.White, ConsoleColor.Cyan, ConsoleColor.Blue, ConsoleColor.DarkBlue, ConsoleColor.DarkCyan, ConsoleColor.DarkRed, ConsoleColor.Gray, ConsoleColor.DarkGray}     
+            new ConsoleColor[]{ConsoleColor.White, ConsoleColor.Cyan, ConsoleColor.Blue, ConsoleColor.Yellow, ConsoleColor.Magenta, ConsoleColor.DarkRed, ConsoleColor.Gray, ConsoleColor.DarkGray}     
         };
         Random rnd = new Random();
         DateTime lastUpdate; // FPS limiter

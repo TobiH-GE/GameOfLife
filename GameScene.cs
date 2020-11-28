@@ -40,7 +40,7 @@ namespace GameOfLife
             logo = new UILogo("Logo", "Logo.txt", 5, 1, 88, 3);
             UIElements.Add(logo);
 
-            UIElements.Add(new UIText("Status", $"cycle #: {gameLogic.cycleNumber}", 10, 0, true));
+            UIElements.Add(new UIText("Status", $"cycle #: {gameLogic.cycleNumber}", 10, 0, true, ConsoleColor.DarkGray));
 
             UIElements.Add(new UIInput("X", "X-Size", 5, gameLogic.height + 6, gameLogic.width.ToString(), true, () => { activeElement = GetUIElementIDByName("Y"); }));
             UIElements.Add(new UIInput("Y", "Y-Size", 20, gameLogic.height + 6, gameLogic.height.ToString(), true, Restart));
