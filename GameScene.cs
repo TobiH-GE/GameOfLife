@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 namespace GameOfLife
 {
-    class GameScene : Scene
+    class GameScene : Scene // TODO: allow window resize
     {
         Random rnd = new Random();
         public GameLogic gameLogic;
@@ -77,6 +77,7 @@ namespace GameOfLife
             Draw();
             field.Draw();
             logo.DrawEffect();
+            CursorBlink();
             AutoCycle();
 
             if (Console.KeyAvailable)
@@ -247,6 +248,15 @@ namespace GameOfLife
                     Cycle();
                     lastUpdate = DateTime.Now;
                 }
+            }
+        }
+        public void CursorBlink()
+        {
+            if (!cursor.cursorMode)
+            {
+                //if (System.DateTime.Now.Second % 2 == 0) cursor.visible = true;
+                //else cursor.visible = false;
+                //Program.DrawUpdates.Add(cursor);
             }
         }
         public void Random()

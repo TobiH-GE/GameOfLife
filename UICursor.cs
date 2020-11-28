@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GameOfLife
 {
-    class UICursor : UIObject, IDrawable // TODO: Cursor-Bereich an Feld-Bereich anpassen
+    class UICursor : UIObject, IDrawable
     {
         readonly private Action _execute;
         readonly private Action _executeAfterMove;

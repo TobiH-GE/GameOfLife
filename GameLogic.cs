@@ -13,6 +13,8 @@ namespace GameOfLife
 
         public GameLogic (int width = 100, int height = 20, bool[,] fieldA = null, int cycleNumber = 1)
         {
+            //if (width > System.Console.WindowWidth - 11) width = System.Console.WindowWidth - 11; // TODO: set to max value
+            //if (height > System.Console.WindowHeight - 9) width = System.Console.WindowHeight - 9;
             if (width > 0 && width < System.Console.WindowWidth - 10 & height > 0 && height < System.Console.WindowHeight - 8)
             {
                 this.width = width;
