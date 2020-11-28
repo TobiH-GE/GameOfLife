@@ -12,7 +12,7 @@ namespace GameOfLife
         sbyte[,] backupField;
         int width = 0;
         int height = 0;
-        public int effectDelay = 50;
+        public int _effectDelay = 50;
         public UIField(string name, string text, int x, int y, bool[,] field, int width = 0, int height = 0, bool visible = true, ConsoleColor fColor = ConsoleColor.White, ConsoleColor bColor = ConsoleColor.Black, bool selected = false) : base(name, text, x, y, visible, fColor, bColor, selected)
         {
             _field = field;
@@ -27,6 +27,18 @@ namespace GameOfLife
                 {
                     backupField[y1, x1] = -2;
                 }
+            }
+        }
+        public int effectDelay
+        {
+            get
+            {
+                return _effectDelay;
+            }
+            set
+            {
+                if (value >= 0 && value <= 500)
+                    _effectDelay = value;
             }
         }
         public bool[,] field

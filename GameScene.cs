@@ -136,6 +136,12 @@ namespace GameOfLife
                     case ConsoleKey.S:
                         Save();
                         break;
+                    case ConsoleKey.PageUp:
+                        field.effectDelay += 10;
+                        break;
+                    case ConsoleKey.PageDown:
+                        field.effectDelay -= 10;
+                        break;
                     case ConsoleKey.Add:
                         cycleDelay += 50;
                         break;
@@ -265,7 +271,7 @@ namespace GameOfLife
         {
             gameLogic.NextCycle();
             field.Set(gameLogic.fieldAB[gameLogic.currentField ? 1 : 0]);
-            GetUIElementByName("Status").text = $"cycle #: {gameLogic.cycleNumber}  cycleDelay +/-: {cycleDelay}  effectDelay: {field.effectDelay} ";
+            GetUIElementByName("Status").text = $"cycle #: {gameLogic.cycleNumber}  cycleDelay +|-: {cycleDelay}  effectDelay PGU|PGD: {field.effectDelay} ";
         }
         public void Quit()
         {
