@@ -6,6 +6,11 @@ namespace GameOfLife
 {
     class UIField : UIObject, IDrawable // TODO: Random-Effekt: zappelnde Zelle
     {
+        List<ConsoleColor[]> colorTheme = new List<ConsoleColor[]>
+        {
+            new ConsoleColor[]{ConsoleColor.White, ConsoleColor.Green, ConsoleColor.DarkGreen, ConsoleColor.DarkGreen, ConsoleColor.Red, ConsoleColor.DarkRed, ConsoleColor.Gray, ConsoleColor.DarkGray},
+            new ConsoleColor[]{ConsoleColor.White, ConsoleColor.Magenta, ConsoleColor.DarkMagenta,ConsoleColor.DarkMagenta, ConsoleColor.Green, ConsoleColor.DarkGreen , ConsoleColor.Gray, ConsoleColor.DarkGray}
+        };
         Random rnd = new Random();
         DateTime lastUpdate; // FPS limiter
         public bool[,] _field;
@@ -13,6 +18,7 @@ namespace GameOfLife
         int width = 0;
         int height = 0;
         public int _effectDelay = 50;
+        int _colorMode = 0;
         public UIField(string name, string text, int x, int y, bool[,] field, int width = 0, int height = 0, bool visible = true, ConsoleColor fColor = ConsoleColor.White, ConsoleColor bColor = ConsoleColor.Black, bool selected = false) : base(name, text, x, y, visible, fColor, bColor, selected)
         {
             _field = field;
@@ -27,6 +33,19 @@ namespace GameOfLife
                 {
                     backupField[y1, x1] = -2;
                 }
+            }
+        }
+        public int colorMode
+        {
+            get
+            {
+                return _colorMode;
+            }
+            set
+            {
+                if (value < 0) _colorMode = colorTheme.Count - 1;
+                else if (value >= colorTheme.Count) _colorMode = 0;
+                else _colorMode = value;
             }
         }
         public int effectDelay
@@ -61,43 +80,43 @@ namespace GameOfLife
         {
             if (backupField[y1, x1] >= -128 && backupField[y1, x1] < -100)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = colorTheme[_colorMode][4];
                 Console.SetCursorPosition(x + x1, y + y1);
                 Console.Write("·");
             }
             else if (backupField[y1, x1] >= -100 && backupField[y1, x1] < -50)
             {
-                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.ForegroundColor = colorTheme[_colorMode][5];
                 Console.SetCursorPosition(x + x1, y + y1);
                 Console.Write("·");
             }
             else if (backupField[y1, x1] >= -50 && backupField[y1, x1] < -2)
             {
-                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.ForegroundColor = colorTheme[_colorMode][6];
                 Console.SetCursorPosition(x + x1, y + y1);
                 Console.Write("·");
             }
             else if (backupField[y1, x1] == -2 || backupField[y1, x1] == -1)
             {
-                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.ForegroundColor = colorTheme[_colorMode][7];
                 Console.SetCursorPosition(x + x1, y + y1);
                 Console.Write("·");
             }
             else if (backupField[y1, x1] >= 0 && backupField[y1, x1] < 115)
             {
-                Console.ForegroundColor = ConsoleColor.Green;
+                Console.ForegroundColor = colorTheme[_colorMode][1];
                 Console.SetCursorPosition(x + x1, y + y1);
                 Console.Write("O");
             }
             else if (backupField[y1, x1] >= 115 && backupField[y1, x1] < 126)
             {
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.ForegroundColor = colorTheme[_colorMode][3];
                 Console.SetCursorPosition(x + x1, y + y1);
                 Console.Write("O");
             }
             else if (backupField[y1, x1] == 126 || backupField[y1, x1] == 127)
             {
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.ForegroundColor = colorTheme[_colorMode][2];
                 Console.SetCursorPosition(x + x1, y + y1);
                 Console.Write("o");
             }
@@ -116,14 +135,14 @@ namespace GameOfLife
                     {
                         if (backupField[y1, x1] >= 0)
                         {
-                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.ForegroundColor = colorTheme[_colorMode][4];
                             backupField[y1, x1] = -128;
                             Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("·");
                         }
                         else if (backupField[y1, x1] == -120)
                         {
-                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            Console.ForegroundColor = colorTheme[_colorMode][5];
                             Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("·");
                         }
@@ -133,13 +152,13 @@ namespace GameOfLife
                         }
                         else if (backupField[y1, x1] == -50)
                         {
-                            Console.ForegroundColor = ConsoleColor.Gray;
+                            Console.ForegroundColor = colorTheme[_colorMode][6];
                             Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("·");
                         }
                         else if(backupField[y1, x1] == -2)
                         {
-                            Console.ForegroundColor = ConsoleColor.DarkGray;
+                            Console.ForegroundColor = colorTheme[_colorMode][7];
                             Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("·");
                         }
@@ -148,14 +167,14 @@ namespace GameOfLife
                     {
                         if (backupField[y1, x1] < 0)
                         {
-                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.ForegroundColor = colorTheme[_colorMode][0];
                             backupField[y1, x1] = 127;
                             Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("o");
                         }
                         else if (backupField[y1, x1] == 126)
                         {
-                            Console.ForegroundColor = ConsoleColor.DarkGreen;
+                            Console.ForegroundColor = colorTheme[_colorMode][2];
                             Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("o");
                         }
@@ -165,13 +184,13 @@ namespace GameOfLife
                         }
                         else if (backupField[y1, x1] == 115)
                         {
-                            Console.ForegroundColor = ConsoleColor.DarkGreen;
+                            Console.ForegroundColor = colorTheme[_colorMode][3];
                             Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("O");
                         }
                         else if (backupField[y1, x1] == 100)
                         {
-                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.ForegroundColor = colorTheme[_colorMode][1];
                             Console.SetCursorPosition(x + x1, y + y1);
                             Console.Write("O");
                         }
