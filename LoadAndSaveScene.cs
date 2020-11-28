@@ -23,17 +23,19 @@ namespace GameOfLife
             logo = new UILogo("Logo", "Logo.txt", 5, 1, 88, 3);
             UIElements.Add(logo);
 
-            UIElements.Add(new UIText("LoadAndSave", $"select a game to load or enter filename for new savegame", 15, 5, true));
+            UIElements.Add(new UIText("LoadAndSave 2", "select a game to load or enter filename for new savegame", 17, 5, true));
             UIElements.Add(new UIInput("Filename", "Filename", 15, 7, "", true, () => { }));
-            UIElements.Add(new UIButton("Load", "Load", 15, 11, true, () => { LoadGame(GetUIElementByName("Filename").input); }));
-            UIElements.Add(new UIButton("Save", "Save", 15, 12, true, () => { SaveGame(GetUIElementByName("Filename").input + ".xml"); }));
+            UIElements.Add(new UIText("Line", "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯", 15, 8, true));
+            UIElements.Add(new UIButton("Load", "[  L Load  ]", 15, 11, true, () => { LoadGame(GetUIElementByName("Filename").input); }));
+            UIElements.Add(new UIButton("Save", "[  S Save  ]", 15, 12, true, () => { SaveGame(GetUIElementByName("Filename").input + ".xml"); }));
 
-            UIElements.Add(new UIText("Found", $"found savegames:", 35, 9, true));
+            UIElements.Add(new UIText("Found", "found savegames:", 35, 10, true));
+            UIElements.Add(new UIText("Line", "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯", 35, 11, true));
             fileNames = Directory.GetFiles(@".\", "*.xml");
 
             for (int i = 0; i < 10; i++)
             {
-                UIElements.Add(new UIButton($"File {i}", $"{i}.", 35, 11 + i, true, () => { }));
+                UIElements.Add(new UIButton($"File {i}", $"{i}.", 35, 12 + i, true, () => { }));
             }
             activeElement = 2;
             ListFiles();
@@ -48,7 +50,7 @@ namespace GameOfLife
                 {
                     int e = new int();
                     e = i;
-                    UIElements[GetUIElementIDByName($"File {i}")] = new UIButton($"File {i}", $"{fileNames[i]}", 35, 11 + i, true, () => { if (GetUIElementByName("Filename").input == fileNames[e]) LoadGame(GetUIElementByName("Filename").input); else GetUIElementByName("Filename").input = fileNames[e]; });
+                    UIElements[GetUIElementIDByName($"File {i}")] = new UIButton($"File {i}", $"{fileNames[i]}", 35, 12 + i, true, () => { if (GetUIElementByName("Filename").input == fileNames[e]) LoadGame(GetUIElementByName("Filename").input); else GetUIElementByName("Filename").input = fileNames[e]; });
                 }
                 else
                     UIElements[GetUIElementIDByName($"File {i}")].text = $"{i}.";
