@@ -170,7 +170,7 @@ namespace GameOfLife
             gameLogic.TogglePosition(x, y);
             if ((DateTime.Now - keyDown).TotalMilliseconds <= 50)
             {
-                gameLogic.TogglePosition(x - addX++ / 20 + rnd.Next(0, addX++/10), y - addY++ / 20 + rnd.Next(0, addY++/10));
+                gameLogic.TogglePosition(x - addX++ / 40 + rnd.Next(0, addX++/20), y - addY++ / 40 + rnd.Next(0, addY++/20));
             }
             else
             {
