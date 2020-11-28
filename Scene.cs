@@ -48,7 +48,7 @@ namespace GameOfLife
         {
             for (int i = 0; i < UIElements.Count; i++)
             {
-                Program.DrawUpdates.Add(UIElements[i]); // TODO: aus den einzelnen Konstruktoren entfernen
+                Program.DrawUpdates.Add(UIElements[i]);
             }
         }
         public int GetUIElementIDByName(string name)
@@ -79,7 +79,7 @@ namespace GameOfLife
 
             for (int i = 0; i < UIElements.Count; i++)
             {
-                if (UIElements[i].visible && UIElements[i].selectable)
+                if (UIElements[i].selectable)
                 {
                     if (direction == Direction.Up && UIElements[i].y < active.y && UIElements[i].x == active.x && DistanceTo(UIElements[i]) < foundDistance)
                     {
@@ -107,7 +107,7 @@ namespace GameOfLife
 
             for (int i = 0; i < UIElements.Count; i++)
             {
-                if (UIElements[i].visible && UIElements[i].selectable)
+                if (UIElements[i].selectable)
                 {
                     if (direction == Direction.Up && UIElements[i].y < active.y && DistanceTo(UIElements[i]) < foundDistance)
                     {
@@ -139,7 +139,7 @@ namespace GameOfLife
         }
         public abstract void Start();
         public abstract void Update();
-        public void Draw()
+        public void Draw() // TODO: disable cursor after window resize
         {
             fpsCounter.Draw();
         }

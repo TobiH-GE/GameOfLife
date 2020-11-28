@@ -12,12 +12,25 @@ namespace GameOfLife
         DateTime lastUpdate = DateTime.Now;
         DateTime keyDown; int addX, addY;
         bool autoCycleMode = false;
+        int _cycleDelay = 500;
         int randomCells = 50;
         public GameScene(GameLogic gameLogic = null)
         {
             if (gameLogic == null) this.gameLogic = new GameLogic();
             else this.gameLogic = gameLogic;
             Start();
+        }
+        public int cycleDelay
+        {
+            get
+            {
+                return _cycleDelay;
+            }
+            set
+            {
+                if (cycleDelay > 0 && cycleDelay < 5000)
+                    _cycleDelay = value;
+            }
         }
         public override void Start()
         {
@@ -62,7 +75,7 @@ namespace GameOfLife
         public override void Update()
         {
             Draw();
-            GetUIElementByName("Field").Draw();
+            field.Draw();
             logo.DrawEffect();
             AutoCycle();
 
@@ -108,7 +121,7 @@ namespace GameOfLife
                     case ConsoleKey.C:
                         Cycle();
                         break;
-                    case ConsoleKey.D: // TODO: entfernen, nur zum Test
+                    case ConsoleKey.D:
                         Program.Scenes.Push(new LoadAndSaveScene(ref gameLogic));
                         break;
                     case ConsoleKey.L:
@@ -124,10 +137,10 @@ namespace GameOfLife
                         Save();
                         break;
                     case ConsoleKey.Add:
-                        field.effectDelay++;
+                        cycleDelay += 50;
                         break;
                     case ConsoleKey.Subtract:
-                        field.effectDelay--;
+                        cycleDelay -= 50;
                         break;
                     case ConsoleKey.Escape:
                         Quit();
@@ -140,6 +153,8 @@ namespace GameOfLife
                         {
                             UIElements[activeElement].input += UserInput.KeyChar;
                         }
+                        if (UserInput.KeyChar == '-') cycleDelay -= 50;
+                        if (UserInput.KeyChar == '+') cycleDelay += 50;
                         break;
                 }
             }
@@ -218,7 +233,7 @@ namespace GameOfLife
         {
             if (autoCycleMode)
             {
-                if ((DateTime.Now - lastUpdate).TotalMilliseconds >= 500)
+                if ((DateTime.Now - lastUpdate).TotalMilliseconds >= cycleDelay)
                 {
                     Cycle();
                     lastUpdate = DateTime.Now;
@@ -250,7 +265,7 @@ namespace GameOfLife
         {
             gameLogic.NextCycle();
             field.Set(gameLogic.fieldAB[gameLogic.currentField ? 1 : 0]);
-            GetUIElementByName("Status").text = $"cycle #: {gameLogic.cycleNumber}  effectDelay +/-: {field.effectDelay} ";
+            GetUIElementByName("Status").text = $"cycle #: {gameLogic.cycleNumber}  cycleDelay +/-: {cycleDelay}  effectDelay: {field.effectDelay} ";
         }
         public void Quit()
         {

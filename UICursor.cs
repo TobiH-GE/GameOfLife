@@ -10,7 +10,7 @@ namespace GameOfLife
         readonly private Action _executeAfterMove;
         public int fieldX;
         public int fieldY;
-        public bool cursorMode = false;
+        public bool _cursorMode;
         public int fieldMaxX = 100;
         public int fieldMaxY = 20;
 
@@ -21,6 +21,19 @@ namespace GameOfLife
             selectable = true;
             this.fieldMaxX = fieldMaxX;
             this.fieldMaxY = fieldMaxY;
+        }
+        public bool cursorMode
+        {
+            get
+            {
+                return _cursorMode;
+            }
+            set
+            {
+                _cursorMode = value;
+                if (cursorMode == true) visible = true;
+                else visible = false;
+            }
         }
         public void Move(Direction direction)
         {

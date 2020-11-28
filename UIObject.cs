@@ -2,7 +2,7 @@
 
 namespace GameOfLife
 {
-    public class UIObject : IDrawable // TODO: Interface IDrawable und Liste needsRedraw
+    public class UIObject : IDrawable
     {
         public string name;
         public string _text;
