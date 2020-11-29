@@ -59,12 +59,10 @@ namespace GameOfLife
         }
         public override void Draw()
         {
-            if (visible)
+            if (visible && selected)
             {
                 Console.SetCursorPosition(x + fieldX, y + fieldY);
-                Console.ForegroundColor = fColor;
-                if (selected) Console.BackgroundColor = ConsoleColor.Green;
-                else Console.BackgroundColor = bColor;
+                Console.BackgroundColor = ConsoleColor.Green;
                 Console.Write(text);
                 Console.ResetColor();
             }

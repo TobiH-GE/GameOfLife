@@ -58,7 +58,7 @@ namespace GameOfLife
             field = new UIField("Field", "GameOfLife", 5, 5, gameLogic.fieldAB[gameLogic.currentField ? 1 : 0], gameLogic.width, gameLogic.height);
             UIElements.Add(field);
 
-            cursor = new UICursor("Cursor", " ", 5, 5, gameLogic.width, gameLogic.height, true, () => { Click(cursor.fieldX, cursor.fieldY); }, () => { UpdatePosition(cursor.fieldX, cursor.fieldY); });
+            cursor = new UICursor("Cursor", " ", 5, 5, gameLogic.width, gameLogic.height, true, () => { Click(cursor.fieldX, cursor.fieldY); }, () => { field.DrawPosition(cursor.fieldX, cursor.fieldY); });
             UIElements.Add(cursor);
 
             UIElements.Add(new UIText("Info", $"use cursor keys and press/ hold space to drop some cells", 60, gameLogic.height + 6, true));
@@ -66,11 +66,6 @@ namespace GameOfLife
             DrawUIElements();
 
             activeElement = 2;
-        }
-
-        public void UpdatePosition(int x, int y)
-        {
-            field.DrawPosition(x, y);
         }
         public override void Update()
         {
@@ -91,7 +86,7 @@ namespace GameOfLife
                         else activeElement = FindNextUIElement(Direction.Up);
                         break;
                     case ConsoleKey.DownArrow:
-                        if (cursor.cursorMode && cursor.fieldY == cursor.fieldMaxY - 1) { activeElement = 3; UpdatePosition(cursor.fieldX, cursor.fieldY); }
+                        if (cursor.cursorMode && cursor.fieldY == cursor.fieldMaxY - 1) { activeElement = 3; field.DrawPosition(cursor.fieldX, cursor.fieldY); }
                         else if (cursor.cursorMode) cursor.Move(Direction.Down);
                         else activeElement = FindNextUIElement(Direction.Down);
                         break;
