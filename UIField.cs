@@ -125,17 +125,18 @@ namespace GameOfLife
                         if (backupField[y1, x1] >= 0)
                         {
                             SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][4], '·');
-                            backupField[y1, x1] = -128;
+                            backupField[y1, x1] = -123;
+                            backupField[y1, x1] -= (sbyte)rnd.Next(0, 6); // random -5
                         }
-                        else if (backupField[y1, x1] == -120)
+                        else if (backupField[y1, x1] == -115)
                         {
                             SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][5], '·');
                         }
-                        else if (backupField[y1, x1] == -100)
+                        else if (backupField[y1, x1] == -95)
                         {
-                            backupField[y1, x1] -= (sbyte)rnd.Next(0, 5);
+                            backupField[y1, x1] -= (sbyte)rnd.Next(0, 5); // random
                         }
-                        else if (backupField[y1, x1] == -50)
+                        else if (backupField[y1, x1] == -45)
                         {
                             SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][6], '·');
                         }
@@ -149,21 +150,22 @@ namespace GameOfLife
                         if (backupField[y1, x1] < 0)
                         {
                             SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][0], 'o');
-                            backupField[y1, x1] = 127;
+                            backupField[y1, x1] = 122;
+                            backupField[y1, x1] += (sbyte)rnd.Next(0, 6); // random +5
                         }
-                        else if (backupField[y1, x1] == 126)
+                        else if (backupField[y1, x1] == 121)
                         {
                             SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][2], 'o');
                         }
-                        else if (backupField[y1, x1] == 116)
+                        else if (backupField[y1, x1] == 111)
                         {
-                            backupField[y1, x1] += (sbyte)rnd.Next(0, 3);
+                            backupField[y1, x1] += (sbyte)rnd.Next(0, 3); // random
                         }
-                        else if (backupField[y1, x1] == 115)
+                        else if (backupField[y1, x1] == 110)
                         {
                             SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][3], 'O');
                         }
-                        else if (backupField[y1, x1] == 100)
+                        else if (backupField[y1, x1] == 95)
                         {
                             SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][1], 'O');
                         }
