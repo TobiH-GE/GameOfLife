@@ -21,8 +21,6 @@ namespace GameOfLife
         int height = 0;
         public int _effectDelay = 50;
         int _colorMode = 0;
-        int prevX = -1;
-        int prevY = -1;
 
         public UIField(string name, string text, int x, int y, bool[,] field, int width = 0, int height = 0, bool visible = true, ConsoleColor fColor = ConsoleColor.White, ConsoleColor bColor = ConsoleColor.Black, bool selected = false) : base(name, text, x, y, visible, fColor, bColor, selected)
         {
@@ -178,9 +176,7 @@ namespace GameOfLife
         public void SetColorAndDraw(int x, int y, ConsoleColor color, char pchar)
         {
             Console.ForegroundColor = color;
-            if (x != prevX + 1 || y != prevY) Console.SetCursorPosition(x, y);
-            prevX = x;  // xy merken und evtl. im nächsten Durchlauf SetCursorPosition überspringen, da Write die x-Position eh um 1 erhöht -> mehr Speed?
-            prevY = y;
+            Console.SetCursorPosition(x, y);
             Console.Write(pchar);
         }
     }

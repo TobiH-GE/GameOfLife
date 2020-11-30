@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GameOfLife
+namespace GameOfLife // TODO: catch wrong input
 {
     class Program                               // *** GameOfLife von TobiH ***
     {
