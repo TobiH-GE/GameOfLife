@@ -82,45 +82,31 @@ namespace GameOfLife
         {
             if (backupField[y1, x1] >= -128 && backupField[y1, x1] < -100)
             {
-                Console.ForegroundColor = colorTheme[_colorMode][4];
-                Console.SetCursorPosition(x + x1, y + y1);
-                Console.Write("·");
+                SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][4], '·');
             }
             else if (backupField[y1, x1] >= -100 && backupField[y1, x1] < -50)
             {
-                Console.ForegroundColor = colorTheme[_colorMode][5];
-                Console.SetCursorPosition(x + x1, y + y1);
-                Console.Write("·");
+                SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][5], '·');
             }
             else if (backupField[y1, x1] >= -50 && backupField[y1, x1] < -2)
             {
-                Console.ForegroundColor = colorTheme[_colorMode][6];
-                Console.SetCursorPosition(x + x1, y + y1);
-                Console.Write("·");
+                SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][6], '·');
             }
             else if (backupField[y1, x1] == -2 || backupField[y1, x1] == -1)
             {
-                Console.ForegroundColor = colorTheme[_colorMode][7];
-                Console.SetCursorPosition(x + x1, y + y1);
-                Console.Write("·");
+                SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][7], '·');
             }
             else if (backupField[y1, x1] >= 0 && backupField[y1, x1] < 115)
             {
-                Console.ForegroundColor = colorTheme[_colorMode][1];
-                Console.SetCursorPosition(x + x1, y + y1);
-                Console.Write("O");
+                SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][1], 'O');
             }
             else if (backupField[y1, x1] >= 115 && backupField[y1, x1] < 126)
             {
-                Console.ForegroundColor = colorTheme[_colorMode][3];
-                Console.SetCursorPosition(x + x1, y + y1);
-                Console.Write("O");
+                SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][3], 'O');
             }
             else if (backupField[y1, x1] == 126 || backupField[y1, x1] == 127)
             {
-                Console.ForegroundColor = colorTheme[_colorMode][2];
-                Console.SetCursorPosition(x + x1, y + y1);
-                Console.Write("o");
+                SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][2], 'o');
             }
         }
         public override void Draw()
@@ -137,16 +123,12 @@ namespace GameOfLife
                     {
                         if (backupField[y1, x1] >= 0)
                         {
-                            Console.ForegroundColor = colorTheme[_colorMode][4];
+                            SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][4], '·');
                             backupField[y1, x1] = -128;
-                            Console.SetCursorPosition(x + x1, y + y1);
-                            Console.Write("·");
                         }
                         else if (backupField[y1, x1] == -120)
                         {
-                            Console.ForegroundColor = colorTheme[_colorMode][5];
-                            Console.SetCursorPosition(x + x1, y + y1);
-                            Console.Write("·");
+                            SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][5], '·');
                         }
                         else if (backupField[y1, x1] == -100)
                         {
@@ -154,31 +136,23 @@ namespace GameOfLife
                         }
                         else if (backupField[y1, x1] == -50)
                         {
-                            Console.ForegroundColor = colorTheme[_colorMode][6];
-                            Console.SetCursorPosition(x + x1, y + y1);
-                            Console.Write("·");
+                            SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][6], '·');
                         }
                         else if(backupField[y1, x1] == -2)
                         {
-                            Console.ForegroundColor = colorTheme[_colorMode][7];
-                            Console.SetCursorPosition(x + x1, y + y1);
-                            Console.Write("·");
+                            SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][7], '·');
                         }
                     }
                     else
                     {
                         if (backupField[y1, x1] < 0)
                         {
-                            Console.ForegroundColor = colorTheme[_colorMode][0];
+                            SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][0], 'o');
                             backupField[y1, x1] = 127;
-                            Console.SetCursorPosition(x + x1, y + y1);
-                            Console.Write("o");
                         }
                         else if (backupField[y1, x1] == 126)
                         {
-                            Console.ForegroundColor = colorTheme[_colorMode][2];
-                            Console.SetCursorPosition(x + x1, y + y1);
-                            Console.Write("o");
+                            SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][2], 'o');
                         }
                         else if (backupField[y1, x1] == 116)
                         {
@@ -186,21 +160,23 @@ namespace GameOfLife
                         }
                         else if (backupField[y1, x1] == 115)
                         {
-                            Console.ForegroundColor = colorTheme[_colorMode][3];
-                            Console.SetCursorPosition(x + x1, y + y1);
-                            Console.Write("O");
+                            SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][3], 'O');
                         }
                         else if (backupField[y1, x1] == 100)
                         {
-                            Console.ForegroundColor = colorTheme[_colorMode][1];
-                            Console.SetCursorPosition(x + x1, y + y1);
-                            Console.Write("O");
+                            SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][1], 'O');
                         }
                     }
                     if (backupField[y1, x1] > 0) backupField[y1, x1]--;
                     else if (backupField[y1, x1] < -1) backupField[y1, x1]++;
                 }
             }
+        }
+        public void SetColorAndDraw(int x, int y, ConsoleColor color, char pchar)
+        {
+            Console.ForegroundColor = color;
+            Console.SetCursorPosition(x, y );
+            Console.Write(pchar);
         }
     }
 }
