@@ -132,9 +132,9 @@ namespace GameOfLife
                         {
                             SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][5], '·');
                         }
-                        else if (backupField[y1, x1] == -95)
+                        else if (backupField[y1, x1] == -99)
                         {
-                            backupField[y1, x1] -= (sbyte)rnd.Next(0, 5); // random
+                            backupField[y1, x1] += (sbyte)rnd.Next(0, 5); // random
                         }
                         else if (backupField[y1, x1] == -45)
                         {
@@ -157,9 +157,9 @@ namespace GameOfLife
                         {
                             SetColorAndDraw(x + x1, y + y1, colorTheme[_colorMode][2], 'o');
                         }
-                        else if (backupField[y1, x1] == 111)
+                        else if (backupField[y1, x1] == 115)
                         {
-                            backupField[y1, x1] += (sbyte)rnd.Next(0, 3); // random
+                            backupField[y1, x1] -= (sbyte)rnd.Next(0, 3); // random
                         }
                         else if (backupField[y1, x1] == 110)
                         {

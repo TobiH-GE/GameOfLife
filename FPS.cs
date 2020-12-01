@@ -15,7 +15,7 @@ namespace GameOfLife
         public void Draw()
         {
             framesSinceLastUpdate++;
-            if ((DateTime.Now - lastUpdate).TotalMilliseconds >= 5000)
+            if ((DateTime.Now - lastUpdate).TotalMilliseconds >= 1000)
             {
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.DarkGray;
